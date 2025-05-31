@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "automationera",
+	"version": "${version}",
+	"name": "AutomationEra",
+	"description": "生电辅助进度MOD",
+	"authors": [
+		"Albertchen857"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/albertchen857/AutomationEra"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/automationera/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.automationera.AutomationEra"
+		],
+		"fabric-datagen": [
+			"com.automationera.AutomationEraDataGenerator"
+		]
+	},
+	"mixins": [
+		"automationera.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
