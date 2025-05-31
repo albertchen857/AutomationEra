@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "minecraft:iron_ingot"
+      "item": "minecraft:iron_ingot"
     },
     "title": {
       "translate": "advancements.ironfarm.title"
@@ -24,16 +24,15 @@
               "minecraft:iron_ingot"
             ],
             "count": {
-              "min": 256,
-              "max": 9999
+              "min": 256
             }
           }
         ]
       }
     }
   },
-  "rewards": {
-    "experience": 100
-  },
-  "parent": "automationera:automationstart"
+  "requirements": [
+    ["ironfarm_0"]
+  ],
+  "parent": "automationera:root"
 }

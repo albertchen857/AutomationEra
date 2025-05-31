@@ -1,15 +1,9 @@
 {
   "display": {
     "background": "minecraft:textures/block/redstone_ore.png",
-    "icon": {
-      "id": "minecraft:redstone"
-    },
-    "title": {
-      "translate": "advancements.automationstart.title"
-    },
-    "description": {
-      "translate": "advancements.automationstart.descr"
-    },
+    "icon": {"item": "minecraft:redstone"},
+    "title": {"translate": "advancements.automationstart.title"},
+    "description": {"translate": "advancements.automationstart.descr"},
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
@@ -23,11 +17,13 @@
           {
             "items": [
               "minecraft:redstone"
-            ],
-            "count": 1
+            ]
           }
         ]
       }
     }
-  }
+  },
+  "requirements": [
+    ["automationstart_0"]
+  ]
 }

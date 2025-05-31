@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"com.automationera.AutomationEraDataGenerator"
+		],
+		"fabric-client": [
+			"com.automationera.AutomationEraClient"
 		]
 	},
 	"mixins": [
