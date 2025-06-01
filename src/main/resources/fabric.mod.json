@@ -19,7 +19,7 @@
 			"com.automationera.AutomationEra"
 		],
 		"fabric-datagen": [
-			"com.automationera.AutomationEraDataGenerator"
+			"com.automationera.DataGeneration"
 		]
 	},
 	"mixins": [

@@ -68,7 +68,13 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("stacks_" + requiredStacks,  FullStackCriterion.createCriterion(targetItem, requiredStacks))
+                .criterion("stacks_" + requiredStacks, 
+                    InventoryChangedCriterion.Conditions.items(
+                        ItemPredicate.Builder.create()
+                            .items(targetItem)
+                            .count(NumberRange.IntRange.atLeast(64 * requiredStacks))
+                            .build()
+                    ))
                 .build(consumer, MOD_ID + "/" + advancementId);
     }
 }

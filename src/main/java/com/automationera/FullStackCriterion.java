@@ -1,5 +1,6 @@
 package com.automationera;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.PlayerAdvancementTracker;
@@ -70,15 +71,15 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
             countObj.addProperty("max", 64);
             itemPredicate.add("count", countObj);
 
-            // 添加所需堆叠数量
-            json.addProperty("required_stacks", this.requiredStacks);
-
             // 创建items数组
-            JsonObject itemsObj = new JsonObject();
-            itemsObj.add("items", itemPredicate);
+            JsonArray itemsArray = new JsonArray();
+            itemsArray.add(itemPredicate);
 
-            // 直接添加items对象到根级别
-            json.add("items", itemsObj);
+            // 创建conditions对象
+            JsonObject conditions = new JsonObject();
+            conditions.add("items", itemsArray);
+            json.add("conditions", conditions);
+
             return json;
         }
     }
@@ -88,11 +89,12 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
     protected Conditions conditionsFromJson(JsonObject json,
                                             LootContextPredicate player,
                                             AdvancementEntityPredicateDeserializer deserializer) {
-        // 获取items对象
-        JsonObject items = json.getAsJsonObject("items");
+        // 获取items数组
+        JsonArray items = json.getAsJsonObject("conditions").getAsJsonArray("items");
+        JsonObject firstItem = items.get(0).getAsJsonObject();
 
         // 获取物品ID
-        String itemId = JsonHelper.getString(items, "item");
+        String itemId = JsonHelper.getString(firstItem, "item");
         Identifier itemIdentifier = new Identifier(itemId);
         Item item = Registries.ITEM.get(itemIdentifier);
 
@@ -101,12 +103,12 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
         }
 
         // 从JSON中直接获取所需堆叠数量
-        int requiredStacks = JsonHelper.getInt(json, "required_stacks");
+        int requiredStacks = JsonHelper.getInt(json, "required_stacks", 1);
 
         return new Conditions(item, requiredStacks);
     }
 
-    // 创建进度条件实例 - 修正返回类型
+    // 创建进度条件实例
     public static AdvancementCriterion createCriterion(Item item, int requiredStacks) {
         return new AdvancementCriterion(new Conditions(item, requiredStacks));
     }
