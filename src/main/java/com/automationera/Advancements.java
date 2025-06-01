@@ -47,6 +47,13 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.COBBLESTONE,
                 9,
                 Items.COBBLESTONE);
+
+        // 创建金农场进度
+        createStackAdvancement(consumer, root,
+                "goldfarm",
+                Items.GOLD_INGOT,
+                6,
+                Items.GOLD_INGOT);
     }
 
     private void createStackAdvancement(
@@ -68,13 +75,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("stacks_" + requiredStacks, 
-                    InventoryChangedCriterion.Conditions.items(
-                        ItemPredicate.Builder.create()
-                            .items(targetItem)
-                            .count(NumberRange.IntRange.atLeast(64 * requiredStacks))
-                            .build()
-                    ))
+                .criterion("stacks_" + requiredStacks,  FullStackCriterion.createCriterion(targetItem, requiredStacks))
                 .build(consumer, MOD_ID + "/" + advancementId);
     }
 }

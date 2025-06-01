@@ -3,11 +3,8 @@ package com.automationera;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-import net.minecraft.advancement.criterion.Criterion;
-import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.item.Item;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
@@ -27,22 +24,7 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
 
     // 触发进度条件
     public void trigger(ServerPlayerEntity player, Item item, int requiredStacks) {
-        int fullStackCount = 0;
-        int stackSize = item.getMaxCount(); // 获取物品的最大堆叠大小
-
-        // 扫描玩家背包
-        for (var stack : player.getInventory().main) {
-            if (!stack.isEmpty() &&
-                    stack.getItem() == item &&
-                    stack.getCount() == stackSize) { // 检查是否是完整堆叠
-                fullStackCount++;
-            }
-        }
-
-        // 如果满足条件则触发进度
-        if (fullStackCount >= requiredStacks) {
-            this.trigger(player, conditions -> true);
-        }
+        this.trigger(player, conditions -> conditions.item == item && conditions.requiredStacks == requiredStacks);
     }
 
     // 进度条件实例
@@ -78,6 +60,7 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
             // 创建conditions对象
             JsonObject conditions = new JsonObject();
             conditions.add("items", itemsArray);
+            conditions.addProperty("required_stacks", this.requiredStacks);
             json.add("conditions", conditions);
 
             return json;
@@ -102,8 +85,8 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
             throw new IllegalStateException("未知物品: " + itemId);
         }
 
-        // 从JSON中直接获取所需堆叠数量
-        int requiredStacks = JsonHelper.getInt(json, "required_stacks", 1);
+        // 从JSON中获取所需堆叠数量
+        int requiredStacks = JsonHelper.getInt(json.getAsJsonObject("conditions"), "required_stacks");
 
         return new Conditions(item, requiredStacks);
     }

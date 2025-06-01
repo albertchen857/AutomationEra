@@ -25,11 +25,35 @@ public class AutomationEra implements ModInitializer {
 		Criteria.register(FULL_STACK_CRITERION);
 		// 添加每刻检查
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
-			if (server.getTicks() % 100 == 0) {
+			if (server.getTicks() % 20 == 0) {
 				for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-					FULL_STACK_CRITERION.trigger(player, Items.IRON_INGOT, 4);
+					// 检查铁锭
+					checkPlayerStacks(player, Items.IRON_INGOT, 4);
+					// 检查圆石
+					checkPlayerStacks(player, Items.COBBLESTONE, 9);
+					// 检查金锭
+					checkPlayerStacks(player, Items.GOLD_INGOT, 6);
 				}
 			}
 		});
+	}
+
+	private void checkPlayerStacks(ServerPlayerEntity player, net.minecraft.item.Item item, int requiredStacks) {
+		int fullStackCount = 0;
+		int stackSize = item.getMaxCount();
+
+		// 扫描玩家背包
+		for (var stack : player.getInventory().main) {
+			if (!stack.isEmpty() &&
+					stack.getItem() == item &&
+					stack.getCount() == stackSize) {
+				fullStackCount++;
+			}
+		}
+
+		// 如果满足条件则触发进度
+		if (fullStackCount >= requiredStacks) {
+			FULL_STACK_CRITERION.trigger(player, item, requiredStacks);
+		}
 	}
 }

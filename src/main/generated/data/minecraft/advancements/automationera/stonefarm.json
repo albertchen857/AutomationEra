@@ -3,16 +3,18 @@
   "criteria": {
     "stacks_9": {
       "conditions": {
-        "items": {
-          "items": {
-            "count": {
-              "max": 64,
-              "min": 64
-            },
-            "item": "minecraft:cobblestone"
-          }
-        },
-        "required_stacks": 9
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cobblestone"
+            }
+          ],
+          "required_stacks": 9
+        }
       },
       "trigger": "automationera:full_stack"
     }

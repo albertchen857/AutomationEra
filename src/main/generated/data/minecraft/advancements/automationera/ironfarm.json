@@ -3,16 +3,18 @@
   "criteria": {
     "stacks_4": {
       "conditions": {
-        "items": {
-          "items": {
-            "count": {
-              "max": 64,
-              "min": 64
-            },
-            "item": "minecraft:iron_ingot"
-          }
-        },
-        "required_stacks": 4
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:iron_ingot"
+            }
+          ],
+          "required_stacks": 4
+        }
       },
       "trigger": "automationera:full_stack"
     }
