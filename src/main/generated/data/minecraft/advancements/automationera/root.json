@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "get_redstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:redstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/block/redstone_ore.png",
+    "description": {
+      "translate": "advancements.root.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:redstone"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_redstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

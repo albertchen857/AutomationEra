@@ -1,0 +1,113 @@
+package com.automationera;
+
+import com.google.gson.JsonObject;
+import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.minecraft.advancement.criterion.AbstractCriterion;
+import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.advancement.criterion.Criterion;
+import net.minecraft.advancement.criterion.CriterionConditions;
+import net.minecraft.item.Item;
+import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
+import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
+import net.minecraft.predicate.entity.LootContextPredicate;
+import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
+
+public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Conditions> {
+    public static final Identifier ID = new Identifier("automationera", "full_stack");
+
+    @Override
+    public Identifier getId() {
+        return ID;
+    }
+
+    // 触发进度条件
+    public void trigger(ServerPlayerEntity player, Item item, int requiredStacks) {
+        int fullStackCount = 0;
+        int stackSize = item.getMaxCount(); // 获取物品的最大堆叠大小
+
+        // 扫描玩家背包
+        for (var stack : player.getInventory().main) {
+            if (!stack.isEmpty() &&
+                    stack.getItem() == item &&
+                    stack.getCount() == stackSize) { // 检查是否是完整堆叠
+                fullStackCount++;
+            }
+        }
+
+        // 如果满足条件则触发进度
+        if (fullStackCount >= requiredStacks) {
+            this.trigger(player, conditions -> true);
+        }
+    }
+
+    // 进度条件实例
+    public static class Conditions extends AbstractCriterionConditions {
+        private final Item item;
+        private final int requiredStacks;
+
+        public Conditions(Item item, int requiredStacks) {
+            super(ID, LootContextPredicate.EMPTY);
+            this.item = item;
+            this.requiredStacks = requiredStacks;
+        }
+
+        // 将条件转换为JSON（用于生成进度JSON文件）
+        @Override
+        public JsonObject toJson(AdvancementEntityPredicateSerializer serializer) {
+            JsonObject json = super.toJson(serializer);
+
+            // 创建物品条件
+            JsonObject itemPredicate = new JsonObject();
+            itemPredicate.addProperty("item", Registries.ITEM.getId(this.item).toString());
+
+            // 设置数量范围（固定为64）
+            JsonObject countObj = new JsonObject();
+            countObj.addProperty("min", 64);
+            countObj.addProperty("max", 64);
+            itemPredicate.add("count", countObj);
+
+            // 添加所需堆叠数量
+            json.addProperty("required_stacks", this.requiredStacks);
+
+            // 创建items数组
+            JsonObject itemsObj = new JsonObject();
+            itemsObj.add("items", itemPredicate);
+
+            // 直接添加items对象到根级别
+            json.add("items", itemsObj);
+            return json;
+        }
+    }
+
+    // 从JSON解析条件
+    @Override
+    protected Conditions conditionsFromJson(JsonObject json,
+                                            LootContextPredicate player,
+                                            AdvancementEntityPredicateDeserializer deserializer) {
+        // 获取items对象
+        JsonObject items = json.getAsJsonObject("items");
+
+        // 获取物品ID
+        String itemId = JsonHelper.getString(items, "item");
+        Identifier itemIdentifier = new Identifier(itemId);
+        Item item = Registries.ITEM.get(itemIdentifier);
+
+        if (item == null) {
+            throw new IllegalStateException("未知物品: " + itemId);
+        }
+
+        // 从JSON中直接获取所需堆叠数量
+        int requiredStacks = JsonHelper.getInt(json, "required_stacks");
+
+        return new Conditions(item, requiredStacks);
+    }
+
+    // 创建进度条件实例 - 修正返回类型
+    public static AdvancementCriterion createCriterion(Item item, int requiredStacks) {
+        return new AdvancementCriterion(new Conditions(item, requiredStacks));
+    }
+}
