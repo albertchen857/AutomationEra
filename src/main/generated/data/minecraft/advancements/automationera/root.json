@@ -1,6 +1,6 @@
 {
   "criteria": {
-    "get_redstone": {
+    "root": {
       "conditions": {
         "items": [
           {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "get_redstone"
+      "root"
     ]
   ],
   "sends_telemetry_event": true

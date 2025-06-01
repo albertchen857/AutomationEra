@@ -1,10 +1,115 @@
 {
   "advancements.root.title": "自动化时代",
   "advancements.root.descr": "开始你的自动化之旅",
-  "advancements.ironfarm.title": "铁锭仓库",
-  "advancements.ironfarm.descr": "收集4组铁锭",
-  "advancements.stonefarm.title": "石头仓库",
+
+  "advancements.silk.title": "精准采集",
+  "advancements.silk.descr": "获得精准采集附魔",
+
+  "advancements.findvillage.title": "找到村庄",
+  "advancements.findvillage.descr": "发现一个村庄",
+
+  "advancements.farm.title": "农场",
+  "advancements.farm.descr": "获得任意农作物",
+
+  "advancements.fight.title": "打怪",
+  "advancements.fight.descr": "击败任意怪物",
+
+  "advancements.stonefarm.title": "刷石机",
   "advancements.stonefarm.descr": "收集9组圆石",
-  "advancements.goldfarm.title": "金锭仓库",
-  "advancements.goldfarm.descr": "收集6组金锭"
+
+  "advancements.mobfarm.title": "刷怪塔",
+  "advancements.mobfarm.descr": "收集9组骨粉",
+
+  "advancements.sandfarm.title": "刷沙机",
+  "advancements.sandfarm.descr": "收集9组沙子",
+
+  "advancements.shulkerfarm.title": "潜影贝农场",
+  "advancements.shulkerfarm.descr": "收集27组潜影贝壳",
+
+  "advancements.witchfarm.title": "女巫塔",
+  "advancements.witchfarm.descr": "收集27组红石",
+
+  "advancements.slimefarm.title": "史莱姆农场",
+  "advancements.slimefarm.descr": "收集27组粘液球",
+
+  "advancements.ironfarm.title": "刷铁机",
+  "advancements.ironfarm.descr": "收集4组铁锭",
+
+  "advancements.furnacegroup.title": "熔炉组",
+  "advancements.furnacegroup.descr": "收集9组圆石",
+
+  "advancements.bigfurnace.title": "大型熔炉组",
+  "advancements.bigfurnace.descr": "收集27组平滑石头",
+
+  "advancements.woodfarm.title": "树厂",
+  "advancements.woodfarm.descr": "任意一种原木收集9组",
+
+  "advancements.bonefarm.title": "骨粉机",
+  "advancements.bonefarm.descr": "收集27组骨粉",
+
+  "advancements.alltree.title": "全树种",
+  "advancements.alltree.descr": "任意一种原木收集27组",
+
+  "advancements.autofarm.title": "自动农场",
+  "advancements.autofarm.descr": "任意一种农作物收集4组",
+
+  "advancements.tradingpost.title": "村民交易所",
+  "advancements.tradingpost.descr": "与村民交易10次",
+
+  "advancements.hoglinfarm.title": "疣猪塔",
+  "advancements.hoglinfarm.descr": "收集9组猪扒",
+
+  "advancements.railfarm.title": "铁轨机",
+  "advancements.railfarm.descr": "每种铁轨收集4组",
+
+  "advancements.netherhighway.title": "地狱高速",
+  "advancements.netherhighway.descr": "在下界放置一次浮冰",
+
+  "advancements.tripwire.title": "钩子机",
+  "advancements.tripwire.descr": "收集27组钩子",
+
+  "advancements.stringfarm.title": "刷线机",
+  "advancements.stringfarm.descr": "收集27组线",
+
+  "advancements.raidfarm.title": "袭击塔",
+  "advancements.raidfarm.descr": "收集9组绿宝石",
+
+  "advancements.bamboo.title": "竹子机",
+  "advancements.bamboo.descr": "收集4组竹子",
+
+  "advancements.sugarcane.title": "甘蔗机",
+  "advancements.sugarcane.descr": "收集4组甘蔗",
+
+  "advancements.pumpkinfarm.title": "南瓜机",
+  "advancements.pumpkinfarm.descr": "收集4组南瓜",
+
+  "advancements.melonfarm.title": "西瓜机",
+  "advancements.melonfarm.descr": "收集4组西瓜",
+
+  "advancements.blaze.title": "烈焰人农场",
+  "advancements.blaze.descr": "收集27组烈焰棒",
+
+  "advancements.expcap.title": "EXP限制",
+  "advancements.expcap.descr": "达到30级经验",
+
+  "advancements.endermanfarm.title": "小黑塔",
+  "advancements.endermanfarm.descr": "收集27组末影珍珠",
+
+  "advancements.pigmanfarm.title": "猪人塔",
+  "advancements.pigmanfarm.descr": "收集27组金锭",
+
+  "advancements.piglintrade.title": "猪灵交易所",
+  "advancements.piglintrade.descr": "收集4组石英、4组黑曜石和1本附魔书",
+
+  "advancements.doublepigman.title": "双维度猪人塔",
+  "advancements.doublepigman.descr": "收集27组金锭",
+
+  "advancements.witherrose.title": "凋零玫瑰农场",
+  "advancements.witherrose.descr": "收集9组凋零玫瑰",
+
+  "advancements.witherskel.title": "凋零骷髅农场",
+  "advancements.witherskel.descr": "收集4组凋零骷髅头和4组煤炭",
+
+  "advancements.witherkill.title": "杀凋机",
+  "advancements.witherkill.descr": "收集4组下界之星"
 } 
