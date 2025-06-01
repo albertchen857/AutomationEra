@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:automationera/root",
+  "criteria": {
+    "findvillage": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:emerald"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.findvillage.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.findvillage.title"
+    }
+  },
+  "requirements": [
+    [
+      "findvillage"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

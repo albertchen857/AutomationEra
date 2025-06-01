@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:automationera/fight",
+  "criteria": {
+    "expcap": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.expcap.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.expcap.title"
+    }
+  },
+  "requirements": [
+    [
+      "expcap"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

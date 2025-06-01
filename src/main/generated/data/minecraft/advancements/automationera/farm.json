@@ -1,0 +1,53 @@
+{
+  "parent": "minecraft:automationera/root",
+  "criteria": {
+    "farm": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wheat"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:potato"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:carrot"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:beetroot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.farm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:wheat"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.farm.title"
+    }
+  },
+  "requirements": [
+    [
+      "farm"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:automationera/tradingpost",
+  "criteria": {
+    "silk": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:shears"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.silk.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:shears",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.silk.title"
+    }
+  },
+  "requirements": [
+    [
+      "silk"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

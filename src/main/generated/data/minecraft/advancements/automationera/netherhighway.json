@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:automationera/silk",
+  "criteria": {
+    "netherhighway": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.netherhighway.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:blue_ice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.netherhighway.title"
+    }
+  },
+  "requirements": [
+    [
+      "netherhighway"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
