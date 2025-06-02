@@ -1,0 +1,63 @@
+{
+  "parent": "minecraft:woolfarm",
+  "criteria": {
+    "pitcher": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pitcher_pod"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "torchflower": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:torchflower_seeds"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.snifferfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:torchflower_seeds"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.snifferfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "torchflower"
+    ],
+    [
+      "pitcher"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

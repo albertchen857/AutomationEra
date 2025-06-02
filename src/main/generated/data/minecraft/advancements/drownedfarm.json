@@ -1,0 +1,79 @@
+{
+  "parent": "minecraft:guardianfarm",
+  "criteria": {
+    "copper": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:copper_ingot"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "flesh": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:rotten_flesh"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "trident": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:trident"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.drownedfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:trident",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.drownedfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "flesh"
+    ],
+    [
+      "copper"
+    ],
+    [
+      "trident"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

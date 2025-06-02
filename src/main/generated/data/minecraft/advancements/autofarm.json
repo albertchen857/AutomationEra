@@ -1,0 +1,63 @@
+{
+  "parent": "minecraft:root",
+  "criteria": {
+    "carrot": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:carrot"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "potato": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:potato"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.autofarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:potato"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.autofarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "potato"
+    ],
+    [
+      "carrot"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
