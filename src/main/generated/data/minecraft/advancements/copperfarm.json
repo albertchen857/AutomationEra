@@ -1,0 +1,83 @@
+{
+  "parent": "minecraft:stonefarm",
+  "criteria": {
+    "exposed": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:exposed_copper"
+            }
+          ],
+          "required_stacks": 2
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "oxidized": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:oxidized_copper"
+            }
+          ],
+          "required_stacks": 2
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "weathered": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:weathered_copper"
+            }
+          ],
+          "required_stacks": 2
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.copperfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:exposed_copper"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.copperfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "exposed"
+    ],
+    [
+      "weathered"
+    ],
+    [
+      "oxidized"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

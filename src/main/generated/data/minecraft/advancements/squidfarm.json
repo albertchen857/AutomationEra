@@ -1,0 +1,63 @@
+{
+  "parent": "minecraft:turtlefarm",
+  "criteria": {
+    "glow": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_ink_sac"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "ink": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:ink_sac"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.squidfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:ink_sac"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.squidfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "ink"
+    ],
+    [
+      "glow"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

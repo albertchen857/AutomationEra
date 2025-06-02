@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:root",
+  "criteria": {
+    "animalfarm": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:chicken"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.animalfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:chicken"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.animalfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "animalfarm"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,63 @@
+{
+  "parent": "minecraft:hoglinfarm",
+  "criteria": {
+    "chicken": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cooked_chicken"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    },
+    "egg": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:egg"
+            }
+          ],
+          "required_stacks": 16
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.lavachicken.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:cooked_chicken"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.lavachicken.title"
+    }
+  },
+  "requirements": [
+    [
+      "chicken"
+    ],
+    [
+      "egg"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
