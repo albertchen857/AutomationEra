@@ -4,6 +4,8 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.advancement.criterion.PlacedBlockCriterion;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -32,8 +34,22 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("root", InventoryChangedCriterion.Conditions.items(Items.REDSTONE))
                 .build(consumer, "root");
 
+        // 自动化工厂分支
+        Advancement automaticFactory = Advancement.Builder.create()
+                .parent(root)
+                .display(
+                        Items.CRAFTING_TABLE,
+                        Text.translatable("advancements.automaticfactory.title"),
+                        Text.translatable("advancements.automaticfactory.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("crafting", InventoryChangedCriterion.Conditions.items(Items.CRAFTING_TABLE))
+                .build(consumer, "automaticfactory");
+
         // 刷石机分支
-        Advancement stonefarm = createStackAdvancement(consumer, root, "stonefarm", Items.COBBLESTONE, 9, Items.COBBLESTONE);
+        Advancement stonefarm = createStackAdvancement(consumer, automaticFactory, "stonefarm", Items.COBBLESTONE, 9, Items.COBBLESTONE, AdvancementFrame.TASK);
         Advancement copperfarm = Advancement.Builder.create()
                 .parent(stonefarm)
                 .display(
@@ -48,9 +64,9 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("weathered", FullStackCriterion.createCriterion(Items.WEATHERED_COPPER, 2))
                 .criterion("oxidized", FullStackCriterion.createCriterion(Items.OXIDIZED_COPPER, 2))
                 .build(consumer, "copperfarm");
-        Advancement icefarm = createStackAdvancement(consumer, stonefarm, "icefarm", Items.ICE, 9, Items.ICE);
-        Advancement basaltfarm = createStackAdvancement(consumer, stonefarm, "basaltfarm", Items.BASALT, 9, Items.BASALT);
-        Advancement dripstonefarm = createStackAdvancement(consumer, stonefarm, "dripstonefarm", Items.DRIPSTONE_BLOCK, 9, Items.DRIPSTONE_BLOCK);
+        Advancement icefarm = createStackAdvancement(consumer, stonefarm, "icefarm", Items.ICE, 9, Items.ICE, AdvancementFrame.TASK);
+        Advancement basaltfarm = createStackAdvancement(consumer, stonefarm, "basaltfarm", Items.BASALT, 9, Items.BASALT, AdvancementFrame.TASK);
+        Advancement dripstonefarm = createStackAdvancement(consumer, stonefarm, "dripstonefarm", Items.DRIPSTONE_BLOCK, 9, Items.DRIPSTONE_BLOCK, AdvancementFrame.TASK);
 
         // 熔炉组分支
         Advancement furnacegroup = Advancement.Builder.create()
@@ -65,44 +81,63 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 )
                 .criterion("furnacegroup2", FullStackCriterion.createCriterion(Items.GLASS, 4))
                 .build(consumer, MOD_ID + "/furnacegroup");
-        Advancement bigfurnace = createStackAdvancement(consumer, furnacegroup, "bigfurnace", Items.SMOOTH_STONE, 27, Items.BLAST_FURNACE);
-        Advancement redstonefactory = Advancement.Builder.create()
-                .parent(furnacegroup)
+        Advancement bigfurnace = createStackAdvancement(consumer, furnacegroup, "bigfurnace", Items.SMOOTH_STONE, 27, Items.BLAST_FURNACE, AdvancementFrame.TASK);
+
+        // 刷铁机分支
+        Advancement ironfarm = createStackAdvancement(consumer, automaticFactory, "ironfarm", Items.IRON_INGOT, 4, Items.IRON_INGOT, AdvancementFrame.TASK);
+        Advancement railfarm = createStackAdvancement(consumer, ironfarm, "railfarm", Items.RAIL, 9, Items.RAIL, AdvancementFrame.TASK);
+        Advancement amethystfarm = createStackAdvancement(consumer, ironfarm, "amethystfarm", Items.AMETHYST_SHARD, 9, Items.AMETHYST_SHARD, AdvancementFrame.TASK);
+
+        // 刷沙机分支
+        Advancement sandfarm = createStackAdvancement(consumer, ironfarm, "sandfarm", Items.SAND, 9, Items.SAND, AdvancementFrame.TASK);
+        Advancement clayfarm = createStackAdvancement(consumer, sandfarm, "clayfarm", Items.CLAY, 9, Items.CLAY, AdvancementFrame.TASK);
+        Advancement dirtfarm = createStackAdvancement(consumer, sandfarm, "dirtfarm", Items.DIRT, 27, Items.DIRT, AdvancementFrame.TASK);
+
+        // 树厂分支
+        Advancement woodfarm = createStackAdvancement(consumer, automaticFactory, "woodfarm", Items.OAK_LOG, 9, Items.OAK_LOG, AdvancementFrame.TASK);
+        Advancement bonefarm = createStackAdvancement(consumer, woodfarm, "bonefarm", Items.BONE_MEAL, 9, Items.BONE_MEAL, AdvancementFrame.TASK);
+        Advancement alltree = createStackAdvancement(consumer, bonefarm, "alltree", Items.OAK_LOG, 27, Items.OAK_LOG, AdvancementFrame.TASK);
+
+        // 骨粉机分支
+        Advancement leaffarm = createStackAdvancement(consumer, bonefarm, "leaffarm", Items.OAK_LEAVES, 9, Items.OAK_LEAVES, AdvancementFrame.TASK);
+        Advancement fungusfarm = createStackAdvancement(consumer, bonefarm, "fungusfarm", Items.CRIMSON_STEM, 9, Items.CRIMSON_STEM, AdvancementFrame.TASK);
+
+        // 地狱高速
+        Advancement netherhighway = Advancement.Builder.create()
+                .parent(automaticFactory)
                 .display(
-                        Items.CRAFTING_TABLE,
-                        Text.translatable("advancements.redstonefactory.title"),
-                        Text.translatable("advancements.redstonefactory.descr"),
+                        Items.PACKED_ICE,
+                        Text.translatable("advancements.netherhighway.title"),
+                        Text.translatable("advancements.netherhighway.descr"),
                         null,
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("crafting", FullStackCriterion.createCriterion(Items.CRAFTING_TABLE, 4))
-                .criterion("hopper", FullStackCriterion.createCriterion(Items.HOPPER, 4))
-                .criterion("dispenser", FullStackCriterion.createCriterion(Items.DISPENSER, 4))
-                .build(consumer, "redstonefactory");
+                .criterion("ice", Criteria.placedBlock.trigger()
+                        .block(Blocks.PACKED_ICE)
+                        .location(LocationPredicate.dimension(World.NETHER))
+                        .build())
+                .build(consumer, "netherhighway");
 
-        // 刷铁机分支
-        Advancement ironfarm = createStackAdvancement(consumer, root, "ironfarm", Items.IRON_INGOT, 4, Items.IRON_INGOT);
-        Advancement railfarm = createStackAdvancement(consumer, ironfarm, "railfarm", Items.RAIL, 9, Items.RAIL);
-        Advancement amethystfarm = createStackAdvancement(consumer, ironfarm, "amethystfarm", Items.AMETHYST_SHARD, 9, Items.AMETHYST_SHARD);
-
-        // 刷沙机分支
-        Advancement sandfarm = createStackAdvancement(consumer, ironfarm, "sandfarm", Items.SAND, 9, Items.SAND);
-        Advancement clayfarm = createStackAdvancement(consumer, sandfarm, "clayfarm", Items.CLAY, 9, Items.CLAY);
-        Advancement dirtfarm = createStackAdvancement(consumer, sandfarm, "dirtfarm", Items.DIRT, 27, Items.DIRT);
-
-        // 树厂分支
-        Advancement woodfarm = createStackAdvancement(consumer, root, "woodfarm", Items.OAK_LOG, 9, Items.OAK_LOG);
-        Advancement bonefarm = createStackAdvancement(consumer, woodfarm, "bonefarm", Items.BONE_MEAL, 9, Items.BONE_MEAL);
-        Advancement alltree = createStackAdvancement(consumer, bonefarm, "alltree", Items.OAK_LOG, 27, Items.OAK_LOG);
-
-        // 骨粉机分支
-        Advancement leaffarm = createStackAdvancement(consumer, bonefarm, "leaffarm", Items.OAK_LEAVES, 9, Items.OAK_LEAVES);
-        Advancement fungusfarm = createStackAdvancement(consumer, bonefarm, "fungusfarm", Items.CRIMSON_STEM, 9, Items.CRIMSON_STEM);
+        // 生物工程分支
+        Advancement mobfarm = Advancement.Builder.create()
+                .parent(root)
+                .display(
+                        Items.ROTTEN_FLESH,
+                        Text.translatable("advancements.mobfarm.title"),
+                        Text.translatable("advancements.mobfarm.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("a1",  FullStackCriterion.createCriterion(Items.BONE, 4))
+                .criterion("a2",  FullStackCriterion.createCriterion(Items.ROTTEN_FLESH, 4))
+                .criterion("a3",  FullStackCriterion.createCriterion(Items.GUNPOWDER, 4))
+                .build(consumer, "mobfarm");
 
         // 畜牧业分支
         Advancement animalfarm = Advancement.Builder.create()
-                .parent(root)
+                .parent(mobfarm)
                 .display(
                         Items.MUTTON,
                         Text.translatable("advancements.animalfarm.title"),
@@ -113,9 +148,9 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 )
                 .criterion("animalfarm", InventoryChangedCriterion.Conditions.items(Items.MUTTON))
                 .build(consumer, "animalfarm");
-        Advancement turtlefarm = createStackAdvancement(consumer, animalfarm, "turtlefarm", Items.TURTLE_EGG, 4, Items.TURTLE_EGG);
-        Advancement snowfarm = createStackAdvancement(consumer, animalfarm, "snowfarm", Items.SNOW_BLOCK, 9, Items.SNOW_BLOCK);
-        Advancement woolfarm = createStackAdvancement(consumer, animalfarm, "woolfarm", Items.WHITE_WOOL, 4, Items.WHITE_WOOL);
+        Advancement turtlefarm = createStackAdvancement(consumer, animalfarm, "turtlefarm", Items.TURTLE_EGG, 4, Items.TURTLE_EGG, AdvancementFrame.TASK);
+        Advancement snowfarm = createStackAdvancement(consumer, animalfarm, "snowfarm", Items.SNOW_BLOCK, 9, Items.SNOW_BLOCK, AdvancementFrame.TASK);
+        Advancement woolfarm = createStackAdvancement(consumer, animalfarm, "woolfarm", Items.WHITE_WOOL, 4, Items.WHITE_WOOL, AdvancementFrame.TASK);
         Advancement squidfarm = Advancement.Builder.create()
                 .parent(turtlefarm)
                 .display(
@@ -145,7 +180,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
 
         // 自动农场分支
         Advancement autofarm = Advancement.Builder.create()
-                .parent(root)
+                .parent(mobfarm)
                 .display(
                         Items.POTATO,
                         Text.translatable("advancements.autofarm.title"),
@@ -157,18 +192,18 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("potato", FullStackCriterion.createCriterion(Items.POTATO, 4))
                 .criterion("carrot", FullStackCriterion.createCriterion(Items.CARROT, 4))
                 .build(consumer, "autofarm");
-        Advancement wheatfarm = createStackAdvancement(consumer, autofarm, "wheatfarm", Items.WHEAT, 9, Items.WHEAT);
-        Advancement sugarcane = createStackAdvancement(consumer, wheatfarm, "sugarcane", Items.SUGAR_CANE, 4, Items.SUGAR_CANE);
-        Advancement cactusfarm = createStackAdvancement(consumer, sugarcane, "cactusfarm", Items.CACTUS, 4, Items.CACTUS);
-        Advancement kelpfarm = createStackAdvancement(consumer, sugarcane, "kelpfarm", Items.KELP, 9, Items.KELP);
-        Advancement bamboo = createStackAdvancement(consumer, sugarcane, "bamboo", Items.BAMBOO, 4, Items.BAMBOO);
-        Advancement pumpkinfarm = createStackAdvancement(consumer, autofarm, "pumpkinfarm", Items.PUMPKIN, 4, Items.PUMPKIN);
-        Advancement melonfarm = createStackAdvancement(consumer, pumpkinfarm, "melonfarm", Items.MELON, 4, Items.MELON);
-        Advancement netherwartfarm = createStackAdvancement(consumer, wheatfarm, "netherwartfarm", Items.NETHER_WART, 9, Items.NETHER_WART);
-        Advancement sweetberryfarm = createStackAdvancement(consumer, wheatfarm, "sweetberryfarm", Items.SWEET_BERRIES, 9, Items.SWEET_BERRIES);
-        Advancement seapicklefarm = createStackAdvancement(consumer, autofarm, "seapicklefarm", Items.SEA_PICKLE, 4, Items.SEA_PICKLE);
-        Advancement coralfarm = createStackAdvancement(consumer, seapicklefarm, "coralfarm", Items.BRAIN_CORAL_FAN, 4, Items.BRAIN_CORAL_FAN);
-        Advancement hoglinfarm = createStackAdvancement(consumer, autofarm, "hoglinfarm", Items.COOKED_PORKCHOP, 9, Items.COOKED_PORKCHOP);
+        Advancement wheatfarm = createStackAdvancement(consumer, autofarm, "wheatfarm", Items.WHEAT, 9, Items.WHEAT, AdvancementFrame.TASK);
+        Advancement sugarcane = createStackAdvancement(consumer, wheatfarm, "sugarcane", Items.SUGAR_CANE, 4, Items.SUGAR_CANE, AdvancementFrame.TASK);
+        Advancement cactusfarm = createStackAdvancement(consumer, sugarcane, "cactusfarm", Items.CACTUS, 4, Items.CACTUS, AdvancementFrame.TASK);
+        Advancement kelpfarm = createStackAdvancement(consumer, sugarcane, "kelpfarm", Items.KELP, 9, Items.KELP, AdvancementFrame.TASK);
+        Advancement bamboo = createStackAdvancement(consumer, sugarcane, "bamboo", Items.BAMBOO, 4, Items.BAMBOO, AdvancementFrame.TASK);
+        Advancement pumpkinfarm = createStackAdvancement(consumer, autofarm, "pumpkinfarm", Items.PUMPKIN, 4, Items.PUMPKIN, AdvancementFrame.TASK);
+        Advancement melonfarm = createStackAdvancement(consumer, pumpkinfarm, "melonfarm", Items.MELON, 4, Items.MELON, AdvancementFrame.TASK);
+        Advancement netherwartfarm = createStackAdvancement(consumer, wheatfarm, "netherwartfarm", Items.NETHER_WART, 9, Items.NETHER_WART, AdvancementFrame.TASK);
+        Advancement sweetberryfarm = createStackAdvancement(consumer, wheatfarm, "sweetberryfarm", Items.SWEET_BERRIES, 9, Items.SWEET_BERRIES, AdvancementFrame.TASK);
+        Advancement seapicklefarm = createStackAdvancement(consumer, autofarm, "seapicklefarm", Items.SEA_PICKLE, 4, Items.SEA_PICKLE, AdvancementFrame.TASK);
+        Advancement coralfarm = createStackAdvancement(consumer, seapicklefarm, "coralfarm", Items.BRAIN_CORAL_FAN, 4, Items.BRAIN_CORAL_FAN, AdvancementFrame.TASK);
+        Advancement hoglinfarm = createStackAdvancement(consumer, autofarm, "hoglinfarm", Items.COOKED_PORKCHOP, 9, Items.COOKED_PORKCHOP, AdvancementFrame.TASK);
         Advancement lavachicken = Advancement.Builder.create()
                 .parent(hoglinfarm)
                 .display(
@@ -182,7 +217,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("chicken", FullStackCriterion.createCriterion(Items.COOKED_CHICKEN, 4))
                 .criterion("egg", FullStackCriterion.createCriterion(Items.EGG, 16))
                 .build(consumer, "lavachicken");
-        Advancement cowfarm = createStackAdvancement(consumer, hoglinfarm, "cowfarm", Items.COOKED_BEEF, 4, Items.COOKED_BEEF);
+        Advancement cowfarm = createStackAdvancement(consumer, hoglinfarm, "cowfarm", Items.COOKED_BEEF, 4, Items.COOKED_BEEF, AdvancementFrame.TASK);
         Advancement beehive = Advancement.Builder.create()
                 .parent(autofarm)
                 .display(
@@ -196,29 +231,15 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("honey_block", FullStackCriterion.createCriterion(Items.HONEY_BLOCK, 4))
                 .criterion("honeycomb", FullStackCriterion.createCriterion(Items.HONEYCOMB, 2))
                 .build(consumer, "beehive");
-        Advancement flowerfarm = createStackAdvancement(consumer, beehive, "flowerfarm", Items.DANDELION, 4, Items.DANDELION);
+        Advancement flowerfarm = createStackAdvancement(consumer, beehive, "flowerfarm", Items.DANDELION, 4, Items.DANDELION, AdvancementFrame.TASK);
 
-        // 打怪分支
-        Advancement mobfarm = Advancement.Builder.create()
-                .parent(root)
-                .display(
-                        Items.ROTTEN_FLESH,
-                        Text.translatable("advancements.mobfarm.title"),
-                        Text.translatable("advancements.mobfarm.descr"),
-                        null,
-                        AdvancementFrame.TASK,
-                        true, true, false
-                )
-                .criterion("a1",  FullStackCriterion.createCriterion(Items.BONE, 4))
-                .criterion("a2",  FullStackCriterion.createCriterion(Items.ROTTEN_FLESH, 4))
-                .criterion("a3",  FullStackCriterion.createCriterion(Items.GUNPOWDER, 4))
-                .build(consumer, "mobfarm");
-        Advancement shulkerfarm = createStackAdvancement(consumer, mobfarm, "shulkerfarm", Items.SHULKER_SHELL, 9, Items.SHULKER_SHELL);
-        Advancement witchfarm = createStackAdvancement(consumer, mobfarm, "witchfarm", Items.REDSTONE, 9, Items.REDSTONE);
-        Advancement slimefarm = createStackAdvancement(consumer, mobfarm, "slimefarm", Items.SLIME_BALL, 9, Items.SLIME_BALL);
-        Advancement blaze = createStackAdvancement(consumer, mobfarm, "blaze", Items.BLAZE_ROD, 9, Items.BLAZE_ROD);
-        Advancement endermanfarm = createStackAdvancement(consumer, mobfarm, "endermanfarm", Items.ENDER_PEARL, 9, Items.ENDER_PEARL);
-        Advancement pigmanfarm = createStackAdvancement(consumer, endermanfarm, "pigmanfarm", Items.GOLD_INGOT, 9, Items.GOLD_INGOT);
+        // 刷怪塔分支
+        Advancement shulkerfarm = createStackAdvancement(consumer, mobfarm, "shulkerfarm", Items.SHULKER_SHELL, 9, Items.SHULKER_SHELL, AdvancementFrame.TASK);
+        Advancement witchfarm = createStackAdvancement(consumer, mobfarm, "witchfarm", Items.REDSTONE, 9, Items.REDSTONE, AdvancementFrame.TASK);
+        Advancement slimefarm = createStackAdvancement(consumer, mobfarm, "slimefarm", Items.SLIME_BALL, 9, Items.SLIME_BALL, AdvancementFrame.TASK);
+        Advancement blaze = createStackAdvancement(consumer, mobfarm, "blaze", Items.BLAZE_ROD, 9, Items.BLAZE_ROD, AdvancementFrame.TASK);
+        Advancement endermanfarm = createStackAdvancement(consumer, mobfarm, "endermanfarm", Items.ENDER_PEARL, 9, Items.ENDER_PEARL, AdvancementFrame.TASK);
+        Advancement pigmanfarm = createStackAdvancement(consumer, endermanfarm, "pigmanfarm", Items.GOLD_INGOT, 9, Items.GOLD_INGOT, AdvancementFrame.TASK);
         Advancement piglintrade = Advancement.Builder.create()
                 .parent(endermanfarm)
                 .display(
@@ -233,8 +254,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("obsidian", FullStackCriterion.createCriterion(Items.OBSIDIAN, 4))
                 .criterion("enchanted_book", InventoryChangedCriterion.Conditions.items(Items.ENCHANTED_BOOK))
                 .build(consumer, "piglintrade");
-        Advancement doublepigman = createStackAdvancement(consumer, pigmanfarm, "doublepigman", Items.GOLD_BLOCK, 27, Items.GOLD_BLOCK);
-        Advancement witherrose = createStackAdvancement(consumer, mobfarm, "witherrose", Items.WITHER_ROSE, 9, Items.WITHER_ROSE);
+        Advancement doublepigman = createStackAdvancement(consumer, pigmanfarm, "doublepigman", Items.GOLD_BLOCK, 27, Items.GOLD_BLOCK, AdvancementFrame.TASK);
+        Advancement witherrose = createStackAdvancement(consumer, mobfarm, "witherrose", Items.WITHER_ROSE, 9, Items.WITHER_ROSE, AdvancementFrame.TASK);
         Advancement witherskel = Advancement.Builder.create()
                 .parent(witherrose)
                 .display(
@@ -248,10 +269,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("skull", FullStackCriterion.createCriterion(Items.WITHER_SKELETON_SKULL, 4))
                 .criterion("coal", FullStackCriterion.createCriterion(Items.COAL, 4))
                 .build(consumer, "witherskel");
-
-        Advancement witherkill = createStackAdvancement(consumer, witherskel, "witherkill", Items.NETHER_STAR, 4, Items.NETHER_STAR);
-
-        // 刷怪塔分支
+        Advancement witherkill = createStackAdvancement(consumer, witherskel, "witherkill", Items.NETHER_STAR, 4, Items.NETHER_STAR, AdvancementFrame.TASK);
         Advancement guardianfarm = Advancement.Builder.create()
                 .parent(mobfarm)
                 .display(
@@ -278,6 +296,47 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("copper", FullStackCriterion.createCriterion(Items.COPPER_INGOT, 4))
                 .criterion("trident", InventoryChangedCriterion.Conditions.items(Items.TRIDENT))
                 .build(consumer, "drownedfarm");
+
+        // 村民工程分支
+        Advancement village = Advancement.Builder.create()
+                .parent(mobfarm)
+                .display(
+                        Items.EMERALD,
+                        Text.translatable("advancements.village.title"),
+                        Text.translatable("advancements.village.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("village", InventoryChangedCriterion.Conditions.items(Items.EMERALD))
+                .build(consumer, "village");
+        Advancement tradingpost = Advancement.Builder.create()
+                .parent(village)
+                .display(
+                        Items.EMERALD,
+                        Text.translatable("advancements.tradingpost.title"),
+                        Text.translatable("advancements.tradingpost.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("trading", InventoryChangedCriterion.Conditions.items(Items.EMERALD))
+                .build(consumer, "tradingpost");
+        Advancement raidfarm = createStackAdvancement(consumer, village, "raidfarm", Items.EMERALD, 9, Items.EMERALD, AdvancementFrame.TASK);
+
+        // 空置域分支
+        Advancement perimeter = Advancement.Builder.create()
+                .parent(root)
+                .display(
+                        Items.BEDROCK,
+                        Text.translatable("advancements.perimeter.title"),
+                        Text.translatable("advancements.perimeter.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("bedrock", InventoryChangedCriterion.Conditions.items(Items.BEDROCK))
+                .build(consumer, "perimeter");
     }
 
     private Advancement createStackAdvancement(
@@ -286,7 +345,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             String advancementId,
             Item targetItem,
             int requiredStacks,
-            Item displayItem
+            Item displayItem,
+            AdvancementFrame type
     ) {
         return Advancement.Builder.create()
                 .parent(parent)
@@ -295,7 +355,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         Text.translatable("advancements."  + advancementId + ".title"),
                         Text.translatable("advancements."  + advancementId + ".descr"),
                         null,
-                        AdvancementFrame.TASK,
+                        type,
                         true, true, false
                 )
                 .criterion("a1",  FullStackCriterion.createCriterion(targetItem, requiredStacks))

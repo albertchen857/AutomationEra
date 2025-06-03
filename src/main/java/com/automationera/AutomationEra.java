@@ -107,6 +107,10 @@ public class AutomationEra implements ModInitializer {
 			Items.PEARLESCENT_FROGLIGHT,
 			Items.VERDANT_FROGLIGHT
 	);
+	private static final Set<Item> SQUID = Set.of(
+			Items.INK_SAC,
+			Items.GLOW_INK_SAC
+	);
 
 	@Override
 	public void onInitialize() {
@@ -170,17 +174,10 @@ public class AutomationEra implements ModInitializer {
 
 					// 0.1.2
 					// 刷石机分支
-					checkPlayerStacks(player, Items.EXPOSED_COPPER, 2); // 晒铜机
-					checkPlayerStacks(player, Items.WEATHERED_COPPER, 2); // 晒铜机
-					checkPlayerStacks(player, Items.OXIDIZED_COPPER, 2); // 晒铜机
+					checkAnyItemStacks(player, COPPER_BLOCKS, 2); // copper
 					checkPlayerStacks(player, Items.ICE, 9); // 刷冰机
 					checkPlayerStacks(player, Items.BASALT, 9); // 玄武岩刷石机
 					checkPlayerStacks(player, Items.DRIPSTONE_BLOCK, 9); // 滴水石头锥农场
-
-					// 熔炉组分支
-					checkPlayerStacks(player, Items.CRAFTING_TABLE, 4); // 红石原件工厂
-					checkPlayerStacks(player, Items.HOPPER, 4); // 红石原件工厂
-					checkPlayerStacks(player, Items.DISPENSER, 4); // 红石原件工厂
 
 					// 刷铁机分支
 					checkPlayerStacks(player, Items.AMETHYST_SHARD, 9); // 紫水晶农场
@@ -197,8 +194,7 @@ public class AutomationEra implements ModInitializer {
 					checkPlayerStacks(player, Items.TURTLE_EGG, 4); // 海龟农场
 					checkPlayerStacks(player, Items.SNOW_BLOCK, 9); // 刷雪机
 					checkAnyItemStacks(player, WOOL, 4); // 羊毛农场
-					checkPlayerStacks(player, Items.INK_SAC, 4); // 鱿鱼农场
-					checkPlayerStacks(player, Items.GLOW_INK_SAC, 4); // 鱿鱼农场
+					checkAnyItemStacks(player, SQUID, 4); // 鱿鱼农场
 					checkPlayerStacks(player, Items.TORCHFLOWER_SEEDS, 4); // 嗅探兽农场
 					checkPlayerStacks(player, Items.PITCHER_POD, 4); // 嗅探兽农场
 

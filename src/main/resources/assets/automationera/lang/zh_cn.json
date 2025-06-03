@@ -28,7 +28,7 @@
   "advancements.melonfarm.descr": "收集4组西瓜",
   "advancements.melonfarm.title": "西瓜机",
   "advancements.mobfarm.descr": "收集4组骨头、4组腐肉和4组火药",
-  "advancements.mobfarm.title": "刷怪塔",
+  "advancements.mobfarm.title": "生物工程",
   "advancements.netherhighway.descr": "在下界放置一次浮冰",
   "advancements.netherhighway.title": "地狱高速",
   "advancements.piglintrade.descr": "收集4组石英、4组黑曜石和1本附魔书",
@@ -97,8 +97,6 @@
   "advancements.basaltfarm.descr": "收集9组玄武岩",
   "advancements.dripstonefarm.title": "滴水石头锥农场",
   "advancements.dripstonefarm.descr": "收集9组滴水石锥",
-  "advancements.redstonefactory.title": "红石原件工厂",
-  "advancements.redstonefactory.descr": "收集4组合成器、4组漏斗和4组发射器",
   "advancements.amethystfarm.title": "紫水晶农场",
   "advancements.amethystfarm.descr": "收集9组紫水晶",
   "advancements.clayfarm.title": "粘土机",
@@ -134,5 +132,9 @@
   "advancements.guardianfarm.title": "守卫者农场",
   "advancements.guardianfarm.descr": "收集4组海晶碎片",
   "advancements.drownedfarm.title": "溺尸塔",
-  "advancements.drownedfarm.descr": "收集4组腐肉、4组铜锭和1个三叉戟"
+  "advancements.drownedfarm.descr": "收集4组腐肉、4组铜锭和1个三叉戟",
+  "advancements.automaticfactory.title": "自动化工厂",
+  "advancements.automaticfactory.descr": "建立你的第一个自动化工厂",
+  "advancements.perimeter.title": "空置域",
+  "advancements.perimeter.descr": "开始你的空置域工程"
 }
