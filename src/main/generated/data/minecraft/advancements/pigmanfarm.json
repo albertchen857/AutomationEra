@@ -24,7 +24,7 @@
     "description": {
       "translate": "advancements.pigmanfarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:gold_ingot"

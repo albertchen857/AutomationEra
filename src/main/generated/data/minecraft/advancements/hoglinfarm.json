@@ -24,7 +24,7 @@
     "description": {
       "translate": "advancements.hoglinfarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:cooked_porkchop"

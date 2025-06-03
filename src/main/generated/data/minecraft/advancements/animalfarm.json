@@ -1,17 +1,17 @@
 {
-  "parent": "minecraft:root",
+  "parent": "minecraft:agriculture",
   "criteria": {
     "animalfarm": {
       "conditions": {
-        "items": [
+        "child": [
           {
-            "items": [
-              "minecraft:chicken"
-            ]
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {}
           }
         ]
       },
-      "trigger": "minecraft:inventory_changed"
+      "trigger": "minecraft:bred_animals"
     }
   },
   "display": {
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:chicken"
+      "item": "minecraft:mutton"
     },
     "show_toast": true,
     "title": {

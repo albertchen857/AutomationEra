@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:root",
+  "parent": "minecraft:automaticfactory",
   "criteria": {
     "a1": {
       "conditions": {

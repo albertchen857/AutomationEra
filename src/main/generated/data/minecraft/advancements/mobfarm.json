@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:root",
+  "parent": "minecraft:agriculture",
   "criteria": {
     "a1": {
       "conditions": {
