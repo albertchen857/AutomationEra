@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:guardianfarm",
   "criteria": {
-    "copper": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -10,42 +10,13 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:copper_ingot"
+              "item": "minecraft:trident"
             }
           ],
           "required_stacks": 4
         }
       },
       "trigger": "automationera:full_stack"
-    },
-    "flesh": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:rotten_flesh"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "trident": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:trident"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -66,13 +37,7 @@
   },
   "requirements": [
     [
-      "flesh"
-    ],
-    [
-      "copper"
-    ],
-    [
-      "trident"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

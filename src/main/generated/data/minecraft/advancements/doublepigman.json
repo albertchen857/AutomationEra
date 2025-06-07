@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:pigmanfarm",
+  "parent": "minecraft:perimeter",
   "criteria": {
     "a1": {
       "conditions": {
@@ -10,7 +10,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:gold_block"
+              "item": "minecraft:gold_ingot"
             }
           ],
           "required_stacks": 27

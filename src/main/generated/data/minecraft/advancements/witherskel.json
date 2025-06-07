@@ -1,24 +1,7 @@
 {
   "parent": "minecraft:witherrose",
   "criteria": {
-    "coal": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:coal"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "skull": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -53,10 +36,7 @@
   },
   "requirements": [
     [
-      "skull"
-    ],
-    [
-      "coal"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

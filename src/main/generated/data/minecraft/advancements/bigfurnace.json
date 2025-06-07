@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:automationera/furnacegroup",
+  "parent": "minecraft:furnacegroup",
   "criteria": {
     "a1": {
       "conditions": {

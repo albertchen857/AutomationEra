@@ -17,40 +17,6 @@
         }
       },
       "trigger": "automationera:full_stack"
-    },
-    "a2": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:rotten_flesh"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "a3": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:gunpowder"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
     }
   },
   "display": {
@@ -71,12 +37,6 @@
   "requirements": [
     [
       "a1"
-    ],
-    [
-      "a2"
-    ],
-    [
-      "a3"
     ]
   ],
   "sends_telemetry_event": true

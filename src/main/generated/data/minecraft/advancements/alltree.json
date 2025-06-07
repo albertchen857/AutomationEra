@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:bonefarm",
+  "parent": "minecraft:perimeter",
   "criteria": {
     "a1": {
       "conditions": {
@@ -10,10 +10,73 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:cherry_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:dark_oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:spruce_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:crimson_stem"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:acacia_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:mangrove_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:jungle_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:warped_stem"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:birch_log"
             }
           ],
-          "required_stacks": 27
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"

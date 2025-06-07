@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:sandfarm",
+  "parent": "minecraft:dirtfarm",
   "criteria": {
     "a1": {
       "conditions": {

@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:stonefarm",
+  "parent": "minecraft:village",
   "criteria": {
-    "furnacegroup2": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -10,10 +10,10 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:glass"
+              "item": "minecraft:emerald"
             }
           ],
-          "required_stacks": 4
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
@@ -22,21 +22,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.furnacegroup.descr"
+      "translate": "advancements.raidfarm.descr"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:furnace"
+      "item": "minecraft:emerald"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.furnacegroup.title"
+      "translate": "advancements.raidfarm.title"
     }
   },
   "requirements": [
     [
-      "furnacegroup2"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

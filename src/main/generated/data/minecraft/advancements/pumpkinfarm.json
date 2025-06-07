@@ -13,7 +13,7 @@
               "item": "minecraft:pumpkin"
             }
           ],
-          "required_stacks": 4
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"

@@ -1,24 +1,7 @@
 {
-  "parent": "minecraft:turtlefarm",
+  "parent": "minecraft:animalfarm",
   "criteria": {
-    "glow": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:glow_ink_sac"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "ink": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -28,9 +11,16 @@
                 "min": 64
               },
               "item": "minecraft:ink_sac"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_ink_sac"
             }
           ],
-          "required_stacks": 4
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
@@ -53,10 +43,7 @@
   },
   "requirements": [
     [
-      "ink"
-    ],
-    [
-      "glow"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

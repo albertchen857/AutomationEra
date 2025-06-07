@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:hoglinfarm",
   "criteria": {
-    "chicken": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -13,24 +13,7 @@
               "item": "minecraft:cooked_chicken"
             }
           ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "egg": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:egg"
-            }
-          ],
-          "required_stacks": 16
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
@@ -44,7 +27,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:cooked_chicken"
+      "item": "minecraft:feather"
     },
     "show_toast": true,
     "title": {
@@ -53,10 +36,7 @@
   },
   "requirements": [
     [
-      "chicken"
-    ],
-    [
-      "egg"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

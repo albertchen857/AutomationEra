@@ -1,17 +1,17 @@
 {
   "parent": "minecraft:agriculture",
   "criteria": {
-    "animalfarm": {
+    "a": {
       "conditions": {
-        "child": [
+        "items": [
           {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {}
+            "items": [
+              "minecraft:beef"
+            ]
           }
         ]
       },
-      "trigger": "minecraft:bred_animals"
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:mutton"
+      "item": "minecraft:beef"
     },
     "show_toast": true,
     "title": {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "animalfarm"
+      "a"
     ]
   ],
   "sends_telemetry_event": true

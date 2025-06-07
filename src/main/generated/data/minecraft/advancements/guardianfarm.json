@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:mobfarm",
   "criteria": {
-    "guardian": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -13,7 +13,7 @@
               "item": "minecraft:prismarine_shard"
             }
           ],
-          "required_stacks": 4
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
@@ -36,7 +36,7 @@
   },
   "requirements": [
     [
-      "guardian"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

@@ -1,36 +1,7 @@
 {
-  "parent": "minecraft:endermanfarm",
+  "parent": "minecraft:pigmanfarm",
   "criteria": {
-    "enchanted_book": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:enchanted_book"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "obsidian": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:obsidian"
-            }
-          ],
-          "required_stacks": 4
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "quartz": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -40,9 +11,16 @@
                 "min": 64
               },
               "item": "minecraft:quartz"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:crying_obsidian"
             }
           ],
-          "required_stacks": 4
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
@@ -65,13 +43,7 @@
   },
   "requirements": [
     [
-      "quartz"
-    ],
-    [
-      "obsidian"
-    ],
-    [
-      "enchanted_book"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true

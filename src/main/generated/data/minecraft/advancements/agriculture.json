@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "a": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wheat_seeds"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/block/smooth_stone.png",
+    "description": {
+      "translate": "advancements.agriculture.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:hay_block"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.agriculture.title"
+    }
+  },
+  "requirements": [
+    [
+      "a"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

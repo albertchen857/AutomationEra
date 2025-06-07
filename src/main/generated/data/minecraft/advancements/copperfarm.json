@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:stonefarm",
   "criteria": {
-    "exposed": {
+    "a1": {
       "conditions": {
         "conditions": {
           "items": [
@@ -11,34 +11,14 @@
                 "min": 64
               },
               "item": "minecraft:exposed_copper"
-            }
-          ],
-          "required_stacks": 2
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "oxidized": {
-      "conditions": {
-        "conditions": {
-          "items": [
+            },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
               "item": "minecraft:oxidized_copper"
-            }
-          ],
-          "required_stacks": 2
-        }
-      },
-      "trigger": "automationera:full_stack"
-    },
-    "weathered": {
-      "conditions": {
-        "conditions": {
-          "items": [
+            },
             {
               "count": {
                 "max": 64,
@@ -70,13 +50,7 @@
   },
   "requirements": [
     [
-      "exposed"
-    ],
-    [
-      "weathered"
-    ],
-    [
-      "oxidized"
+      "a1"
     ]
   ],
   "sends_telemetry_event": true
