@@ -10,13 +10,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:brown_mushroom_block"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:red_mushroom_block"
             },
             {
@@ -32,6 +25,13 @@
                 "min": 64
               },
               "item": "minecraft:red_mushroom"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:brown_mushroom_block"
             }
           ],
           "required_stacks": 9

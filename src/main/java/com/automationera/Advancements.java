@@ -77,7 +77,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.GOAL,
                         true, true, false
                 )
-                .criterion("trading_post", AutomationEra.TRADING_POST_CRITERION.createCriterion())
+                .criterion("trading_post", new ImpossibleCriterion.Conditions())
                 .build(consumer, "tradingpost");
         advancementMap.put("tradingpost", tradingpost);
 
@@ -106,7 +106,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("above_nether", AutomationEra.ABOVE_NETHER_CRITERION.createCriterion())
+                .criterion("above_nether", new ImpossibleCriterion.Conditions())
                 .build(consumer, "abovenether");
         advancementMap.put("abovenether", abovenether);
         Advancement netherhighway = Advancement.Builder.create()

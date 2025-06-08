@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:village",
+  "parent": "minecraft:automaticfactory",
   "criteria": {
-    "trading_post": {
+    "above_nether": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.tradingpost.descr"
+      "translate": "advancements.abovenether.descr"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:emerald"
+      "item": "minecraft:bedrock"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.tradingpost.title"
+      "translate": "advancements.abovenether.title"
     }
   },
   "requirements": [
     [
-      "trading_post"
+      "above_nether"
     ]
   ],
   "sends_telemetry_event": true

@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:verdant_froglight"
+              "item": "minecraft:ochre_froglight"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:ochre_froglight"
+              "item": "minecraft:verdant_froglight"
             },
             {
               "count": {

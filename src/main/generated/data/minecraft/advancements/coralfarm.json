@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:brain_coral_fan"
+              "item": "minecraft:bubble_coral_fan"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:horn_coral_fan"
+              "item": "minecraft:brain_coral_fan"
             },
             {
               "count": {
@@ -38,7 +38,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:bubble_coral_fan"
+              "item": "minecraft:horn_coral_fan"
             }
           ],
           "required_stacks": 4

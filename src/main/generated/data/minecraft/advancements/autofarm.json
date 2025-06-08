@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:carrot"
+              "item": "minecraft:wheat"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:wheat"
+              "item": "minecraft:carrot"
             },
             {
               "count": {
