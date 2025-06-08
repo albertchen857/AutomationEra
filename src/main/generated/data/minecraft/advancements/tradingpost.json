@@ -3,7 +3,7 @@
   "criteria": {
     "manually_triggered": {
       "conditions": {},
-      "trigger": "minecraft:tick"
+      "trigger": "automationera:trading_post"
     }
   },
   "display": {

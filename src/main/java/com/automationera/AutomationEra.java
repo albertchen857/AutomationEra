@@ -1,7 +1,6 @@
 package com.automationera;
 
-import com.automationera.advance.FullShulkerBoxCriterion;
-import com.automationera.advance.PlacedBlockInNetherCriterion;
+import com.automationera.advance.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -30,12 +29,15 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.HashSet;
 
 public class AutomationEra implements ModInitializer {
 	public static final String MOD_ID = "automationera";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final FullStackCriterion FULL_STACK_CRITERION = new FullStackCriterion();
 	public static final FullShulkerBoxCriterion FULL_SHULKER_BOX_CRITERION = new FullShulkerBoxCriterion();
+	public static final TradingPostCriterion TRADING_POST_CRITERION = new TradingPostCriterion();
+	public static final AboveNetherCriterion ABOVE_NETHER_CRITERION = new AboveNetherCriterion();
 	private static final Set<Item> LOG_ITEMS = Set.of(
 			Items.OAK_LOG,
 			Items.SPRUCE_LOG,
@@ -172,16 +174,22 @@ public class AutomationEra implements ModInitializer {
 			Items.SUNFLOWER
 	);
 
+	private static final Map<UUID, Integer> tradeCounts = new HashMap<>();
+	private static final Set<UUID> aboveNetherPlayers = new HashSet<>();
+
 	@Override
 	public void onInitialize() {
 		Criteria.register(FULL_STACK_CRITERION);
 		PlacedBlockInNetherCriterion.register();
 		Criteria.register(FULL_SHULKER_BOX_CRITERION);
+		Criteria.register(TRADING_POST_CRITERION);
+		Criteria.register(ABOVE_NETHER_CRITERION);
+		CustomAdvancementCriteria.register();
 
-		
 		// 添加每刻检查
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
-			if (server.getTicks() % 10 == 0) {
+			// 降低检查频率到每100个游戏刻
+			if (server.getTicks() % 100 == 0) {
 				for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 					LOGGER.info("Checking player {} for advancements", player.getName().getString());
 					
@@ -253,12 +261,18 @@ public class AutomationEra implements ModInitializer {
 					LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
 					FULL_SHULKER_BOX_CRITERION.trigger(player);
 
-					if (player.getWorld().getRegistryKey().equals(World.NETHER)){
+					// 检查地狱上层成就
+					if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
 						BlockPos pos = player.getBlockPos();
-						if (pos.getY() > 127) {
-							Advancement adv = player.getServer().getAdvancementLoader().get(new Identifier("minecraft:abovenether"));
-							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "manually_triggered");
+						LOGGER.info("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
+						
+						// 确保玩家真的在地狱上层，并且已经在那里待了一段时间
+						if (pos.getY() > 127 && !aboveNetherPlayers.contains(player.getUuid())) {
+							// 确保玩家不是刚进入世界
+							if (player.getWorld().getTime() - player.getWorld().getTimeOfDay() > 200) {
+								ABOVE_NETHER_CRITERION.trigger(player);
+								aboveNetherPlayers.add(player.getUuid());
+								LOGGER.info("Triggered above nether advancement for player {}", player.getName().getString());
 							}
 						}
 					}
@@ -266,17 +280,20 @@ public class AutomationEra implements ModInitializer {
 			}
 		});
 
-		Map<UUID, Integer> tradeCounts = new HashMap<>();
-
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			if (!world.isClient && entity instanceof VillagerEntity villager) {
 				if (player instanceof ServerPlayerEntity serverPlayer) {
-					LOGGER.info("TRADE ONCE");
-					tradeCounts.merge(player.getUuid(), 1, Integer::sum);
-					if (tradeCounts.get(player.getUuid()) >= 10) {
-						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
-						if (adv != null) {
-							serverPlayer.getAdvancementTracker().grantCriterion(adv, "manually_triggered");
+					LOGGER.info("Player {} traded with villager", player.getName().getString());
+					
+					// 确保玩家不是刚进入世界
+					if (world.getTime() - world.getTimeOfDay() > 200) {
+						tradeCounts.merge(player.getUuid(), 1, Integer::sum);
+						int tradeCount = tradeCounts.get(player.getUuid());
+						LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
+						
+						if (tradeCount >= 10) {
+							TRADING_POST_CRITERION.trigger(serverPlayer);
+							LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
 						}
 					}
 				}
