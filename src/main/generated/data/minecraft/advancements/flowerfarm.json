@@ -10,14 +10,28 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:azure_bluet"
+              "item": "minecraft:lily_of_the_valley"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:pink_tulip"
+              "item": "minecraft:white_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:red_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:poppy"
             },
             {
               "count": {
@@ -38,20 +52,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:poppy"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:dandelion"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:orange_tulip"
             },
             {
@@ -59,14 +59,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:lily_of_the_valley"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:cornflower"
+              "item": "minecraft:azure_bluet"
             },
             {
               "count": {
@@ -80,14 +73,21 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:white_tulip"
+              "item": "minecraft:pink_tulip"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:red_tulip"
+              "item": "minecraft:dandelion"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cornflower"
             }
           ],
           "required_stacks": 4

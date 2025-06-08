@@ -17,28 +17,14 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:rose_bush"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:lilac"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:vine"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:sunflower"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:glow_lichen"
             },
             {
               "count": {
@@ -52,7 +38,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:rose_bush"
+              "item": "minecraft:sunflower"
             },
             {
               "count": {
@@ -66,13 +52,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:glow_berries"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:big_dripleaf"
             },
             {
@@ -80,7 +59,28 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:vine"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:cocoa_beans"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_lichen"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_berries"
             }
           ],
           "required_stacks": 9

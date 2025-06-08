@@ -1,5 +1,6 @@
 package com.automationera;
 
+import com.automationera.advance.AboveNetherCriterion;
 import com.automationera.advance.FullShulkerBoxCriterion;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
@@ -76,7 +77,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.GOAL,
                         true, true, false
                 )
-                .criterion("manually_triggered", TickCriterion.Conditions.createTick())
+                .criterion("trading_post", AutomationEra.TRADING_POST_CRITERION.createCriterion())
                 .build(consumer, "tradingpost");
         advancementMap.put("tradingpost", tradingpost);
 
@@ -105,7 +106,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("manually_triggered", TickCriterion.Conditions.createTick())
+                .criterion("above_nether", AutomationEra.ABOVE_NETHER_CRITERION.createCriterion())
                 .build(consumer, "abovenether");
         advancementMap.put("abovenether", abovenether);
         Advancement netherhighway = Advancement.Builder.create()

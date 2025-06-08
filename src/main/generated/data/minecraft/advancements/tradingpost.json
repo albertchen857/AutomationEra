@@ -2,8 +2,7 @@
   "parent": "minecraft:village",
   "criteria": {
     "manually_triggered": {
-      "conditions": {},
-      "trigger": "automationera:trading_post"
+      "trigger": "minecraft:impossible"
     }
   },
   "display": {

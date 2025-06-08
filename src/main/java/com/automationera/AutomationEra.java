@@ -175,6 +175,7 @@ public class AutomationEra implements ModInitializer {
 	);
 
 	private static final Map<UUID, Integer> tradeCounts = new HashMap<>();
+	private static final Map<UUID, Long> netherEntryTimes = new HashMap<>();
 	private static final Set<UUID> aboveNetherPlayers = new HashSet<>();
 
 	@Override
@@ -184,7 +185,6 @@ public class AutomationEra implements ModInitializer {
 		Criteria.register(FULL_SHULKER_BOX_CRITERION);
 		Criteria.register(TRADING_POST_CRITERION);
 		Criteria.register(ABOVE_NETHER_CRITERION);
-		CustomAdvancementCriteria.register();
 
 		// 添加每刻检查
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
@@ -264,17 +264,28 @@ public class AutomationEra implements ModInitializer {
 					// 检查地狱上层成就
 					if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
 						BlockPos pos = player.getBlockPos();
-						LOGGER.info("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
-						
+						// 记录玩家进入地狱的时间
+						if (!netherEntryTimes.containsKey(player.getUuid())) {
+							netherEntryTimes.put(player.getUuid(), player.getWorld().getTime());
+							LOGGER.info("Player {} entered Nether at time {}", player.getName().getString(), player.getWorld().getTime());
+						}
 						// 确保玩家真的在地狱上层，并且已经在那里待了一段时间
-						if (pos.getY() > 127 && !aboveNetherPlayers.contains(player.getUuid())) {
-							// 确保玩家不是刚进入世界
-							if (player.getWorld().getTime() - player.getWorld().getTimeOfDay() > 200) {
+						if (pos.getY() > 127) {
+							LOGGER.info("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
+							Long entryTime = netherEntryTimes.get(player.getUuid());
+							// 检查玩家是否已经获得过这个成就
+							Advancement adv = player.getServer().getAdvancementLoader().get(new Identifier("minecraft:abovenether"));
+							LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
+							if (!player.getAdvancementTracker().getProgress(adv).isDone()) {
 								ABOVE_NETHER_CRITERION.trigger(player);
+								player.getAdvancementTracker().grantCriterion(adv, "above_nether");
 								aboveNetherPlayers.add(player.getUuid());
 								LOGGER.info("Triggered above nether advancement for player {}", player.getName().getString());
 							}
 						}
+					} else {
+						// 玩家离开地狱时清除记录
+						netherEntryTimes.remove(player.getUuid());
 					}
 				}
 			}
@@ -284,18 +295,21 @@ public class AutomationEra implements ModInitializer {
 			if (!world.isClient && entity instanceof VillagerEntity villager) {
 				if (player instanceof ServerPlayerEntity serverPlayer) {
 					LOGGER.info("Player {} traded with villager", player.getName().getString());
-					
-					// 确保玩家不是刚进入世界
-					if (world.getTime() - world.getTimeOfDay() > 200) {
+
+					// 检查玩家是否已经获得过这个成就
+					Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
+					if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
 						tradeCounts.merge(player.getUuid(), 1, Integer::sum);
 						int tradeCount = tradeCounts.get(player.getUuid());
 						LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
-						
+
 						if (tradeCount >= 10) {
 							TRADING_POST_CRITERION.trigger(serverPlayer);
+							serverPlayer.getAdvancementTracker().grantCriterion(adv, "trading_post");
 							LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
 						}
 					}
+
 				}
 			}
 			return ActionResult.PASS;
