@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:powered_rail"
+              "item": "minecraft:detector_rail"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:detector_rail"
+              "item": "minecraft:powered_rail"
             },
             {
               "count": {

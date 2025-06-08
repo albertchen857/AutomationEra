@@ -24,7 +24,7 @@
     "description": {
       "translate": "advancements.ironfarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:iron_ingot"

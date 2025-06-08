@@ -1,11 +1,10 @@
 package com.automationera;
 
+import com.automationera.advance.FullShulkerBoxCriterion;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
-import net.minecraft.advancement.criterion.BredAnimalsCriterion;
-import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.advancement.criterion.*;
 import com.automationera.advance.PlacedBlockInNetherCriterion;
-import net.minecraft.advancement.criterion.OnKilledCriterion;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -67,31 +66,56 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
         registerSingleItemAdvancement(consumer, "stringfarm", Items.STRING, AdvancementFrame.TASK, Items.STRING, 9, village);
         registerSingleItemAdvancement(consumer, "tripwire", Items.TRIPWIRE_HOOK, AdvancementFrame.TASK, Items.TRIPWIRE_HOOK, 9, village);
         registerSingleItemAdvancement(consumer, "raidfarm", Items.EMERALD, AdvancementFrame.TASK, Items.EMERALD, 9, village);
-        registerSingleItemAdvancement(consumer, "tradingpost", Items.EMERALD, AdvancementFrame.TASK, Items.EMERALD, 9, village);
+        Advancement tradingpost = Advancement.Builder.create()
+                .parent(village)
+                .display(
+                        Items.EMERALD,
+                        Text.translatable("advancements.tradingpost.title"),
+                        Text.translatable("advancements.tradingpost.descr"),
+                        null,
+                        AdvancementFrame.GOAL,
+                        true, true, false
+                )
+                .criterion("manually_triggered", TickCriterion.Conditions.createTick())
+                .build(consumer, "tradingpost");
+        advancementMap.put("tradingpost", tradingpost);
 
 
-        registerSingleItemAdvancement(consumer, "stonefarm", Items.COBBLESTONE, AdvancementFrame.TASK, Items.COBBLESTONE, 9, automaticFactory); // 圆石农场
+        registerSingleItemAdvancement(consumer, "stonefarm", Items.COBBLESTONE, AdvancementFrame.GOAL, Items.COBBLESTONE, 9, automaticFactory); // 圆石农场
         registerSingleItemAdvancement(consumer, "icefarm", Items.ICE, AdvancementFrame.TASK, Items.ICE, 9, advancementMap.get("stonefarm")); // 冰农场
         registerSingleItemAdvancement(consumer, "basaltfarm", Items.BASALT, AdvancementFrame.TASK, Items.BASALT, 9, advancementMap.get("stonefarm")); // 玄武岩农场
         registerSingleItemAdvancement(consumer, "dripstonefarm", Items.DRIPSTONE_BLOCK, AdvancementFrame.TASK, Items.DRIPSTONE_BLOCK, 9, advancementMap.get("stonefarm")); // 滴水石农场
-        registerItemSetAdvancement(consumer, "furnacegroup", Items.FURNACE, Set.of(Items.GLASS,Items.STONE), 9, advancementMap.get("stonefarm")); // 熔炉组
-        registerSingleItemAdvancement(consumer, "ironfarm", Items.IRON_INGOT, AdvancementFrame.TASK, Items.IRON_INGOT, 9, automaticFactory); // 铁农场
+        registerItemSetAdvancement(consumer, "furnacegroup", Items.FURNACE, Set.of(Items.GLASS,Items.STONE), 9, AdvancementFrame.TASK, advancementMap.get("stonefarm")); // 熔炉组
+        registerSingleItemAdvancement(consumer, "ironfarm", Items.IRON_INGOT, AdvancementFrame.GOAL, Items.IRON_INGOT, 9, automaticFactory); // 铁农场
         registerSingleItemAdvancement(consumer, "amethystfarm", Items.AMETHYST_SHARD, AdvancementFrame.TASK, Items.AMETHYST_SHARD, 9, advancementMap.get("ironfarm")); // 紫水晶农场
-        registerSingleItemAdvancement(consumer, "sandfarm", Items.SAND, AdvancementFrame.TASK, Items.SAND, 9, advancementMap.get("ironfarm")); // 沙子农场
-        registerSingleItemAdvancement(consumer, "dirtfarm", Items.DIRT, AdvancementFrame.TASK, Items.DIRT, 27, advancementMap.get("sandfarm")); // 泥土农场
+        registerSingleItemAdvancement(consumer, "sandfarm", Items.SAND, AdvancementFrame.GOAL, Items.SAND, 9, advancementMap.get("ironfarm")); // 沙子农场
+        registerSingleItemAdvancement(consumer, "dirtfarm", Items.DIRT, AdvancementFrame.TASK, Items.DIRT, 9, advancementMap.get("sandfarm")); // 泥土农场
         registerSingleItemAdvancement(consumer, "clayfarm", Items.CLAY, AdvancementFrame.TASK, Items.CLAY, 9, advancementMap.get("dirtfarm")); // 粘土农场
         registerSingleItemAdvancement(consumer, "mudfarm", Items.MUD, AdvancementFrame.TASK, Items.MUD, 9, advancementMap.get("dirtfarm")); // 粘土农场
-        registerSingleItemAdvancement(consumer, "bonefarm", Items.BONE_MEAL, AdvancementFrame.TASK, Items.BONE_MEAL, 9, advancementMap.get("woodfarm")); // 骨粉农场
+        registerSingleItemAdvancement(consumer, "bonefarm", Items.BONE_MEAL, AdvancementFrame.GOAL, Items.BONE_MEAL, 9, advancementMap.get("woodfarm")); // 骨粉农场
         registerSingleItemAdvancement(consumer, "obsidianfarm", Items.OBSIDIAN, AdvancementFrame.TASK, Items.OBSIDIAN, 9, advancementMap.get("sandfarm")); // 黑曜石农场
 
-        Advancement netherhighway = Advancement.Builder.create()
+        Advancement abovenether = Advancement.Builder.create()
                 .parent(automaticFactory)
+                .display(
+                        Items.BEDROCK,
+                        Text.translatable("advancements.abovenether.title"),
+                        Text.translatable("advancements.abovenether.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("manually_triggered", TickCriterion.Conditions.createTick())
+                .build(consumer, "abovenether");
+        advancementMap.put("abovenether", abovenether);
+        Advancement netherhighway = Advancement.Builder.create()
+                .parent(abovenether)
                 .display(
                         Items.BLUE_ICE,
                         Text.translatable("advancements.netherhighway.title"),
                         Text.translatable("advancements.netherhighway.descr"),
                         null,
-                        AdvancementFrame.TASK,
+                        AdvancementFrame.GOAL,
                         true, true, false
                 )
                 .criterion("ice", PlacedBlockInNetherCriterion.conditions(
@@ -112,20 +136,20 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.CHERRY_LOG,
                 Items.CRIMSON_STEM,
                 Items.WARPED_STEM
-        ), 9, automaticFactory);
+        ), 9, AdvancementFrame.GOAL, automaticFactory);
 
         registerItemSetAdvancement(consumer, "railfarm",Items.POWERED_RAIL, Set.of( // 铁轨农场
                 Items.RAIL,
                 Items.POWERED_RAIL,
                 Items.DETECTOR_RAIL,
                 Items.ACTIVATOR_RAIL
-        ), 9, advancementMap.get("ironfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("ironfarm"));
 
         registerItemSetAdvancement(consumer, "copperfarm",Items.EXPOSED_COPPER, Set.of( // 铜农场
                 Items.EXPOSED_COPPER,
                 Items.WEATHERED_COPPER,
                 Items.OXIDIZED_COPPER
-        ), 2, advancementMap.get("stonefarm"));
+        ), 4, AdvancementFrame.TASK, advancementMap.get("stonefarm"));
 
         registerItemSetAdvancement(consumer, "leaffarm",Items.OAK_LEAVES, Set.of( // 树叶农场
                 Items.OAK_LEAVES,
@@ -138,19 +162,19 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.CHERRY_LEAVES,
                 Items.AZALEA_LEAVES,
                 Items.FLOWERING_AZALEA_LEAVES
-        ), 9, advancementMap.get("bonefarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("bonefarm"));
 
         registerItemSetAdvancement(consumer, "fungusfarm",Items.CRIMSON_STEM, Set.of( // 菌类农场
                 Items.CRIMSON_STEM,
                 Items.WARPED_STEM
-        ), 9, advancementMap.get("bonefarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("bonefarm"));
 
         registerItemSetAdvancement(consumer, "mushroomfarm",Items.RED_MUSHROOM_BLOCK, Set.of( // 菌类农场
                 Items.BROWN_MUSHROOM,
                 Items.RED_MUSHROOM,
                 Items.RED_MUSHROOM_BLOCK,
                 Items.BROWN_MUSHROOM_BLOCK
-        ), 9, advancementMap.get("bonefarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("bonefarm"));
 
         registerItemSetAdvancement(consumer, "concretefarm", Items.WHITE_CONCRETE, Set.of( // 混凝土农场
                 Items.WHITE_CONCRETE,
@@ -169,7 +193,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.GREEN_CONCRETE,
                 Items.RED_CONCRETE,
                 Items.BLACK_CONCRETE
-        ), 9, advancementMap.get("sandfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("sandfarm"));
     }
 
     public void agricultureRoot(Consumer<Advancement> consumer){
@@ -197,7 +221,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("a", InventoryChangedCriterion.Conditions.items(Items.BEEF))
+                .criterion("a", BredAnimalsCriterion.Conditions.create(EntityPredicate.ANY, EntityPredicate.ANY, EntityPredicate.ANY))
                 .build(consumer, "animalfarm");
         advancementMap.put("animalfarm", animalfarm);
         registerSingleItemAdvancement(consumer, "turtlefarm", Items.TURTLE_EGG, AdvancementFrame.TASK, Items.TURTLE_EGG, 4, advancementMap.get("animalfarm")); // 海龟农场
@@ -219,15 +243,15 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.GREEN_WOOL,
                 Items.RED_WOOL,
                 Items.BLACK_WOOL
-        ), 9, advancementMap.get("animalfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("animalfarm"));
         registerItemSetAdvancement(consumer, "squidfarm",Items.INK_SAC, Set.of( // 鱿鱼农场
                 Items.INK_SAC,
                 Items.GLOW_INK_SAC
-        ), 9, advancementMap.get("animalfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("animalfarm"));
         registerItemSetAdvancement(consumer, "snifferfarm",Items.INK_SAC, Set.of( // 嗅探兽农场
                 Items.TORCHFLOWER_SEEDS,
                 Items.PITCHER_POD
-        ), 9, advancementMap.get("woolfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("woolfarm"));
         registerSingleItemAdvancement(consumer, "honeyfarm", Items.BEEHIVE, AdvancementFrame.TASK, Items.HONEY_BLOCK, 4, advancementMap.get("animalfarm")); // 骨粉农场
 
 
@@ -250,18 +274,18 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.OCHRE_FROGLIGHT,
                 Items.PEARLESCENT_FROGLIGHT,
                 Items.VERDANT_FROGLIGHT
-        ), 9, advancementMap.get("witherrose"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("witherrose"));
         registerItemSetAdvancement(consumer, "piglintrade",Items.QUARTZ, Set.of( // 猪灵交易所
                 Items.QUARTZ,
                 Items.CRYING_OBSIDIAN
-        ), 9, advancementMap.get("pigmanfarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("pigmanfarm"));
 
 
         registerItemSetAdvancement(consumer, "autofarm",Items.CARROT, Set.of( // 自动农场
                 Items.WHEAT,
                 Items.POTATO,
                 Items.CARROT
-        ), 4, agriculture);
+        ), 4, AdvancementFrame.TASK, agriculture);
         registerSingleItemAdvancement(consumer, "wheatfarm", Items.WHEAT, AdvancementFrame.TASK, Items.WHEAT, 9, advancementMap.get("autofarm")); // 小麦农场
         registerSingleItemAdvancement(consumer, "sugarcane", Items.SUGAR_CANE, AdvancementFrame.TASK, Items.SUGAR_CANE, 9, advancementMap.get("wheatfarm")); // 甘蔗农场
         registerSingleItemAdvancement(consumer, "cactusfarm", Items.CACTUS, AdvancementFrame.TASK, Items.CACTUS, 9, advancementMap.get("sugarcane")); // 仙人掌农场
@@ -285,7 +309,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.FIRE_CORAL_FAN,
                 Items.HORN_CORAL_FAN,
                 Items.TUBE_CORAL_FAN
-        ), 4, advancementMap.get("seapicklefarm"));
+        ), 4, AdvancementFrame.TASK, advancementMap.get("seapicklefarm"));
         registerItemSetAdvancement(consumer, "flowerfarm",Items.POPPY, Set.of( // 花机
                 Items.DANDELION,
                 Items.POPPY,
@@ -299,7 +323,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.RED_TULIP,
                 Items.WHITE_TULIP,
                 Items.WITHER_ROSE
-        ), 4, advancementMap.get("beehive"));
+        ), 4, AdvancementFrame.TASK, advancementMap.get("beehive"));
         registerItemSetAdvancement(consumer, "ripeningmachine",Items.DISPENSER, Set.of( // 催熟机
                 Items.COCOA_BEANS,
                 Items.GLOW_BERRIES,
@@ -313,11 +337,24 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.PEONY,
                 Items.SUNFLOWER
 
-        ), 9, advancementMap.get("autofarm"));
+        ), 9, AdvancementFrame.TASK, advancementMap.get("autofarm"));
     }
 
-    public void perimeterRoot(Consumer<Advancement> consumer){
+    public void curcuitrevolutionRoot(Consumer<Advancement> consumer){
+        Advancement curcuitrevolution = Advancement.Builder.create()
+                .display(
+                        Items.BEACON,
+                        Text.translatable("advancements.curcuitrevolution.title"),
+                        Text.translatable("advancements.curcuitrevolution.descr"),
+                        new Identifier("textures/block/bedrock.png"),
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("a", InventoryChangedCriterion.Conditions.items(Items.SHULKER_BOX))
+                .build(consumer, "curcuitrevolution");
+        advancementMap.put("curcuitrevolution", curcuitrevolution);
         Advancement perimeter = Advancement.Builder.create()
+                .parent(curcuitrevolution)
                 .display(
                         Items.BEDROCK,
                         Text.translatable("advancements.perimeter.title"),
@@ -330,59 +367,69 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .build(consumer, "perimeter");
         advancementMap.put("perimeter", perimeter);
 
-        registerSingleItemAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, AdvancementFrame.CHALLENGE, Items.GOLD_INGOT, 27, perimeter); // 双倍猪人农场
-        Advancement alltree = Advancement.Builder.create()
-                .parent(perimeter)
-                .display(
-                        Items.OAK_LOG,
-                        Text.translatable("advancements." + "alltree" + ".title"),
-                        Text.translatable("advancements." + "alltree" + ".descr"),
-                        null,
-                        AdvancementFrame.CHALLENGE,
-                        true, true, false
-                )
-                .criterion("a1", FullStackCriterion.createCriterion(Set.of( // 全木材农场
-                        Items.OAK_LOG,
-                        Items.SPRUCE_LOG,
-                        Items.BIRCH_LOG,
-                        Items.JUNGLE_LOG,
-                        Items.ACACIA_LOG,
-                        Items.DARK_OAK_LOG,
-                        Items.MANGROVE_LOG,
-                        Items.CHERRY_LOG,
-                        Items.CRIMSON_STEM,
-                        Items.WARPED_STEM
-                ), 27))
-                .build(consumer, "alltree");
-        advancementMap.put("alltree", alltree);
-        registerSingleItemAdvancement(consumer, "bigfurnace", Items.BLAST_FURNACE, AdvancementFrame.CHALLENGE, Items.SMOOTH_STONE, 27, perimeter); // 大型熔炉
+        registerSingleShulkerBoxAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, Items.GOLD_INGOT, 27, AdvancementFrame.CHALLENGE, curcuitrevolution); // 双倍猪人农场
+        registerSingleShulkerBoxAdvancement(consumer, "bigfurnace", Items.BLAST_FURNACE, Items.SMOOTH_STONE, 27, AdvancementFrame.CHALLENGE, curcuitrevolution); // 大型熔炉
+        registerMultiShulkerBoxAdvancement(consumer, "alltree", Items.OAK_WOOD, Set.of( // 全木材农场
+                Items.OAK_LOG,
+                Items.SPRUCE_LOG,
+                Items.BIRCH_LOG,
+                Items.JUNGLE_LOG,
+                Items.ACACIA_LOG,
+                Items.DARK_OAK_LOG,
+                Items.MANGROVE_LOG,
+                Items.CHERRY_LOG,
+                Items.CRIMSON_STEM,
+                Items.WARPED_STEM
+        ), 27, AdvancementFrame.CHALLENGE, curcuitrevolution);
     }
+
+    public void Achivements(Consumer<Advancement> consumer){
+
+    }
+
     @Override
     public void accept(Consumer<Advancement> consumer) {
         LOGGER.info("Registering advancements...");
         autoRoot(consumer);
         agricultureRoot(consumer);
-        perimeterRoot(consumer);
+        curcuitrevolutionRoot(consumer);
+        Achivements(consumer);
         LOGGER.info("成功注册{}成就",createAdvancement);
     }
 
-    private Advancement registerBaseAdvancement(Consumer<Advancement> consumer, String id, Item displayItem, String titleKey) {
+    private Advancement registerInventorySingleItemAdvancement(
+            Consumer<Advancement> consumer,
+            String id,
+            Item displayItem,
+            AdvancementFrame frame,
+            Item targetItem,
+            int requiredStacks,
+            Advancement parent) {
         Advancement advancement = Advancement.Builder.create()
+                .parent(parent)
                 .display(
                         displayItem,
-                        Text.translatable("advancements." + titleKey + ".title"),
-                        Text.translatable("advancements." + titleKey + ".descr"),
+                        Text.translatable("advancements." + id + ".title"),
+                        Text.translatable("advancements." + id + ".descr"),
                         null,
-                        AdvancementFrame.TASK,
+                        frame,
                         true, true, false
                 )
-                .criterion("base", InventoryChangedCriterion.Conditions.items(displayItem))
+                .criterion("a1", InventoryChangedCriterion.Conditions.items(targetItem))
                 .build(consumer, id);
         advancementMap.put(id, advancement);
+        createAdvancement++;
         return advancement;
     }
 
-    private void registerSingleItemAdvancement(Consumer<Advancement> consumer, String id, Item displayItem, AdvancementFrame frame, Item targetItem, int requiredStacks, Advancement parent) {
+    private Advancement registerSingleItemAdvancement(
+            Consumer<Advancement> consumer,
+            String id,
+            Item displayItem,
+            AdvancementFrame frame,
+            Item targetItem,
+            int requiredStacks,
+            Advancement parent) {
         Advancement advancement = Advancement.Builder.create()
                 .parent(parent)
                 .display(
@@ -397,26 +444,17 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .build(consumer, id);
         advancementMap.put(id, advancement);
         createAdvancement++;
+        return advancement;
     }
 
-    private void registerItemSetAdvancement(Consumer<Advancement> consumer, String id, Item icon, Set<Item> items, int requiredStacks, Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
-                .parent(parent)
-                .display(
-                        icon,
-                        Text.translatable("advancements." + id + ".title"),
-                        Text.translatable("advancements." + id + ".descr"),
-                        null,
-                        AdvancementFrame.TASK,
-                        true, true, false
-                )
-                .criterion("a1", FullStackCriterion.createCriterion(items, requiredStacks))
-                .build(consumer, id);
-        advancementMap.put(id, advancement);
-        createAdvancement++;
-    }
-
-    private void registerShulkerBoxAdvancement(Consumer<Advancement> consumer, String id, Item displayItem, Item targetItem, int requiredStacks, Advancement parent) {
+    private Advancement registerItemSetAdvancement(
+            Consumer<Advancement> consumer,
+            String id,
+            Item displayItem,
+            Set<Item> targetItems,
+            int requiredStacks,
+            AdvancementFrame frame,
+            Advancement parent) {
         Advancement advancement = Advancement.Builder.create()
                 .parent(parent)
                 .display(
@@ -424,29 +462,64 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         Text.translatable("advancements." + id + ".title"),
                         Text.translatable("advancements." + id + ".descr"),
                         null,
-                        AdvancementFrame.TASK,
+                        frame,
                         true, true, false
                 )
-                .criterion("a1", InventoryChangedCriterion.Conditions.items(
-                    ItemPredicate.Builder.create()
-                        .items(Items.SHULKER_BOX)
-                        .nbt(new NbtCompound() {{
-                            put("BlockEntityTag", new NbtCompound() {{
-                                put("Items", new NbtList() {{
-                                    for (int i = 0; i < 27; i++) {
-                                        NbtCompound slot = new NbtCompound();
-                                        slot.putByte("Slot", (byte)i);
-                                        slot.putString("id", targetItem.toString());
-                                        slot.putByte("Count", (byte)requiredStacks);
-                                        add(slot);
-                                    }
-                                }});
-                            }});
-                        }})
-                        .build()
-                ))
+                .criterion("a1", FullStackCriterion.createCriterion(targetItems, requiredStacks))
                 .build(consumer, id);
         advancementMap.put(id, advancement);
+        createAdvancement++;
+        return advancement;
+    }
+
+    private Advancement registerSingleShulkerBoxAdvancement(
+            Consumer<Advancement> consumer,
+            String id,
+            Item displayItem,
+            Item targetItem,
+            int requiredStacks,
+            AdvancementFrame frame,
+            Advancement parent) {
+        Advancement advancement = Advancement.Builder.create()
+                .parent(parent)
+                .display(
+                        displayItem,
+                        Text.translatable("advancements." + id + ".title"),
+                        Text.translatable("advancements." + id + ".descr"),
+                        null,
+                        frame,
+                        true, true, false
+                )
+                .criterion("a1", FullShulkerBoxCriterion.createCriterion(targetItem, requiredStacks))
+                .build(consumer, id);
+        advancementMap.put(id, advancement);
+        createAdvancement++;
+        return advancement;
+    }
+
+    private Advancement registerMultiShulkerBoxAdvancement(
+            Consumer<Advancement> consumer,
+            String id,
+            Item displayItem,
+            Set<Item> targetItems,
+            int requiredStacks,
+            AdvancementFrame frame,
+            Advancement parent) {
+        Advancement advancement = Advancement.Builder.create()
+                .parent(parent)
+                .display(
+                        displayItem,
+                        Text.translatable("advancements." + id + ".title"),
+                        Text.translatable("advancements." + id + ".descr"),
+                        null,
+                        frame,
+                        true, true, false
+                )
+                .criterion("a1", FullShulkerBoxCriterion.createCriterion(targetItems, requiredStacks))
+                .build(consumer, id);
+        advancementMap.put(id, advancement);
+        createAdvancement++;
+        return advancement;
     }
 }
 

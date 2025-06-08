@@ -23,7 +23,7 @@
     "description": {
       "translate": "advancements.bonefarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:bone_meal"

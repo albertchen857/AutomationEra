@@ -131,7 +131,6 @@
   "advancements.ripeningmachine.descr": "收集任意一种催熟作物9组",
   "advancements.perimeter.title": "空置域",
   "advancements.perimeter.descr": "我需要更高的产量",
-
   "advancements.alltree.descr": "收集任意种类原木27组",
   "advancements.alltree.title": "全树种",
   "advancements.netherhighway.descr": "新时代的交通运输",
@@ -152,8 +151,11 @@
   "advancements.potionfarm.title": "炼药机",
   "advancements.snifferfarm.descr": "获得9组火把花种子或瓶子草荚果",
   "advancements.snifferfarm.title": "嗅探兽农场",
-  "advancements.findvillage.descr": "Discover a village",
-  "advancements.findvillage.title": "Find a Village",
   "advancements.mudfarm.title": "泥巴机",
-  "advancements.mudfarm.descr": "收集9组泥巴"
+  "advancements.mudfarm.descr": "收集9组泥巴",
+
+  "advancements.curcuitrevolution.title": "生电革命",
+  "advancements.curcuitrevolution.descr": "效率是MC的极限不是我的极限",
+  "advancements.abovenether.title": "下界上层",
+  "advancements.abovenether.descr": "广阔无垠的无主之地"
 }

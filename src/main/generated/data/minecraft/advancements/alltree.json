@@ -1,85 +1,25 @@
 {
-  "parent": "minecraft:perimeter",
+  "parent": "minecraft:curcuitrevolution",
   "criteria": {
     "a1": {
       "conditions": {
-        "conditions": {
+        "item": {
           "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:cherry_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:dark_oak_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:oak_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:spruce_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:crimson_stem"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:acacia_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:mangrove_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:jungle_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:warped_stem"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:birch_log"
-            }
-          ],
-          "required_stacks": 9
-        }
+            "minecraft:mangrove_log",
+            "minecraft:warped_stem",
+            "minecraft:crimson_stem",
+            "minecraft:jungle_log",
+            "minecraft:spruce_log",
+            "minecraft:dark_oak_log",
+            "minecraft:acacia_log",
+            "minecraft:oak_log",
+            "minecraft:cherry_log",
+            "minecraft:birch_log"
+          ]
+        },
+        "required_stacks": 27
       },
-      "trigger": "automationera:full_stack"
+      "trigger": "automationera:full_shulker_box"
     }
   },
   "display": {
@@ -87,10 +27,10 @@
     "description": {
       "translate": "advancements.alltree.descr"
     },
-    "frame": "task",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:oak_log"
+      "item": "minecraft:oak_wood"
     },
     "show_toast": true,
     "title": {

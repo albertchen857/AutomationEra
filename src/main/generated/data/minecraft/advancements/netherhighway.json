@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:automaticfactory",
+  "parent": "minecraft:abovenether",
   "criteria": {
     "ice": {
       "conditions": {
@@ -15,7 +15,7 @@
     "description": {
       "translate": "advancements.netherhighway.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:blue_ice"

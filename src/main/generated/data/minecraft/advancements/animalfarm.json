@@ -2,16 +2,8 @@
   "parent": "minecraft:agriculture",
   "criteria": {
     "a": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:beef"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
+      "conditions": {},
+      "trigger": "minecraft:bred_animals"
     }
   },
   "display": {

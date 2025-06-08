@@ -19,8 +19,6 @@
   "advancements.doublepigman.title": "Portal Based Zombie Piglin Farm",
   "advancements.endermanfarm.descr": "Collect 9 stacks of ender pearls",
   "advancements.endermanfarm.title": "Enderman XP Farm",
-  "advancements.findvillage.descr": "Discover a village",
-  "advancements.findvillage.title": "Find a Village",
   "advancements.furnacegroup.descr": "Collect 4 stacks of glass",
   "advancements.furnacegroup.title": "Furnace Array",
   "advancements.hoglinfarm.descr": "Collect 9 stacks of cooked porkchop",
@@ -154,5 +152,10 @@
   "advancements.chorusfarm.title": "Chorus Farm",
   "advancements.chorusfarm.descr": "Collect 9 stacks of chorus fruit",
   "advancements.mudfarm.title": "mudfarm Farm",
-  "advancements.mudfarm.descr": "Collect 9 stacks of Mud"
+  "advancements.mudfarm.descr": "Collect 9 stacks of Mud",
+
+  "advancements.curcuitrevolution.title": "Survival Curcuit Revolution",
+  "advancements.curcuitrevolution.descr": "Efficiency is Minecraft's limit, not mine!",
+  "advancements.abovenether.title": "Survival Curcuit Revolution",
+  "advancements.abovenether.descr": "Efficiency is Minecraft's limit, not mine!"
 }

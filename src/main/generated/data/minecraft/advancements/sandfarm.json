@@ -24,7 +24,7 @@
     "description": {
       "translate": "advancements.sandfarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:sand"

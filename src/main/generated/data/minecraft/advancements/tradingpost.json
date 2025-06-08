@@ -1,22 +1,9 @@
 {
   "parent": "minecraft:village",
   "criteria": {
-    "a1": {
-      "conditions": {
-        "conditions": {
-          "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:emerald"
-            }
-          ],
-          "required_stacks": 9
-        }
-      },
-      "trigger": "automationera:full_stack"
+    "manually_triggered": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
     }
   },
   "display": {
@@ -24,7 +11,7 @@
     "description": {
       "translate": "advancements.tradingpost.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:emerald"
@@ -36,7 +23,7 @@
   },
   "requirements": [
     [
-      "a1"
+      "manually_triggered"
     ]
   ],
   "sends_telemetry_event": true

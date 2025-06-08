@@ -10,13 +10,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:exposed_copper"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:oxidized_copper"
             },
             {
@@ -25,9 +18,16 @@
                 "min": 64
               },
               "item": "minecraft:weathered_copper"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:exposed_copper"
             }
           ],
-          "required_stacks": 2
+          "required_stacks": 4
         }
       },
       "trigger": "automationera:full_stack"

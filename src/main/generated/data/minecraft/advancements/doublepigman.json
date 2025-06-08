@@ -1,22 +1,16 @@
 {
-  "parent": "minecraft:perimeter",
+  "parent": "minecraft:curcuitrevolution",
   "criteria": {
     "a1": {
       "conditions": {
-        "conditions": {
+        "item": {
           "items": [
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:gold_ingot"
-            }
-          ],
-          "required_stacks": 27
-        }
+            "minecraft:gold_ingot"
+          ]
+        },
+        "required_stacks": 27
       },
-      "trigger": "automationera:full_stack"
+      "trigger": "automationera:full_shulker_box"
     }
   },
   "display": {

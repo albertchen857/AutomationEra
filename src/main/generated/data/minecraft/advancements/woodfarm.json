@@ -10,28 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:cherry_log"
+              "item": "minecraft:mangrove_log"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:dark_oak_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:oak_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:spruce_log"
+              "item": "minecraft:warped_stem"
             },
             {
               "count": {
@@ -45,20 +31,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:acacia_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:mangrove_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:jungle_log"
             },
             {
@@ -66,7 +38,35 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:warped_stem"
+              "item": "minecraft:spruce_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:dark_oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:acacia_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cherry_log"
             },
             {
               "count": {
@@ -87,7 +87,7 @@
     "description": {
       "translate": "advancements.woodfarm.descr"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:oak_log"

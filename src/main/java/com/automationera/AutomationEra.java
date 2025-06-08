@@ -1,23 +1,41 @@
 package com.automationera;
 
+import com.automationera.advance.FullShulkerBoxCriterion;
 import com.automationera.advance.PlacedBlockInNetherCriterion;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public class AutomationEra implements ModInitializer {
 	public static final String MOD_ID = "automationera";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final FullStackCriterion FULL_STACK_CRITERION = new FullStackCriterion();
+	public static final FullShulkerBoxCriterion FULL_SHULKER_BOX_CRITERION = new FullShulkerBoxCriterion();
 	private static final Set<Item> LOG_ITEMS = Set.of(
 			Items.OAK_LOG,
 			Items.SPRUCE_LOG,
@@ -110,16 +128,63 @@ public class AutomationEra implements ModInitializer {
 			Items.INK_SAC,
 			Items.GLOW_INK_SAC
 	);
+	private static final Set<Item> Furnace = Set.of(Items.GLASS,Items.STONE);
+	private static final Set<Item> Mushroom = Set.of(
+			Items.BROWN_MUSHROOM,
+			Items.RED_MUSHROOM,
+			Items.RED_MUSHROOM_BLOCK,
+			Items.BROWN_MUSHROOM_BLOCK
+	);
+	private static final Set<Item> Concrete = Set.of( // 混凝土农场
+			Items.WHITE_CONCRETE,
+			Items.ORANGE_CONCRETE,
+			Items.MAGENTA_CONCRETE,
+			Items.LIGHT_BLUE_CONCRETE,
+			Items.YELLOW_CONCRETE,
+			Items.LIME_CONCRETE,
+			Items.PINK_CONCRETE,
+			Items.GRAY_CONCRETE,
+			Items.LIGHT_GRAY_CONCRETE,
+			Items.CYAN_CONCRETE,
+			Items.PURPLE_CONCRETE,
+			Items.BLUE_CONCRETE,
+			Items.BROWN_CONCRETE,
+			Items.GREEN_CONCRETE,
+			Items.RED_CONCRETE,
+			Items.BLACK_CONCRETE
+	);
+	private static final Set<Item> Sniffer = Set.of( // 嗅探兽农场
+			Items.TORCHFLOWER_SEEDS,
+			Items.PITCHER_POD
+	);
+	private static final Set<Item> Pigtrade = Set.of(Items.QUARTZ,Items.CRYING_OBSIDIAN);
+	private static final Set<Item> Ripening = Set.of( // 催熟机
+			Items.COCOA_BEANS,
+			Items.GLOW_BERRIES,
+			Items.VINE,
+			Items.GLOW_LICHEN,
+			Items.BIG_DRIPLEAF,
+			Items.HANGING_ROOTS,
+			Items.PINK_PETALS,
+			Items.ROSE_BUSH,
+			Items.LILAC,
+			Items.PEONY,
+			Items.SUNFLOWER
+	);
 
 	@Override
 	public void onInitialize() {
 		Criteria.register(FULL_STACK_CRITERION);
 		PlacedBlockInNetherCriterion.register();
+		Criteria.register(FULL_SHULKER_BOX_CRITERION);
+
 		
 		// 添加每刻检查
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
-			if (server.getTicks() % 20 == 0) {
+			if (server.getTicks() % 10 == 0) {
 				for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+					LOGGER.info("Checking player {} for advancements", player.getName().getString());
+					
 					// 检查单物品成就
 					checkPlayerStacks(player, Items.COBBLESTONE, 9);
 					checkPlayerStacks(player, Items.ICE, 9);
@@ -127,7 +192,7 @@ public class AutomationEra implements ModInitializer {
 					checkPlayerStacks(player, Items.DRIPSTONE_BLOCK, 9);
 					checkPlayerStacks(player, Items.GLASS, 4);
 					checkPlayerStacks(player, Items.SMOOTH_STONE, 27);
-					checkPlayerStacks(player, Items.IRON_INGOT, 4);
+					checkPlayerStacks(player, Items.IRON_INGOT, 9);
 					checkPlayerStacks(player, Items.AMETHYST_SHARD, 9);
 					checkPlayerStacks(player, Items.SAND, 9);
 					checkPlayerStacks(player, Items.CLAY, 9);
@@ -166,6 +231,7 @@ public class AutomationEra implements ModInitializer {
 					
 					// 检查物品集合成就
 					checkAnyItemStacks(player, LOG_ITEMS, 9);
+					checkAnyItemStacks(player, LOG_ITEMS, 27);
 					checkAnyItemStacks(player, CROP_ITEMS, 4);
 					checkAnyItemStacks(player, RAIL_ITEMS, 9);
 					checkAnyItemStacks(player, CORAL_FAN, 4);
@@ -176,8 +242,46 @@ public class AutomationEra implements ModInitializer {
 					checkAnyItemStacks(player, WOOL, 4);
 					checkAnyItemStacks(player, SQUID, 4);
 					checkAnyItemStacks(player, FROG_LIGHT, 9);
+					checkAnyItemStacks(player, Furnace, 9);
+					checkAnyItemStacks(player, Mushroom, 9);
+					checkAnyItemStacks(player, Concrete, 9);
+					checkAnyItemStacks(player, Sniffer, 9);
+					checkAnyItemStacks(player, Pigtrade, 9);
+					checkAnyItemStacks(player, Ripening, 9);
+
+					// 检查潜影盒成就
+					LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
+					FULL_SHULKER_BOX_CRITERION.trigger(player);
+
+					if (player.getWorld().getRegistryKey().equals(World.NETHER)){
+						BlockPos pos = player.getBlockPos();
+						if (pos.getY() > 127) {
+							Advancement adv = player.getServer().getAdvancementLoader().get(new Identifier("minecraft:abovenether"));
+							if (adv != null) {
+								player.getAdvancementTracker().grantCriterion(adv, "manually_triggered");
+							}
+						}
+					}
 				}
 			}
+		});
+
+		Map<UUID, Integer> tradeCounts = new HashMap<>();
+
+		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			if (!world.isClient && entity instanceof VillagerEntity villager) {
+				if (player instanceof ServerPlayerEntity serverPlayer) {
+					LOGGER.info("TRADE ONCE");
+					tradeCounts.merge(player.getUuid(), 1, Integer::sum);
+					if (tradeCounts.get(player.getUuid()) >= 10) {
+						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
+						if (adv != null) {
+							serverPlayer.getAdvancementTracker().grantCriterion(adv, "manually_triggered");
+						}
+					}
+				}
+			}
+			return ActionResult.PASS;
 		});
 	}
 

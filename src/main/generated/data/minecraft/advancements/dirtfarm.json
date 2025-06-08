@@ -13,7 +13,7 @@
               "item": "minecraft:dirt"
             }
           ],
-          "required_stacks": 27
+          "required_stacks": 9
         }
       },
       "trigger": "automationera:full_stack"
