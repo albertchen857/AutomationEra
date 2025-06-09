@@ -17,14 +17,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:exposed_copper"
+              "item": "minecraft:weathered_copper"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:weathered_copper"
+              "item": "minecraft:exposed_copper"
             }
           ],
           "required_stacks": 4

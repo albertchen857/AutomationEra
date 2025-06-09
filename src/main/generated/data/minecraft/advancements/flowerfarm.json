@@ -10,27 +10,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:wither_rose"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:red_tulip"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:orange_tulip"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:white_tulip"
             },
             {
@@ -38,35 +17,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:dandelion"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:blue_orchid"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:allium"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:azure_bluet"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:poppy"
+              "item": "minecraft:lily_of_the_valley"
             },
             {
               "count": {
@@ -80,14 +31,63 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:pink_tulip"
+              "item": "minecraft:dandelion"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:lily_of_the_valley"
+              "item": "minecraft:red_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:poppy"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:orange_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:blue_orchid"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:azure_bluet"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:wither_rose"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:allium"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pink_tulip"
             }
           ],
           "required_stacks": 4

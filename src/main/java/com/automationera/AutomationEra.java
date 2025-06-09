@@ -303,7 +303,7 @@ public class AutomationEra implements ModInitializer {
 						int tradeCount = tradeCounts.get(player.getUuid());
 						LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
 
-						if (tradeCount >= 10) {
+						if (tradeCount >= 60) {
 							TRADING_POST_CRITERION.trigger(serverPlayer);
 							serverPlayer.getAdvancementTracker().grantCriterion(adv, "trading_post");
 							LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());

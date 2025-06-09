@@ -10,20 +10,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:oak_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:acacia_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:dark_oak_log"
             },
             {
@@ -31,35 +17,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:mangrove_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:cherry_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:jungle_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:warped_stem"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:crimson_stem"
+              "item": "minecraft:birch_log"
             },
             {
               "count": {
@@ -73,7 +31,49 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:birch_log"
+              "item": "minecraft:jungle_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cherry_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:mangrove_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:acacia_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:crimson_stem"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:warped_stem"
             }
           ],
           "required_stacks": 9

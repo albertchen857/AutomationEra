@@ -17,14 +17,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:carrot"
+              "item": "minecraft:potato"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:potato"
+              "item": "minecraft:carrot"
             }
           ],
           "required_stacks": 4

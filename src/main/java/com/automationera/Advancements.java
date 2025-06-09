@@ -382,6 +382,11 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.CRIMSON_STEM,
                 Items.WARPED_STEM
         ), 27, AdvancementFrame.CHALLENGE, curcuitrevolution);
+        registerMultiShulkerBoxAdvancement(consumer, "perimobfarm", Items.ROTTEN_FLESH, Set.of(Items.BONE, Items.ROTTEN_FLESH), 27, AdvancementFrame.CHALLENGE, perimeter);
+        registerSingleShulkerBoxAdvancement(consumer, "pericreeperfarm", Items.GUNPOWDER, Items.GUNPOWDER, 27, AdvancementFrame.CHALLENGE, perimeter);
+        registerSingleShulkerBoxAdvancement(consumer, "perislimefarm", Items.SLIME_BLOCK, Items.SLIME_BALL, 27, AdvancementFrame.CHALLENGE, perimeter);
+        registerSingleShulkerBoxAdvancement(consumer, "periwitherskel", Items.WITHER_SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, 27, AdvancementFrame.CHALLENGE, perimeter);
+        registerSingleShulkerBoxAdvancement(consumer, "periguardianfarm", Items.SEA_LANTERN, Items.SEA_LANTERN, 27, AdvancementFrame.CHALLENGE, perimeter);
     }
 
     public void Achivements(Consumer<Advancement> consumer){

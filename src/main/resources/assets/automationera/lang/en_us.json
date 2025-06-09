@@ -49,7 +49,7 @@
   "advancements.stringfarm.title": "String Farm",
   "advancements.sugarcane.descr": "Collect 4 stacks of sugar cane",
   "advancements.sugarcane.title": "Sugar Cane Farm",
-  "advancements.tradingpost.descr": "Trade with villagers 10 times",
+  "advancements.tradingpost.descr": "Trade with villagers 30 times",
   "advancements.tradingpost.title": "Villager Trading Hall",
   "advancements.tripwire.descr": "Collect 9 stacks of tripwire hooks",
   "advancements.tripwire.title": "Tripwire Hook Farm",
@@ -157,5 +157,15 @@
   "advancements.curcuitrevolution.title": "Survival Curcuit Revolution",
   "advancements.curcuitrevolution.descr": "Efficiency is Minecraft's limit, not mine!",
   "advancements.abovenether.title": "Survival Curcuit Revolution",
-  "advancements.abovenether.descr": "Efficiency is Minecraft's limit, not mine!"
+  "advancements.abovenether.descr": "Efficiency is Minecraft's limit, not mine!",
+  "advancements.perimobfarm.title": "Perimeter Mob Farm",
+  "advancements.perimobfarm.descr": "Grain 1 box of Bone and Rotten flesh",
+  "advancements.pericreeperfarm.title": "Perimeter Creeper Farm",
+  "advancements.pericreeperfarm.descr": "Grain 1 box of Gunpowder",
+  "advancements.perislimefarm.title": "Perimeter Slime Farm",
+  "advancements.perislimefarm.descr": "Grain 1 box of Slimeball",
+  "advancements.periwitherskel.title": "Perimeter Wither Skeleton Farm",
+  "advancements.periwitherskel.descr": "Grain 1 box of Wither Skeleton Skull",
+  "advancements.periguardianfarm.title": "Perimeter Guardian Farm",
+  "advancements.periguardianfarm.descr": "Grain 1 box of Sea Lantern"
 }
