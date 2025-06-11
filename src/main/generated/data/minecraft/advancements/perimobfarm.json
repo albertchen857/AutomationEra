@@ -5,8 +5,8 @@
       "conditions": {
         "item": {
           "items": [
-            "minecraft:rotten_flesh",
-            "minecraft:bone"
+            "minecraft:bone",
+            "minecraft:rotten_flesh"
           ]
         },
         "required_stacks": 27

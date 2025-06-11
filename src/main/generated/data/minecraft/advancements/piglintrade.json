@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:crying_obsidian"
+              "item": "minecraft:quartz"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:quartz"
+              "item": "minecraft:crying_obsidian"
             }
           ],
           "required_stacks": 9

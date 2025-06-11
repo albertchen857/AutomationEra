@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:curcuitrevolution",
   "criteria": {
-    "perimeter": {
+    "tntquarry": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.tntquarry.descr"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:tnt"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.tntquarry.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "tntquarry"
     ]
   ],
   "sends_telemetry_event": true

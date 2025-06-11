@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:stuckserver",
   "criteria": {
-    "perimeter": {
+    "large_server": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.largeserver.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:chain_command_block"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.largeserver.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "large_server"
     ]
   ],
   "sends_telemetry_event": true

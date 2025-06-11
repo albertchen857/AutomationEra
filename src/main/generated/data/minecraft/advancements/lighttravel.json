@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:fastesttravel",
   "criteria": {
-    "perimeter": {
+    "light_travel": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.lighttravel.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:barrier"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.lighttravel.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "light_travel"
     ]
   ],
   "sends_telemetry_event": true

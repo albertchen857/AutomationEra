@@ -10,14 +10,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:magenta_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:yellow_concrete"
+              "item": "minecraft:white_concrete"
             },
             {
               "count": {
@@ -31,14 +24,63 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:light_blue_concrete"
+              "item": "minecraft:orange_concrete"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:white_concrete"
+              "item": "minecraft:cyan_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:gray_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:blue_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pink_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:purple_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:yellow_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:light_gray_concrete"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:black_concrete"
             },
             {
               "count": {
@@ -59,34 +101,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:cyan_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:purple_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:gray_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:light_gray_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:brown_concrete"
             },
             {
@@ -94,28 +108,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:black_concrete"
+              "item": "minecraft:magenta_concrete"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:pink_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:orange_concrete"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:blue_concrete"
+              "item": "minecraft:light_blue_concrete"
             }
           ],
           "required_stacks": 9

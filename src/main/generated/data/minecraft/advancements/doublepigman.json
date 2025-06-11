@@ -18,7 +18,7 @@
     "description": {
       "translate": "advancements.doublepigman.descr"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "minecraft:gold_block"

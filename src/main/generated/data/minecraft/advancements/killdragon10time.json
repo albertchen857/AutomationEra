@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:agriculture",
   "criteria": {
-    "perimeter": {
+    "kill_10time": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.killdragon10time.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:dragon_head"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.killdragon10time.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "kill_10time"
     ]
   ],
   "sends_telemetry_event": true

@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:curcuitrevolution",
   "criteria": {
-    "perimeter": {
+    "stuck_server": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.stuckserver.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:command_block"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.stuckserver.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "stuck_server"
     ]
   ],
   "sends_telemetry_event": true

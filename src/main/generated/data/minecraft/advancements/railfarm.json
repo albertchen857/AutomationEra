@@ -17,14 +17,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:activator_rail"
+              "item": "minecraft:rail"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:rail"
+              "item": "minecraft:activator_rail"
             },
             {
               "count": {

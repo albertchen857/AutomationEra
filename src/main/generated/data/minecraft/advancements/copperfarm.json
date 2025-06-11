@@ -10,7 +10,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:oxidized_copper"
+              "item": "minecraft:exposed_copper"
             },
             {
               "count": {
@@ -24,7 +24,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:exposed_copper"
+              "item": "minecraft:oxidized_copper"
             }
           ],
           "required_stacks": 4

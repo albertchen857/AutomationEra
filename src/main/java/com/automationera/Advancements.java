@@ -1,30 +1,23 @@
 package com.automationera;
 
-import com.automationera.advance.AboveNetherCriterion;
 import com.automationera.advance.FullShulkerBoxCriterion;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.*;
 import com.automationera.advance.PlacedBlockInNetherCriterion;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.BlockPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.predicate.item.ItemPredicate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +54,9 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         AdvancementFrame.TASK,
                         true, true, false
                 )
-                .criterion("a", InventoryChangedCriterion.Conditions.items(Items.EMERALD))
+                .criterion("a", OnKilledCriterion.Conditions.createPlayerKilledEntity(
+                        EntityPredicate.Builder.create().type(EntityType.IRON_GOLEM)
+                ))
                 .build(consumer, "village");
         advancementMap.put("village", village);
         registerSingleItemAdvancement(consumer, "stringfarm", Items.STRING, AdvancementFrame.TASK, Items.STRING, 9, village);
@@ -354,22 +349,94 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("a", InventoryChangedCriterion.Conditions.items(Items.SHULKER_BOX))
                 .build(consumer, "curcuitrevolution");
         advancementMap.put("curcuitrevolution", curcuitrevolution);
-        Advancement perimeter = Advancement.Builder.create()
+        Advancement tntquarry = Advancement.Builder.create()
                 .parent(curcuitrevolution)
+                .display(
+                        Items.TNT,
+                        Text.translatable("advancements.tntquarry.title"),
+                        Text.translatable("advancements.tntquarry.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("tntquarry", new ImpossibleCriterion.Conditions())
+                .build(consumer, "tntquarry");
+        Advancement worldeater = Advancement.Builder.create()
+                .parent(tntquarry)
+                .display(
+                        Items.TNT_MINECART,
+                        Text.translatable("advancements.worldeater.title"),
+                        Text.translatable("advancements.worldeater.descr"),
+                        null,
+                        AdvancementFrame.GOAL,
+                        true, true, false
+                )
+                .criterion("worldeater", new ImpossibleCriterion.Conditions())
+                .build(consumer, "worldeater");
+        Advancement perimeter = Advancement.Builder.create()
+                .parent(worldeater)
                 .display(
                         Items.BEDROCK,
                         Text.translatable("advancements.perimeter.title"),
                         Text.translatable("advancements.perimeter.descr"),
-                        new Identifier("textures/block/bedrock.png"),
+                        null,
                         AdvancementFrame.GOAL,
                         true, true, false
                 )
-                .criterion("a", InventoryChangedCriterion.Conditions.items(Items.BEDROCK))
+                .criterion("perimeter", new ImpossibleCriterion.Conditions())
                 .build(consumer, "perimeter");
         advancementMap.put("perimeter", perimeter);
+        Advancement realperimeter = Advancement.Builder.create()
+                .parent(perimeter)
+                .display(
+                        Items.STRUCTURE_VOID,
+                        Text.translatable("advancements.realperimeter.title"),
+                        Text.translatable("advancements.realperimeter.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("realperimeter", new ImpossibleCriterion.Conditions())
+                .build(consumer, "realperimeter");
+        Advancement netherperimeter = Advancement.Builder.create()
+                .parent(realperimeter)
+                .display(
+                        Items.LAVA_BUCKET,
+                        Text.translatable("advancements.netherperimeter.title"),
+                        Text.translatable("advancements.netherperimeter.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("netherperimeter", new ImpossibleCriterion.Conditions())
+                .build(consumer, "netherperimeter");
 
-        registerSingleShulkerBoxAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, Items.GOLD_INGOT, 27, AdvancementFrame.CHALLENGE, curcuitrevolution); // 双倍猪人农场
-        registerSingleShulkerBoxAdvancement(consumer, "bigfurnace", Items.BLAST_FURNACE, Items.SMOOTH_STONE, 27, AdvancementFrame.CHALLENGE, curcuitrevolution); // 大型熔炉
+        Advancement fakepeaceful = Advancement.Builder.create()
+                .parent(curcuitrevolution)
+                .display(
+                        Items.BARRIER,
+                        Text.translatable("advancements.fakepeaceful.title"),
+                        Text.translatable("advancements.fakepeaceful.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("fakepeaceful", new ImpossibleCriterion.Conditions())
+                .build(consumer, "fakepeaceful");
+        Advancement lightsuppression = Advancement.Builder.create()
+                .parent(fakepeaceful)
+                .display(
+                        Items.LIGHT,
+                        Text.translatable("advancements.lightsuppression.title"),
+                        Text.translatable("advancements.lightsuppression.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("lightsuppression", new ImpossibleCriterion.Conditions())
+                .build(consumer, "lightsuppression");
+        registerSingleShulkerBoxAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, Items.GOLD_INGOT, 27, AdvancementFrame.TASK, curcuitrevolution); // 双倍猪人农场
+        registerSingleShulkerBoxAdvancement(consumer, "bigfurnace", Items.BLAST_FURNACE, Items.SMOOTH_STONE, 27, AdvancementFrame.TASK, curcuitrevolution); // 大型熔炉
         registerMultiShulkerBoxAdvancement(consumer, "alltree", Items.OAK_WOOD, Set.of( // 全木材农场
                 Items.OAK_LOG,
                 Items.SPRUCE_LOG,
@@ -381,7 +448,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.CHERRY_LOG,
                 Items.CRIMSON_STEM,
                 Items.WARPED_STEM
-        ), 27, AdvancementFrame.CHALLENGE, curcuitrevolution);
+        ), 27, AdvancementFrame.TASK, curcuitrevolution);
         registerMultiShulkerBoxAdvancement(consumer, "perimobfarm", Items.ROTTEN_FLESH, Set.of(Items.BONE, Items.ROTTEN_FLESH), 27, AdvancementFrame.CHALLENGE, perimeter);
         registerSingleShulkerBoxAdvancement(consumer, "pericreeperfarm", Items.GUNPOWDER, Items.GUNPOWDER, 27, AdvancementFrame.CHALLENGE, perimeter);
         registerSingleShulkerBoxAdvancement(consumer, "perislimefarm", Items.SLIME_BLOCK, Items.SLIME_BALL, 27, AdvancementFrame.CHALLENGE, perimeter);
@@ -390,7 +457,102 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     }
 
     public void Achivements(Consumer<Advancement> consumer){
-
+        Advancement stuckserver = Advancement.Builder.create()
+                .parent(advancementMap.get("curcuitrevolution"))
+                .display(
+                        Items.COMMAND_BLOCK,
+                        Text.translatable("advancements.stuckserver.title"),
+                        Text.translatable("advancements.stuckserver.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("stuck_server", new ImpossibleCriterion.Conditions())
+                .build(consumer, "stuckserver");
+        Advancement largeserver = Advancement.Builder.create()
+                .parent(stuckserver)
+                .display(
+                        Items.CHAIN_COMMAND_BLOCK,
+                        Text.translatable("advancements.largeserver.title"),
+                        Text.translatable("advancements.largeserver.descr"),
+                        null,
+                        AdvancementFrame.GOAL,
+                        true, true, false
+                )
+                .criterion("large_server", new ImpossibleCriterion.Conditions())
+                .build(consumer, "largeserver");
+        Advancement giantserver = Advancement.Builder.create()
+                .parent(largeserver)
+                .display(
+                        Items.REPEATING_COMMAND_BLOCK,
+                        Text.translatable("advancements.giantserver.title"),
+                        Text.translatable("advancements.giantserver.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("giant_server", new ImpossibleCriterion.Conditions())
+                .build(consumer, "giantserver");
+        Advancement fastesttravel = Advancement.Builder.create()
+                .parent(advancementMap.get("netherhighway"))
+                .display(
+                        Items.ENDER_PEARL,
+                        Text.translatable("advancements.fastesttravel.title"),
+                        Text.translatable("advancements.fastesttravel.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("fastest_travel", new ImpossibleCriterion.Conditions())
+                .build(consumer, "fastesttravel");
+        Advancement lighttravel = Advancement.Builder.create()
+                .parent(fastesttravel)
+                .display(
+                        Items.BARRIER,
+                        Text.translatable("advancements.lighttravel.title"),
+                        Text.translatable("advancements.lighttravel.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("light_travel", new ImpossibleCriterion.Conditions())
+                .build(consumer, "lighttravel");
+        Advancement killdragon10time = Advancement.Builder.create()
+                .parent(advancementMap.get("agriculture"))
+                .display(
+                        Items.DRAGON_HEAD,
+                        Text.translatable("advancements.killdragon10time.title"),
+                        Text.translatable("advancements.killdragon10time.descr"),
+                        null,
+                        AdvancementFrame.CHALLENGE,
+                        true, true, false
+                )
+                .criterion("kill_10time", new ImpossibleCriterion.Conditions())
+                .build(consumer, "killdragon10time");
+        Advancement afk = Advancement.Builder.create()
+                .parent(advancementMap.get("automaticfactory"))
+                .display(
+                        Items.STRUCTURE_VOID,
+                        Text.translatable("advancements.afk.title"),
+                        Text.translatable("advancements.afk.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("afk", new ImpossibleCriterion.Conditions())
+                .build(consumer, "afk");
+        Advancement afkdie = Advancement.Builder.create()
+                .parent(afk)
+                .display(
+                        Items.BARRIER,
+                        Text.translatable("advancements.afkdie.title"),
+                        Text.translatable("advancements.afkdie.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("afkdie", new ImpossibleCriterion.Conditions())
+                .build(consumer, "afkdie");
     }
 
     @Override

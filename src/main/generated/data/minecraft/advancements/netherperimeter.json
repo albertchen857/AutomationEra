@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:realperimeter",
   "criteria": {
-    "perimeter": {
+    "netherperimeter": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.netherperimeter.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:lava_bucket"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.netherperimeter.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "netherperimeter"
     ]
   ],
   "sends_telemetry_event": true

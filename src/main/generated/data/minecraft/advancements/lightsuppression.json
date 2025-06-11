@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:worldeater",
+  "parent": "minecraft:fakepeaceful",
   "criteria": {
-    "perimeter": {
+    "lightsuppression": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.perimeter.descr"
+      "translate": "advancements.lightsuppression.descr"
     },
-    "frame": "goal",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:bedrock"
+      "item": "minecraft:light"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.perimeter.title"
+      "translate": "advancements.lightsuppression.title"
     }
   },
   "requirements": [
     [
-      "perimeter"
+      "lightsuppression"
     ]
   ],
   "sends_telemetry_event": true

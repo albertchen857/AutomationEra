@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:pitcher_pod"
+              "item": "minecraft:torchflower_seeds"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:torchflower_seeds"
+              "item": "minecraft:pitcher_pod"
             }
           ],
           "required_stacks": 9
