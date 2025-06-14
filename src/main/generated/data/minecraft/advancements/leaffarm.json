@@ -10,6 +10,20 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:jungle_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:birch_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:oak_leaves"
             },
             {
@@ -24,21 +38,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:acacia_leaves"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:jungle_leaves"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:azalea_leaves"
+              "item": "minecraft:cherry_leaves"
             },
             {
               "count": {
@@ -46,6 +46,13 @@
                 "min": 64
               },
               "item": "minecraft:mangrove_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:acacia_leaves"
             },
             {
               "count": {
@@ -66,14 +73,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:cherry_leaves"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:birch_leaves"
+              "item": "minecraft:azalea_leaves"
             }
           ],
           "required_stacks": 9

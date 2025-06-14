@@ -3,15 +3,17 @@
   "criteria": {
     "a": {
       "conditions": {
-        "items": [
+        "entity": [
           {
-            "items": [
-              "minecraft:emerald"
-            ]
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:iron_golem"
+            }
           }
         ]
       },
-      "trigger": "minecraft:inventory_changed"
+      "trigger": "minecraft:player_killed_entity"
     }
   },
   "display": {

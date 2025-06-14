@@ -17,14 +17,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:red_mushroom"
+              "item": "minecraft:brown_mushroom"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:brown_mushroom"
+              "item": "minecraft:red_mushroom"
             },
             {
               "count": {

@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.stuckserver.descr"
     },
-    "frame": "challenge",
+    "frame": "task",
     "hidden": false,
     "icon": {
       "item": "minecraft:command_block"

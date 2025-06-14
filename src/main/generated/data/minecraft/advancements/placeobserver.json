@@ -1,28 +1,28 @@
 {
-  "parent": "minecraft:stuckserver",
+  "parent": "minecraft:automaticfactory",
   "criteria": {
-    "large_server": {
+    "placeobserver": {
       "trigger": "minecraft:impossible"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.largeserver.descr"
+      "translate": "advancements.placeobserver.descr"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "minecraft:chain_command_block"
+      "item": "minecraft:observer"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.largeserver.title"
+      "translate": "advancements.placeobserver.title"
     }
   },
   "requirements": [
     [
-      "large_server"
+      "placeobserver"
     ]
   ],
   "sends_telemetry_event": true

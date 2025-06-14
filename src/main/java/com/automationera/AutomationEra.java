@@ -4,12 +4,14 @@ import com.automationera.advance.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TntEntity;
@@ -18,6 +20,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -36,6 +39,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.foliage.FoliagePlacer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -195,6 +199,8 @@ public class AutomationEra implements ModInitializer {
 	private int[] lastpos = new int[]{0,0};
 	private boolean afk = false;
 	private int afkperiod = 0;
+	private int furnace = 0;
+	private int Observer = 0;
 
 	@Override
 	public void onInitialize() {
@@ -432,6 +438,7 @@ public class AutomationEra implements ModInitializer {
 			}
 		});
 
+
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			// 计算当前刻耗时（纳秒转毫秒）
 			long now = System.nanoTime();
@@ -441,25 +448,53 @@ public class AutomationEra implements ModInitializer {
 		});
 
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			if (!world.isClient && entity instanceof VillagerEntity villager) {
+			if (!world.isClient) {
+				ItemStack stack = player.getStackInHand(hand);
 				if (player instanceof ServerPlayerEntity serverPlayer) {
-					LOGGER.info("Player {} traded with villager", player.getName().getString());
-					// 检查玩家是否已经获得过这个成就
-					Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
-					if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
-						tradeCounts.merge(player.getUuid(), 1, Integer::sum);
-						int tradeCount = tradeCounts.get(player.getUuid());
-						LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
-						if (tradeCount >= 60) {
-							serverPlayer.getAdvancementTracker().grantCriterion(adv, "trading_post");
-							LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
+					if(entity instanceof VillagerEntity villager){
+						LOGGER.info("Player {} traded with villager", player.getName().getString());
+						// 检查玩家是否已经获得过这个成就
+						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
+						if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
+							tradeCounts.merge(player.getUuid(), 1, Integer::sum);
+							int tradeCount = tradeCounts.get(player.getUuid());
+							LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
+							if (tradeCount >= 60) {
+								serverPlayer.getAdvancementTracker().grantCriterion(adv, "trading_post");
+								LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
+							}
+						}
+					}else if (stack.getItem() == Items.OBSERVER) {
+						Observer+=1;
+						if (Observer>9999){
+							Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:placeobserver"));
+							if (adv != null) {
+								serverPlayer.getAdvancementTracker().grantCriterion(adv, "placeobserver");
+							}
 						}
 					}
-
 				}
 			}
 			return ActionResult.PASS;
 		});
+
+		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+			if (!world.isClient && player instanceof ServerPlayerEntity serverPlayer) {
+				BlockState state = world.getBlockState(hitResult.getBlockPos());
+				if (state.getBlock() == Blocks.FURNACE) {
+					furnace+=1;
+					if(furnace>1999){
+						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:openfurnace"));
+						if (adv != null) {
+							serverPlayer.getAdvancementTracker().grantCriterion(adv, "openfurnace");
+						}
+					}
+				}
+			}
+			return ActionResult.PASS;
+		});
+
+
 	}
 
 

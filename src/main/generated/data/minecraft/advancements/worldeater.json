@@ -10,10 +10,10 @@
     "description": {
       "translate": "advancements.worldeater.descr"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "minecraft:tnt"
+      "item": "minecraft:tnt_minecart"
     },
     "show_toast": true,
     "title": {

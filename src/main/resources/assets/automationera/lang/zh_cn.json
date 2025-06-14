@@ -194,5 +194,9 @@
   "advancements.afkdie.descr": "挂机时候死了",
   "advancements.afkdie.title": "似乎忘了什么",
   "advancements.afk.descr": "挂机5小时资源3大盒",
-  "advancements.afk.title": "AFK"
+  "advancements.afk.title": "AFK",
+  "advancements.openfurnace.descr": "打开熔炉2000次",
+  "advancements.openfurnace.title": "炉子用多久了",
+  "advancements.placeobserver.descr": "放置侦测器10000次",
+  "advancements.placeobserver.title": "怎么感觉有无数双眼睛盯着我"
 }

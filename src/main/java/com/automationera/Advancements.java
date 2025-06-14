@@ -553,6 +553,30 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 )
                 .criterion("afkdie", new ImpossibleCriterion.Conditions())
                 .build(consumer, "afkdie");
+        Advancement openfurnace = Advancement.Builder.create()
+                .parent(advancementMap.get("furnacegroup"))
+                .display(
+                        Items.BLAST_FURNACE,
+                        Text.translatable("advancements.openfurnace.title"),
+                        Text.translatable("advancements.openfurnace.descr"),
+                        null,
+                        AdvancementFrame.TASK,
+                        true, true, false
+                )
+                .criterion("openfurnace", new ImpossibleCriterion.Conditions())
+                .build(consumer, "openfurnace");
+        Advancement placeobserver = Advancement.Builder.create()
+                .parent(advancementMap.get("automaticfactory"))
+                .display(
+                        Items.OBSERVER,
+                        Text.translatable("advancements.placeobserver.title"),
+                        Text.translatable("advancements.placeobserver.descr"),
+                        null,
+                        AdvancementFrame.GOAL,
+                        true, true, false
+                )
+                .criterion("placeobserver", new ImpossibleCriterion.Conditions())
+                .build(consumer, "placeobserver");
     }
 
     @Override

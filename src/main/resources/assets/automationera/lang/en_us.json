@@ -195,6 +195,9 @@
   "advancements.afkdie.descr": "Dead during afk",
   "advancements.afkdie.title": "Did I forgot something?",
   "advancements.afk.descr": "afk 5 hours and 3 box of items",
-  "advancements.afk.title": "AFK"
-
+  "advancements.afk.title": "AFK",
+  "advancements.openfurnace.descr": "Open furnace 2000times",
+  "advancements.openfurnace.title": "Ash in Furnace",
+  "advancements.placeobserver.descr": "Place Observer 10000times",
+  "advancements.placeobserver.title": "Million Eyes on You"
 }
