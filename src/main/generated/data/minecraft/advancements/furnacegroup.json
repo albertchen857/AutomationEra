@@ -10,14 +10,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:glass"
+              "item": "minecraft:stone"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:stone"
+              "item": "minecraft:glass"
             }
           ],
           "required_stacks": 9

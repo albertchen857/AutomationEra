@@ -10,7 +10,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:potato"
+              "item": "minecraft:wheat"
             },
             {
               "count": {
@@ -24,7 +24,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:wheat"
+              "item": "minecraft:potato"
             }
           ],
           "required_stacks": 4

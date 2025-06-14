@@ -2,13 +2,13 @@
 	"schemaVersion": 1,
 	"id": "automationera",
 	"version": "${version}",
-	"name": "AutomationEra",
-	"description": "Survival circuit tutorial MOD",
+	"name": "AutomationEra 自动化时代",
+	"description": "自动化时代 - 生电教学向模组 | Survival circuit tutorial MOD",
 	"authors": [
 		"Albertchen857"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
+		"homepage": "https://space.bilibili.com/3494373232741268?spm_id_from=333.1007.0.0",
 		"sources": "https://github.com/albertchen857/AutomationEra"
 	},
 	"license": "CC0-1.0",
@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"com.automationera.DataGeneration"
+		],
+		"emi": [
+			"com.automationera.emi.emiPlugin"
 		]
 	},
 	"mixins": [

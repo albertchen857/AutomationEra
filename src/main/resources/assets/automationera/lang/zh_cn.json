@@ -198,5 +198,7 @@
   "advancements.openfurnace.descr": "打开熔炉2000次",
   "advancements.openfurnace.title": "炉子用多久了",
   "advancements.placeobserver.descr": "放置侦测器10000次",
-  "advancements.placeobserver.title": "怎么感觉有无数双眼睛盯着我"
+  "advancements.placeobserver.title": "怎么感觉有无数双眼睛盯着我",
+
+  "emi.category.automationera.machine": "生电"
 }

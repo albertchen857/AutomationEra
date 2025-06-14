@@ -24,13 +24,6 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:fire_coral_fan"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
               "item": "minecraft:brain_coral_fan"
             },
             {
@@ -39,6 +32,13 @@
                 "min": 64
               },
               "item": "minecraft:bubble_coral_fan"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:fire_coral_fan"
             }
           ],
           "required_stacks": 4

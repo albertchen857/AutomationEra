@@ -10,35 +10,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:black_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:pink_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:brown_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:yellow_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:green_wool"
+              "item": "minecraft:magenta_wool"
             },
             {
               "count": {
@@ -52,49 +24,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:orange_wool"
+              "item": "minecraft:brown_wool"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:gray_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:magenta_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:red_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:blue_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:light_gray_wool"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:purple_wool"
+              "item": "minecraft:black_wool"
             },
             {
               "count": {
@@ -108,7 +45,70 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:purple_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:blue_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:gray_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:white_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:yellow_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pink_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:light_gray_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:orange_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:green_wool"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:red_wool"
             },
             {
               "count": {

@@ -199,5 +199,7 @@
   "advancements.openfurnace.descr": "Open furnace 2000times",
   "advancements.openfurnace.title": "Ash in Furnace",
   "advancements.placeobserver.descr": "Place Observer 10000times",
-  "advancements.placeobserver.title": "Million Eyes on You"
+  "advancements.placeobserver.title": "Million Eyes on You",
+
+  "emi.category.automationera.machine": "Circuit"
 }
