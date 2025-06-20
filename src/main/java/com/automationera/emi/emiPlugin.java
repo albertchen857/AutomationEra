@@ -25,15 +25,12 @@ public class emiPlugin implements EmiPlugin {
 
     @Override
     public void register(EmiRegistry registry) {
-        // 添加"机器"分类
         registry.addCategory(MACHINE_CATEGORY);
-        // 添加工作站（机器图标显示在哪）
-        registry.addWorkstation(MACHINE_CATEGORY, EmiStack.of(Items.REDSTONE_BLOCK)); // 自定义图标机器
-
-        for (Map.Entry<String, List<Item>> recipe : ore.entrySet()) {
-            for (Item item : recipe.getValue()) {
-                registry.addRecipe(new MachineEmiRecipe(new MachineRecipe(Items.AIR, item)));
-            }
+        for (Map.Entry<String, List<Item>> entry : ore.entrySet()) {
+            registry.addRecipe(new MachineEmiRecipe(
+                new MachineRecipe(Items.AIR, entry.getValue().get(0)),
+                entry.getValue()
+            ));
         }
     }
 }

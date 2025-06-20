@@ -1,23 +1,19 @@
 package com.automationera.emi.display;
 
-import com.automationera.emi.category.MachineRecipeCategory;
 import com.automationera.emi.emiPlugin;
 import com.automationera.emi.recipe.MachineRecipe;
 import com.automationera.emi.recipe.OutputRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +22,17 @@ public class MachineEmiRecipe implements EmiRecipe {
     private final EmiStack input;
     private final EmiStack output;
     private final Map<String, List<Item> > ore = new OutputRecipe().OutputdRecipy();
+    private final List<Item> allOutputs;
 
-
-    public MachineEmiRecipe(MachineRecipe recipe) {
+    public MachineEmiRecipe(MachineRecipe recipe, List<Item> allOutputs) {
         this.recipe = recipe;
         this.input = EmiStack.of(recipe.input);
         this.output = EmiStack.of(recipe.output);
+        this.allOutputs = allOutputs;
+    }
+
+    public MachineEmiRecipe(MachineRecipe recipe) {
+        this(recipe, null);
     }
 
     @Override
@@ -51,6 +52,9 @@ public class MachineEmiRecipe implements EmiRecipe {
 
     @Override
     public List<EmiStack> getOutputs() {
+        if (allOutputs != null) {
+            return allOutputs.stream().map(EmiStack::of).toList();
+        }
         return List.of(output);
     }
 
@@ -67,30 +71,15 @@ public class MachineEmiRecipe implements EmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         for (Map.Entry<String, List<Item>> entry : ore.entrySet()) {
-            String key = entry.getKey();
+            String id = entry.getKey();
             List<Item> items = entry.getValue();
             if (items.contains(recipe.input) || items.contains(recipe.output)) {
-                String id = "iron";
-                switch (key) {
-                    case "刷铁机" -> id = "iron";
-                    case "刷石机" -> id = "stone";
-                    case "树场" -> id = "wood";
-                    case "刷怪塔" -> id = "mob";
-                    case "自动农场" -> id = "farm";
-                    case "刷沙机" -> id = "sand";
-                    case "刷冰机" -> id = "ice";
-                    case "铁轨机" -> id = "rail";
-                    case "骨粉机" -> id = "bonemeal";
-                    case "甘蔗机" -> id = "sugarcane";
-                    case "地狱疣农场" -> id = "wart";
-                    case "竹子农场" -> id = "bamboo";
-                    case "疣猪塔" -> id = "pork";
-                    case "史莱姆农场" -> id = "slime";
-                    case "小黑塔" -> id = "enderman";
-                    case "猪人塔" -> id = "pigman";
-                    default -> id = "stone";
+                switch (id) {
+                    case "trade" -> {
+                        return;
+                    }
                 }
-                WidFarm(widgets, I18n.translate("emi.automationera."+id+".title"), id, I18n.translate("emi.automationera."+id+".descr"), items);
+                WidFarm(widgets, I18n.translate("emi.automationera."+ id +".title"), id, I18n.translate("emi.automationera."+id+".descr"), items);
                 break;
             }
         }

@@ -10,6 +10,20 @@
                 "max": 64,
                 "min": 64
               },
+              "item": "minecraft:dark_oak_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:birch_log"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
               "item": "minecraft:acacia_log"
             },
             {
@@ -17,14 +31,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:spruce_log"
+              "item": "minecraft:jungle_log"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:dark_oak_log"
+              "item": "minecraft:crimson_stem"
             },
             {
               "count": {
@@ -45,21 +59,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:birch_log"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:crimson_stem"
-            },
-            {
-              "count": {
-                "max": 64,
-                "min": 64
-              },
-              "item": "minecraft:mangrove_log"
+              "item": "minecraft:spruce_log"
             },
             {
               "count": {
@@ -73,7 +73,7 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:jungle_log"
+              "item": "minecraft:mangrove_log"
             }
           ],
           "required_stacks": 9

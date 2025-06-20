@@ -233,5 +233,11 @@
   "emi.automationera.enderman.title": "Enderman Farm",
   "emi.automationera.enderman.descr": "EXP come from",
   "emi.automationera.pigman.title": "Zombified Piglin Farm",
-  "emi.automationera.pigman.descr": "EXP and Golds from"
+  "emi.automationera.pigman.descr": "EXP and Golds from",
+  "emi.automationera.cactus.title": "Cactus Farm",
+  "emi.automationera.cactus.descr": "Simple Stacking Cactus Farm",
+  "emi.automationera.trade.title": "Villager Trading",
+  "emi.automationera.trade.descr": "Villager sales everything",
+  "emi.automationera.melon.title": "Melon Farm",
+  "emi.automationera.melon.descr": "Watermelon & pumpkin"
 }

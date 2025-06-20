@@ -17,14 +17,14 @@
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:verdant_froglight"
+              "item": "minecraft:pearlescent_froglight"
             },
             {
               "count": {
                 "max": 64,
                 "min": 64
               },
-              "item": "minecraft:pearlescent_froglight"
+              "item": "minecraft:verdant_froglight"
             }
           ],
           "required_stacks": 9
