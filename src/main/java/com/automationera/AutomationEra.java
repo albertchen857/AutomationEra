@@ -224,7 +224,7 @@ public class AutomationEra implements ModInitializer {
 				lastTickStartTime = System.nanoTime();
 				 if (server.getTicks() % 36000 == 0){ //10min
 					 BlockPos pos = player.getBlockPos();
-					 LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
+					 //LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
 					 if (Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()})){
 						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:afk"));
 						 if (adv != null) {
@@ -270,7 +270,7 @@ public class AutomationEra implements ModInitializer {
 					 }
 				 }else if (server.getTicks() % 20 == 0) {
 					int online = server.getCurrentPlayerCount();
-					LOGGER.info("Checking player {} for advancements", player.getName().getString());
+					//LOGGER.info("Checking player {} for advancements", player.getName().getString());
 					
 					// 检查单物品成就
 					checkPlayerStacks(player, Items.COBBLESTONE, 9);
@@ -337,7 +337,7 @@ public class AutomationEra implements ModInitializer {
 					checkAnyItemStacks(player, Ripening, 9);
 
 					// 检查潜影盒成就
-					LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
+					//LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
 					FULL_SHULKER_BOX_CRITERION.trigger(player);
 
 					 BlockPos pos = player.getBlockPos();
@@ -349,7 +349,7 @@ public class AutomationEra implements ModInitializer {
 							Long entryTime = netherEntryTimes.get(player.getUuid());
 							// 检查玩家是否已经获得过这个成就
 							Advancement adv = player.getServer().getAdvancementLoader().get(new Identifier("minecraft:abovenether"));
-							LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
+							//LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
 							if (!player.getAdvancementTracker().getProgress(adv).isDone()) {
 								//ABOVE_NETHER_CRITERION.trigger(player);
 								player.getAdvancementTracker().grantCriterion(adv, "above_nether");
@@ -395,7 +395,7 @@ public class AutomationEra implements ModInitializer {
 					}
 
 					int dragonKills = player.getStatHandler().getStat(Stats.KILLED.getOrCreateStat(EntityType.ENDER_DRAGON));
-					LOGGER.info("dragon: {}",dragonKills);
+					//LOGGER.info("dragon: {}",dragonKills);
 					if (dragonKills > 9) {
 						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:killdragon10time"));
 						if (adv != null) {

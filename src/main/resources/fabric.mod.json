@@ -36,5 +36,9 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"optional": {
+		"jei": "*",
+		"emi": "*"
 	}
 }

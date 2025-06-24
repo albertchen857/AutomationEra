@@ -66,19 +66,16 @@ public class FullShulkerBoxCriterion extends AbstractCriterion<FullShulkerBoxCri
 
         public boolean matches(ItemStack shulkerBox) {
             if (shulkerBox == null || !shulkerBox.hasNbt()) {
-                LOGGER.info("Shulker box has no NBT data");
                 return false;
             }
 
             NbtCompound nbt = shulkerBox.getNbt();
             if (!nbt.contains("BlockEntityTag")) {
-                LOGGER.info("Shulker box has no BlockEntityTag");
                 return false;
             }
 
             NbtCompound blockEntityTag = nbt.getCompound("BlockEntityTag");
             if (!blockEntityTag.contains("Items")) {
-                LOGGER.info("Shulker box has no Items list");
                 return false;
             }
 

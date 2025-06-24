@@ -1,7 +1,5 @@
-package com.automationera.emi.recipe;
+package com.automationera;
 
-import dev.emi.emi.mixin.api.ItemEmiStackMixin;
-import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
