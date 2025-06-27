@@ -1,5 +1,6 @@
 package com.automationera;
 
+import com.ibm.icu.impl.ICURegionDataTables;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
@@ -195,8 +196,7 @@ public class OutputRecipe {
                 Items.RED_MUSHROOM,
                 Items.RED_MUSHROOM_BLOCK,
                 Items.BROWN_MUSHROOM_BLOCK,
-                Items.MUSHROOM_STEM,
-                Items.MUSHROOM_STEW
+                Items.MUSHROOM_STEM
         ));
         ore.put("pickle",List.of(
                 Items.SEA_PICKLE
@@ -364,6 +364,234 @@ public class OutputRecipe {
                 Items.MAGENTA_CONCRETE,    // 品红色混凝土
                 Items.PINK_CONCRETE        // 粉红色混凝土
         ));
+        ore.put("allay", List.of(
+                Items.ALLAY_SPAWN_EGG
+        ));
+        ore.put("bat", List.of(
+                Items.BAT_SPAWN_EGG
+        ));
+        ore.put("bedrock", List.of(
+                Items.BEDROCK,
+                Items.TNT
+        ));
+        ore.put("brew", List.of(
+                Items.POTION,
+                Items.LINGERING_POTION,
+                Items.SPLASH_POTION
+        ));
+        ore.put("carpet", List.of(
+                Items.WHITE_CARPET,
+                Items.ORANGE_CARPET,
+                Items.MAGENTA_CARPET,
+                Items.LIGHT_BLUE_CARPET,
+                Items.YELLOW_CARPET,
+                Items.LIME_CARPET,
+                Items.PINK_CARPET,
+                Items.GRAY_CARPET,
+                Items.LIGHT_GRAY_CARPET,
+                Items.CYAN_CARPET,
+                Items.PURPLE_CARPET,
+                Items.BLUE_CARPET,
+                Items.BROWN_CARPET,
+                Items.GREEN_CARPET,
+                Items.RED_CARPET,
+                Items.BLACK_CARPET
+        ));
+
+        ore.put("cat", List.of(
+                Items.CAT_SPAWN_EGG
+        ));
+        ore.put("classify", List.of(
+                Items.REDSTONE,
+                Items.HOPPER
+        ));
+        ore.put("coral", List.of(
+                Items.TUBE_CORAL_FAN,
+                Items.BRAIN_CORAL_FAN,
+                Items.BUBBLE_CORAL_FAN,
+                Items.FIRE_CORAL_FAN,
+                Items.HORN_CORAL_FAN,
+                Items.TUBE_CORAL,
+                Items.BRAIN_CORAL,
+                Items.BUBBLE_CORAL,
+                Items.FIRE_CORAL,
+                Items.HORN_CORAL,
+                Items.SEAGRASS
+        ));
+
+        ore.put("disk", List.of(
+                Items.MUSIC_DISC_13,
+                Items.MUSIC_DISC_CAT,
+                Items.MUSIC_DISC_BLOCKS,
+                Items.MUSIC_DISC_CHIRP,
+                Items.MUSIC_DISC_FAR,
+                Items.MUSIC_DISC_MALL,
+                Items.MUSIC_DISC_MELLOHI,
+                Items.MUSIC_DISC_STAL,
+                Items.MUSIC_DISC_STRAD,
+                Items.MUSIC_DISC_WARD,
+                Items.MUSIC_DISC_WAIT,
+                Items.MUSIC_DISC_11
+        ));
+
+        ore.put("drainer", List.of(
+                Items.WATER_BUCKET,
+                Items.LAVA_BUCKET
+        ));
+        ore.put("endstone", List.of(
+                Items.END_STONE
+        ));
+        ore.put("fish", List.of(
+                Items.COD,
+                Items.SALMON,
+                Items.TROPICAL_FISH
+        ));
+        ore.put("fishing", List.of(
+                Items.BOW,
+                Items.ENCHANTED_BOOK,
+                Items.FISHING_ROD,
+                Items.NAME_TAG,
+                Items.NAUTILUS_SHELL,
+                Items.SADDLE,
+                Items.COD,
+                Items.SALMON,
+                Items.PUFFERFISH,
+                Items.TROPICAL_FISH,
+                Items.BOWL,
+                Items.LEATHER,
+                Items.LEATHER_BOOTS,
+                Items.ROTTEN_FLESH,
+                Items.STICK,
+                Items.STRING,
+                Items.GLASS_BOTTLE,
+                Items.BONE,
+                Items.INK_SAC,
+                Items.TRIPWIRE_HOOK
+        ));
+
+        ore.put("goat", List.of(
+                Items.GOAT_HORN
+        ));
+        ore.put("head", List.of(
+                Items.CREEPER_HEAD,
+                Items.ZOMBIE_HEAD,
+                Items.SKELETON_SKULL,
+                Items.WITHER_SKELETON_SKULL,
+                Items.PIGLIN_HEAD
+        ));
+        ore.put("lantern", List.of(
+                Items.JACK_O_LANTERN
+        ));
+        ore.put("lava", List.of(
+                Items.LAVA_BUCKET
+        ));
+        ore.put("lichen", List.of(
+                Items.GLOW_LICHEN
+        ));
+        ore.put("load", List.of(
+                Items.MINECART
+        ));
+        ore.put("mooshroom", List.of(
+                Items.BEEF,
+                Items.COOKED_BEEF,
+                Items.LEATHER
+        ));
+
+        ore.put("nylium", List.of(
+                Items.CRIMSON_NYLIUM,
+                Items.WARPED_NYLIUM
+        ));
+        ore.put("obsidian2", List.of(
+                Items.OBSIDIAN
+        ));
+        ore.put("pack", List.of(
+                Items.SHULKER_BOX
+        ));
+        ore.put("phantom", List.of(
+                Items.PHANTOM_MEMBRANE
+        ));
+        ore.put("pig", List.of(
+                Items.PORKCHOP,
+                Items.COOKED_PORKCHOP
+        ));
+        ore.put("smelt", List.of(
+                Items.LAVA_BUCKET,
+                Items.SHULKER_BOX
+        ));
+        ore.put("spider", List.of(
+                Items.STRING,
+                Items.SPIDER_EYE
+        ));
+        ore.put("stone2", List.of(
+                Items.STONE
+        ));
+        ore.put("stray", List.of(
+                Items.TIPPED_ARROW,
+                Items.BONE,
+                Items.ARROW
+        ));
+        ore.put("strip", List.of(
+                Items.COBBLED_DEEPSLATE,
+                Items.DIRT,
+                // 所有去皮原木
+                Items.STRIPPED_OAK_LOG,
+                Items.STRIPPED_SPRUCE_LOG,
+                Items.STRIPPED_BIRCH_LOG,
+                Items.STRIPPED_JUNGLE_LOG,
+                Items.STRIPPED_ACACIA_LOG,
+                Items.STRIPPED_DARK_OAK_LOG,
+                Items.STRIPPED_MANGROVE_LOG,
+                Items.STRIPPED_CHERRY_LOG,
+                Items.STRIPPED_BAMBOO_BLOCK,
+                Items.STRIPPED_CRIMSON_STEM,
+                Items.STRIPPED_WARPED_STEM
+        ));
+
+        ore.put("tbm", List.of(
+                Items.COBBLESTONE,
+                Items.DEEPSLATE,
+                Items.NETHERRACK,
+                Items.COAL,
+                Items.RAW_COPPER,
+                Items.RAW_IRON,
+                Items.RAW_GOLD,
+                Items.LAPIS_LAZULI,
+                Items.REDSTONE,
+                Items.DIAMOND,
+                Items.QUARTZ
+        ));
+        ore.put("tnt", List.of(
+                Items.TNT,
+                Items.DEAD_TUBE_CORAL_FAN,
+                Items.DEAD_BRAIN_CORAL_FAN,
+                Items.DEAD_BUBBLE_CORAL_FAN,
+                Items.DEAD_FIRE_CORAL_FAN,
+                Items.DEAD_HORN_CORAL_FAN
+        ));
+        ore.put("tnt3d", List.of(
+                Items.TNT,
+                Items.DEAD_TUBE_CORAL_FAN,
+                Items.DEAD_BRAIN_CORAL_FAN,
+                Items.DEAD_BUBBLE_CORAL_FAN,
+                Items.DEAD_FIRE_CORAL_FAN,
+                Items.DEAD_HORN_CORAL_FAN
+        ));
+        ore.put("unpack", List.of(
+                Items.SHULKER_BOX
+        ));
+        ore.put("vine", List.of(
+                Items.VINE
+        ));
+        ore.put("warden", List.of(
+                Items.SCULK_CATALYST
+        ));
+        ore.put("worldeater", List.of(
+                Items.TNT,
+                Items.SLIME_BLOCK,
+                Items.ANVIL,
+                Items.BEDROCK
+        ));
+
         return ore;
     }
     public Map<String, Map<Item,Item>> OutputfRecipy() {
