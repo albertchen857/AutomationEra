@@ -9,9 +9,9 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class MachineEmiRecipe implements EmiRecipe {
+public class TradeEmiRecipe implements EmiRecipe {
     private final MachineRecipe recipe;
     private final EmiStack input;
     private final EmiStack output;
@@ -56,7 +56,7 @@ public class MachineEmiRecipe implements EmiRecipe {
      * @param key      机器的标识符（用于找到对应的纹理和本地化文本）
      * @param allOutputs 该机器能产出的所有 Item 列表
      */
-    public MachineEmiRecipe(MachineRecipe recipe, String key, List<List<Item>> allOutputs) {
+    public TradeEmiRecipe(MachineRecipe recipe, String key, List<List<Item>> allOutputs) {
         this.recipe = recipe;
         this.input = EmiStack.of(recipe.input);
         this.output = EmiStack.of(recipe.output);
@@ -67,7 +67,7 @@ public class MachineEmiRecipe implements EmiRecipe {
 
     @Override
     public EmiRecipeCategory getCategory() {
-        return emiPlugin.TRADE_CATEGORY;
+        return emiPlugin.MACHINE_CATEGORY;
     }
 
     @Override

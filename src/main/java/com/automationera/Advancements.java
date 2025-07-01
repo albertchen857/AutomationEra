@@ -244,7 +244,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 Items.INK_SAC,
                 Items.GLOW_INK_SAC
         ), 9, AdvancementFrame.TASK, advancementMap.get("animalfarm"));
-        registerItemSetAdvancement(consumer, "snifferfarm",Items.INK_SAC, Set.of( // 嗅探兽农场
+        registerItemSetAdvancement(consumer, "snifferfarm",Items.SNIFFER_EGG, Set.of( // 嗅探兽农场
                 Items.TORCHFLOWER_SEEDS,
                 Items.PITCHER_POD
         ), 9, AdvancementFrame.TASK, advancementMap.get("woolfarm"));
