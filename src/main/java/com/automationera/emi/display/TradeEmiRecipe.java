@@ -11,12 +11,14 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,22 +33,6 @@ public class TradeEmiRecipe implements EmiRecipe {
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEra/emi/display/MachineEmiRecipe");
     private final Map<String,List<List<String>>> Ing = new OutputRecipe().OutputIng();
     private final Map<String, List<Item>> Template = new OutputRecipe().OutputTemplate();
-    private final List<String> professions = List.of(
-            "armorer",
-            "butcher",
-            "farmer",
-            "fisherman",
-            "fletcher",
-            "leatherworker",
-            "librarian",
-            "cleric",
-            "cartographer",
-            "shepherd",
-            "mason",
-            "toolsmith",
-            "weaponsmith",
-            "wandering_trader"
-    );
 
 
     /**
@@ -67,7 +53,7 @@ public class TradeEmiRecipe implements EmiRecipe {
 
     @Override
     public EmiRecipeCategory getCategory() {
-        return emiPlugin.MACHINE_CATEGORY;
+        return emiPlugin.TRADE_CATEGORY;
     }
 
     @Override
@@ -78,6 +64,15 @@ public class TradeEmiRecipe implements EmiRecipe {
 
     @Override
     public List<EmiIngredient> getInputs() {
+        if (key.endsWith("_in")) {
+            List<EmiIngredient> inputs = new ArrayList<>();
+            inputs.add(EmiStack.of(Items.EMERALD));
+            // 加入其他输入
+            if (allInputs != null) {
+                inputs.addAll(allInputs.stream().map(EmiStack::of).map(stack -> (EmiIngredient) stack).toList());
+            }
+            return inputs;
+        }
         if (allInputs != null) {
             // 返回机器所有产物对应的 EmiStack 列表
             return allInputs.stream()
@@ -85,17 +80,23 @@ public class TradeEmiRecipe implements EmiRecipe {
                     .map(stack -> (EmiIngredient) stack)
                     .toList();
         }
-        return List.of(input);
+        return List.of();
     }
 
     @Override
     public List<EmiStack> getOutputs() {
+        if (key.endsWith("_out")){
+            List<EmiStack> result = new ArrayList<>();
+            result.add(EmiStack.of(Items.EMERALD));
+            if (allOutputs != null) {
+                result.addAll(allOutputs.stream().map(EmiStack::of).toList());
+                return result;
+            }
+        }
         if (allOutputs != null) {
-            // 返回机器所有产物对应的 EmiStack 列表
             return allOutputs.stream().map(EmiStack::of).toList();
         }
-        // 后备方案：如果未提供产物列表，则返回单一输出
-        return List.of(output);
+        return List.of();
     }
 
     @Override
@@ -111,9 +112,10 @@ public class TradeEmiRecipe implements EmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         LOGGER.info("out:{}, mac:{}", recipe.output, key);
+        String job = key.split("_")[0];
         String code = MinecraftClient.getInstance().getLanguageManager().getLanguage();
         int textlen = ("zh_cn".equalsIgnoreCase(code)) ? 17 : 40;
-        if (Objects.equals(key, "circuit")){
+        if (Objects.equals(key, "trade_main")){
             widgets.addText(Text.literal(I18n.translate("emi.automationera.circuit.title")), 5, 5, 0xE71B1B, false);
             String descr = I18n.translate("emi.automationera.circuit.descr");
             for (int i = 0; i<=descr.length(); i+=textlen){
@@ -129,78 +131,41 @@ public class TradeEmiRecipe implements EmiRecipe {
             });
             return;
         }
+
         widgets.addText(Text.literal(I18n.translate("emi.automationera." + key + ".title")), 5, 5, 0x404040, false);
         String descr = I18n.translate("emi.automationera." + key + ".descr");
         widgets.addButton(128, 0, 32, 12,0,0, new Identifier("automationera", "textures/gui/wikibutton.png"), () -> true, (mouseX, mouseY, button) -> {
-            Util.getOperatingSystem().open(I18n.translate("emi.automationera." + key + ".wiki"));
+            Util.getOperatingSystem().open(I18n.translate("emi.automationera.trade.wiki"));
         });
-        int ingOlen = Ing.containsKey(key) ? Ing.get(key).get(0).size() : 0;
-        int ingIlen = Ing.containsKey(key) ? Ing.get(key).get(1).size() : 0;
-        //int y_inc = 0;
+        int ingOlen, ingIlen;
+        int inglen = 0;
+        if (Ing.containsKey(key)){
+            ingOlen = Ing.get(key).get(0).size();
+            ingIlen = Ing.get(key).get(1).size();
+            inglen =  key.endsWith("_out") ? ingOlen : ingIlen;
+        }
         for (int i = 0; i<=descr.length(); i+=textlen){
             widgets.addText(Text.literal(descr.substring(i, Math.min(descr.length(), i + textlen))), 5, 20 + (i/textlen*8), 0x404040, false);
-            //y_inc = i/textlen*8;
         }
-        if (professions.contains(key)) {
-            widgets.addTexture(new Identifier("automationera", "textures/villager/" + key + ".png"),
-                    0, 30,  // 坐标
-                    48, 96, // 显示宽高
-                    0, 0, // 纹理起始坐标（纹理内偏移）
-                    410, 825, 410, 825); // 纹理大小（用于裁剪/缩放）
-            if (allOutputs.size() + ingOlen > 0){
-                for (int i = 0; i < allOutputs.size() + ingOlen; i++) {
-                    int sx = 86 + (i % 4) * 18;
-                    int sy = 56 + (i / 4) * 18;
-                    if (ingOlen!=0 || (i < allOutputs.size())){
-                        widgets.addSlot(EmiStack.of(allOutputs.get(i)), sx, sy).recipeContext(this);
-                    }else{
-                        EmiIngredient ingredient = EmiIngredient.of(Template.get(Ing.get(key).get(0).get(i-allOutputs.size())).stream().map(EmiStack::of).toList());
-                        widgets.addSlot(ingredient, sx, sy).recipeContext(this);
-                    }
-                }
-            }
-            if (allInputs.size() + ingIlen > 0){
-                for (int i = 0; i < allInputs.size() + ingIlen; i++) {
-                    int sx = 86 + (i % 4) * 18;
-                    int sy = 56 + (i / 4) * 18;
-                    if (ingOlen!=0 || (i < allInputs.size())){
-                        widgets.addSlot(EmiStack.of(allInputs.get(i)), sx, 114).recipeContext(this);
-                    }else{
-                        EmiIngredient ingredient = EmiIngredient.of(Template.get(Ing.get(key).get(1).get(i-allInputs.size())).stream().map(EmiStack::of).toList());
-                        widgets.addSlot(ingredient, sx, 114).recipeContext(this);
-                    }
-                }
-            }
-        }else {
-            widgets.addTexture(new Identifier("automationera", "textures/" + key + ".png"),
-                    0, 40,  // 坐标
-                    96, 96, // 显示宽高
-                    50, 50, // 纹理起始坐标（纹理内偏移）
-                    900, 900, 900, 900); // 纹理大小（用于裁剪/缩放）
-            if (allOutputs.size() + ingOlen > 0){
-                for (int i = 0; i < allOutputs.size() + ingOlen; i++) {
-                    int sx = 86 + (i % 4) * 18;
-                    int sy = 56 + (i / 4) * 18;
-                    if (ingOlen!=0 || (i < allOutputs.size())){
-                        widgets.addSlot(EmiStack.of(allOutputs.get(i)), sx, sy).recipeContext(this);
-                    }else{
-                        EmiIngredient ingredient = EmiIngredient.of(Template.get(Ing.get(key).get(0).get(i-allOutputs.size())).stream().map(EmiStack::of).toList());
-                        widgets.addSlot(ingredient, sx, sy).recipeContext(this);
-                    }
-                }
-            }
-            if (allInputs.size() + ingIlen > 0){
-                for (int i = 0; i < allInputs.size() + ingIlen; i++) {
-                    int sx = i * 18;
-                    if (ingOlen!=0 || (i < allInputs.size())){
-                        widgets.addSlot(EmiStack.of(allInputs.get(i)), sx, 114).recipeContext(this);
-                    }else{
-                        EmiIngredient ingredient = EmiIngredient.of(Template.get(Ing.get(key).get(1).get(i-allInputs.size())).stream().map(EmiStack::of).toList());
-                        widgets.addSlot(ingredient, sx, 114).recipeContext(this);
-                    }
-                }
+
+        widgets.addTexture(new Identifier("automationera", "textures/villager/" + key.split("_")[0] + ".png"),
+                0, 30,  // 坐标
+                48, 96, // 显示宽高
+                0, 0, // 纹理起始坐标（纹理内偏移）
+                410, 825, 410, 825); // 纹理大小（用于裁剪/缩放）
+        List<Item> preall = key.split("_")[1].equals("out") ? allOutputs : allInputs;
+        int premd = key.split("_")[1].equals("out") ? 0 : 1;
+        for (int i = 0; i < preall.size() + inglen; i++) {
+            int sx = 52 + (i % 6) * 18;
+            int sy = 40 + (i / 6) * 18;
+            if (inglen==0 || (i < preall.size())){
+                widgets.addSlot(EmiStack.of(preall.get(i)), sx, sy).recipeContext(this);
+            }else{
+                EmiIngredient ingredient = EmiIngredient.of(Template.get(Ing.get(job).get(premd).get(i-preall.size())).stream().map(EmiStack::of).toList());
+                widgets.addSlot(ingredient, sx, sy).recipeContext(this);
             }
         }
+        widgets.addSlot(EmiStack.of(Items.EMERALD), 0, 114).recipeContext(this);
     }
 
     public MachineRecipe getRecipe() {

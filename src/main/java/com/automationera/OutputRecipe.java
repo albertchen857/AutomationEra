@@ -23,13 +23,12 @@ public class OutputRecipe {
                 Items.BROWN_DYE, Items.PURPLE_DYE, Items.BLUE_DYE, Items.GREEN_DYE, Items.MAGENTA_DYE, Items.CYAN_DYE
         ));
         Template.put("CARPET", List.of(
-                Items.WHITE_CARPET, Items.WHITE_BED,
-                Items.LIGHT_GRAY_CARPET, Items.GRAY_CARPET, Items.BLACK_CARPET, Items.BROWN_CARPET,
+                Items.WHITE_CARPET, Items.LIGHT_GRAY_CARPET, Items.GRAY_CARPET, Items.BLACK_CARPET, Items.BROWN_CARPET,
                 Items.RED_CARPET, Items.ORANGE_CARPET, Items.YELLOW_CARPET, Items.LIME_CARPET, Items.GREEN_CARPET,
                 Items.CYAN_CARPET, Items.LIGHT_BLUE_CARPET, Items.BLUE_CARPET, Items.PURPLE_CARPET, Items.MAGENTA_CARPET, Items.PINK_CARPET
         ));
         Template.put("BED", List.of(
-                Items.LIGHT_GRAY_BED, Items.GRAY_BED, Items.BLACK_BED, Items.BROWN_BED, Items.RED_BED,
+                Items.WHITE_BED, Items.LIGHT_GRAY_BED, Items.GRAY_BED, Items.BLACK_BED, Items.BROWN_BED, Items.RED_BED,
                 Items.ORANGE_BED, Items.YELLOW_BED, Items.LIME_BED, Items.GREEN_BED,
                 Items.CYAN_BED, Items.LIGHT_BLUE_BED, Items.BLUE_BED, Items.PURPLE_BED, Items.MAGENTA_BED, Items.PINK_BED
         ));
@@ -101,8 +100,27 @@ public class OutputRecipe {
                 Items.PUFFERFISH,
                 Items.TROPICAL_FISH
         ));
-        //Template.put("", );
-        //Template.put("", );
+        Template.put("DIAMOND_TOOL", List.of(
+                Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_PICKAXE, Items.DIAMOND_HOE
+        ));
+        Template.put("IRON_TOOL", List.of(
+                Items.IRON_AXE, Items.IRON_SHOVEL, Items.IRON_PICKAXE, Items.IRON_HOE
+        ));
+        Template.put("STONE_TOOL", List.of(
+                Items.STONE_AXE, Items.STONE_SHOVEL, Items.STONE_PICKAXE, Items.STONE_HOE
+        ));
+        Template.put("SEEDS", List.of(
+                Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS
+        ));
+        Template.put("MOSS", List.of(
+                Items.MOSS_BLOCK, Items.MOSS_CARPET, Items.SMALL_DRIPLEAF, Items.BIG_DRIPLEAF,
+                Items.AZALEA, Items.FLOWERING_AZALEA,Items.SPORE_BLOSSOM
+        ));
+        Template.put("FISH_BUCKET", List.of(Items.PUFFERFISH_BUCKET, Items.TROPICAL_FISH_BUCKET));
+        Template.put("W_CAVE", List.of(Items.SMALL_AMETHYST_BUD,Items.POINTED_DRIPSTONE,Items.DRIPSTONE_BLOCK));
+        Template.put("W_FALLING", List.of(Items.SAND, Items.RED_SAND, Items.GRAVEL));
+        Template.put("W_SAPLING", List.of(Items.CHERRY_SAPLING,Items.MANGROVE_PROPAGULE));
+        Template.put("W_ICE", List.of(Items.PACKED_ICE, Items.BLUE_ICE));
 
         return Template;
     }
@@ -216,12 +234,7 @@ public class OutputRecipe {
         trade.put("toolsmith", List.of(
                 List.of(
                         Items.COAL, Items.IRON_INGOT, Items.FLINT, Items.DIAMOND
-                ),
-                List.of(
-                        Items.BELL, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_PICKAXE, Items.DIAMOND_HOE,
-                        Items.IRON_AXE, Items.IRON_SHOVEL, Items.IRON_PICKAXE, Items.IRON_HOE,
-                        Items.STONE_AXE, Items.STONE_SHOVEL, Items.STONE_PICKAXE, Items.STONE_HOE
-                )
+                ), List.of(Items.BELL)
         ));
 
         trade.put("weaponsmith", List.of(
@@ -232,25 +245,19 @@ public class OutputRecipe {
                         Items.BELL, Items.DIAMOND_AXE, Items.DIAMOND_SWORD, Items.IRON_AXE, Items.IRON_SWORD
                 )
         ));
-        trade.put("wandering_trader", List.of(
+        trade.put("wanderingtrader", List.of(
                 // 收购项
                 List.of(
-                        Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.PUMPKIN_SEEDS, Items.MELON_SEEDS,
                         Items.VINE, Items.MOSS_CARPET, Items.GLOW_BERRIES, Items.SMALL_DRIPLEAF,
-                        Items.POINTED_DRIPSTONE, Items.ROOTED_DIRT, Items.MANGROVE_PROPAGULE,
-                        Items.CHERRY_SAPLING, Items.SNIFFER_EGG
+                        Items.POINTED_DRIPSTONE, Items.ROOTED_DIRT, Items.SNIFFER_EGG
                 ),
                 List.of(
-                        Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS,
+
                         Items.COCOA_BEANS, Items.SUGAR_CANE, Items.BAMBOO, Items.CACTUS, Items.SEA_PICKLE,
-                        Items.KELP, Items.MOSS_BLOCK, Items.MOSS_CARPET, Items.SMALL_DRIPLEAF, Items.BIG_DRIPLEAF,
-                        Items.VINE, Items.FERN, Items.AZALEA, Items.FLOWERING_AZALEA, Items.CHERRY_SAPLING,
-                        Items.MANGROVE_PROPAGULE, Items.TORCHFLOWER, Items.PITCHER_PLANT, Items.PODZOL,
-                        Items.ROOTED_DIRT, Items.POINTED_DRIPSTONE, Items.SAND, Items.RED_SAND, Items.GRAVEL,
-                        Items.PACKED_ICE, Items.BLUE_ICE, Items.GLOWSTONE, Items.SLIME_BLOCK, Items.SEA_LANTERN,
-                        Items.CLAY, Items.DRIPSTONE_BLOCK, Items.MUD, Items.MUDDY_MANGROVE_ROOTS, Items.MOSSY_COBBLESTONE,
-                        Items.SPORE_BLOSSOM, Items.SMALL_AMETHYST_BUD, Items.PUFFERFISH_BUCKET, Items.TROPICAL_FISH_BUCKET,
-                        Items.POWDER_SNOW_BUCKET, Items.LEAD, Items.NAUTILUS_SHELL, Items.SNIFFER_EGG
+                        Items.KELP, Items.VINE, Items.FERN,   Items.TORCHFLOWER, Items.PITCHER_PLANT, Items.PODZOL,
+                        Items.ROOTED_DIRT, Items.GLOWSTONE, Items.SLIME_BLOCK, Items.SEA_LANTERN,
+                        Items.CLAY, Items.MUD, Items.MUDDY_MANGROVE_ROOTS, Items.MOSSY_COBBLESTONE,
+                         Items.POWDER_SNOW_BUCKET, Items.LEAD, Items.NAUTILUS_SHELL, Items.SNIFFER_EGG
                 )//coarl block /coral flower dye
         ));
         return trade;
@@ -819,9 +826,13 @@ public class OutputRecipe {
                 List.of(),
                 List.of("TERRACOTTA","GLAZED_TERRACOTTA")// out terracotta glazed_tara
         ));
-        Ing.put("wandering_trader", List.of(
+        Ing.put("toolsmith", List.of(
                 List.of(),
-                List.of("CORAL_BLOCK","CORAL_FAN","FLOWER","DYE")//coarl block /coral flower dye
+                List.of("DIAMOND_TOOL","IRON_TOOL","STONE_TOOL")
+        ));
+        Ing.put("wandering_trader", List.of(
+                List.of("SEEDS","W_SAPLING"),
+                List.of("CORAL_BLOCK","CORAL_FAN","FLOWER","DYE","SEEDS","FISH_BUCKET","W_CAVE","W_FALLING","W_SAPLING","W_ICE")
         ));
         //normal
         Ing.put("sand", List.of(

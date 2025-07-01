@@ -47,11 +47,11 @@ public class emiPlugin implements EmiPlugin {
             List<Item> o1 = entry.getValue().get(0);
             List<Item> o2 = entry.getValue().get(0);
             if (!o1.isEmpty()) {
-                registry.addRecipe(new TradeEmiRecipe(new MachineRecipe(Items.EMERALD, o1.get(0)), key, entry.getValue()));
+                registry.addRecipe(new TradeEmiRecipe(new MachineRecipe(Items.EMERALD, o1.get(0)), key+"_in", entry.getValue()));
             }
-            /*if (!o2.isEmpty()) {
-                registry.addRecipe(new MachineEmiRecipe(new MachineRecipe(o2.get(0), Items.EMERALD), key, entry.getValue()));
-            }*/
+            if (!o2.isEmpty()) {
+                registry.addRecipe(new TradeEmiRecipe(new MachineRecipe(o2.get(0), Items.EMERALD), key+"_out", entry.getValue()));
+            }
         }
     }
 }
