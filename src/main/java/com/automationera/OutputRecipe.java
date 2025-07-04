@@ -121,6 +121,16 @@ public class OutputRecipe {
         Template.put("W_FALLING", List.of(Items.SAND, Items.RED_SAND, Items.GRAVEL));
         Template.put("W_SAPLING", List.of(Items.CHERRY_SAPLING,Items.MANGROVE_PROPAGULE));
         Template.put("W_ICE", List.of(Items.PACKED_ICE, Items.BLUE_ICE));
+        Template.put("SAPLING", List.of(
+                Items.OAK_SAPLING,
+                Items.SPRUCE_SAPLING,
+                Items.BIRCH_SAPLING,
+                Items.JUNGLE_SAPLING,
+                Items.ACACIA_SAPLING,
+                Items.DARK_OAK_SAPLING,
+                Items.CHERRY_SAPLING      // 樱花树苗
+        ));
+
 
         return Template;
     }
@@ -273,7 +283,9 @@ public class OutputRecipe {
                 Items.ACACIA_LOG,
                 Items.DARK_OAK_LOG,
                 Items.MANGROVE_LOG,
-                Items.CHERRY_LOG), List.of(Items.BONE_MEAL)));
+                Items.CHERRY_LOG,
+                Items.STICK,
+                Items.APPLE), List.of(Items.BONE_MEAL)));
         ore.put("iron",List.of(List.of(
                 Items.IRON_INGOT,
                 Items.POPPY
@@ -800,7 +812,125 @@ public class OutputRecipe {
         ore.put("worldeater", List.of(
                 List.of(Items.TNT),
                 List.of(Items.SLIME_BLOCK, Items.ANVIL, Items.BEDROCK)));
+        ore.put("bedrock2", List.of(
+                List.of(Items.BEDROCK),
+                List.of(Items.PISTON)));
+        ore.put("brew2", List.of(
+                List.of(Items.POTION,Items.LINGERING_POTION,Items.SPLASH_POTION),
+                List.of(Items.GLASS_BOTTLE,Items.BLAZE_POWDER)));
+        ore.put("dirt2", List.of(
+                List.of(Items.PODZOL,Items.DIRT,Items.SPRUCE_LOG),
+                List.of(Items.BONE_MEAL)));
+        ore.put("dirt3", List.of(
+                List.of(Items.DIRT),
+                List.of(Items.COARSE_DIRT)));
+        ore.put("flower2", List.of(
+                List.of(Items.SUNFLOWER,Items.ROSE_BUSH,Items.LILAC,Items.PEONY),
+                List.of(Items.BONE_MEAL)));
+        ore.put("furnace", List.of(
+                List.of(Items.FURNACE),
+                List.of(Items.COAL,Items.LAVA_BUCKET)));
+        ore.put("furnace2", List.of(
+                List.of(Items.FURNACE),
+                List.of()));
+        ore.put("melon2", List.of(
+                List.of(Items.MELON,Items.PUMPKIN),
+                List.of(Items.ENDERMAN_SPAWN_EGG,Items.ENDERMITE_SPAWN_EGG)));
+        ore.put("mob2", List.of(List.of(
+                Items.GUNPOWDER,
+                Items.ARROW,
+                Items.TIPPED_ARROW,
+                Items.BONE,
+                Items.STRING,
+                Items.ROTTEN_FLESH,
+                Items.REDSTONE,
+                Items.GLOWSTONE_DUST,
+                Items.GLASS_BOTTLE,
+                Items.SPIDER_EYE,
+                Items.SUGAR
+        ), List.of(Items.ZOMBIE_SPAWN_EGG,Items.CREEPER_SPAWN_EGG,Items.SKELETON_SPAWN_EGG,Items.SPIDER_SPAWN_EGG)));
+        ore.put("mob3", List.of(List.of(
+                Items.GUNPOWDER,
+                Items.ARROW,
+                Items.TIPPED_ARROW,
+                Items.BONE,
+                Items.STRING,
+                Items.ROTTEN_FLESH,
+                Items.REDSTONE,
+                Items.GLOWSTONE_DUST,
+                Items.GLASS_BOTTLE,
+                Items.SPIDER_EYE,
+                Items.SUGAR
+        ), List.of(Items.ZOMBIE_SPAWN_EGG,Items.CREEPER_SPAWN_EGG,Items.SKELETON_SPAWN_EGG,Items.SPIDER_SPAWN_EGG)));
+        ore.put("mob4", List.of(List.of(
+                Items.GUNPOWDER,
+                Items.ARROW,
+                Items.BONE,
+                Items.ROTTEN_FLESH,
+                Items.REDSTONE,
+                Items.GLOWSTONE_DUST,
+                Items.GLASS_BOTTLE,
+                Items.SUGAR
+        ), List.of(Items.ZOMBIE_SPAWN_EGG,Items.CREEPER_SPAWN_EGG,Items.SKELETON_SPAWN_EGG,Items.WITCH_SPAWN_EGG)));
+        ore.put("mobswitch", List.of(
+                List.of(Items.WARDEN_SPAWN_EGG),
+                List.of(Items.SCULK_SHRIEKER)));
+        ore.put("pearlcannon", List.of(
+                List.of(Items.ENDER_PEARL),
+                List.of(Items.TNT)));
+        ore.put("snow2", List.of(
+                List.of(Items.SNOWBALL),
+                List.of(Items.SNOW_GOLEM_SPAWN_EGG,Items.TNT)));
+        ore.put("sugarcane2", List.of(
+                List.of(Items.SUGAR_CANE,Items.CACTUS,Items.BAMBOO,Items.POINTED_DRIPSTONE),
+                List.of(Items.PISTON,Items.SLIME_BLOCK)));
+        ore.put("suppression", List.of(
+                List.of(Items.OBSIDIAN,Items.LIGHT),
+                List.of(Items.POWERED_RAIL,Items.REDSTONE_LAMP,Items.REDSTONE)));
+        ore.put("suppression2", List.of(
+                List.of(Items.OBSIDIAN),
+                List.of(Items.POWERED_RAIL,Items.REDSTONE)));
+        ore.put("tntcannon", List.of(
+                List.of(Items.TNT),
+                List.of(Items.TNT,Items.REDSTONE)));
+        ore.put("wood2", List.of(
+                List.of(Items.OAK_LOG,
+                        Items.SPRUCE_LOG,
+                        Items.BIRCH_LOG,
+                        Items.JUNGLE_LOG,
+                        Items.ACACIA_LOG,
+                        Items.DARK_OAK_LOG,
+                        Items.MANGROVE_LOG,
+                        Items.CHERRY_LOG,
+                        Items.STICK,
+                        Items.APPLE),
+                List.of(Items.BONE_MEAL)));
         return ore;
+    }
+    public Map<String, List<Item>> TutorialRecipy() {
+        Map<String, List<Item>> tut = new HashMap<>();
+        tut.put("tut_logic", List.of(Items.REDSTONE));
+        tut.put("tut_0tcircuit", List.of(Items.PISTON,Items.REDSTONE));
+        tut.put("tut_bedrock", List.of(Items.BEDROCK,Items.ENDER_PEARL,Items.KNOWLEDGE_BOOK));
+        tut.put("tut_bud", List.of(Items.SLIME_BLOCK,Items.PISTON,Items.REDSTONE));
+        tut.put("tut_clock", List.of(Items.REDSTONE,Items.HOPPER));
+        tut.put("tut_cud", List.of(Items.COMPARATOR,Items.REDSTONE));
+        tut.put("tut_elevator", List.of(Items.WATER_BUCKET,Items.SOUL_SAND,Items.MAGMA_BLOCK));
+        tut.put("tut_hfcircuit", List.of(Items.REDSTONE,Items.OBSERVER));
+        tut.put("tut_performance", List.of(Items.REDSTONE,Items.KNOWLEDGE_BOOK));
+        tut.put("tut_qc", List.of(Items.PISTON,Items.REDSTONE));
+        tut.put("tut_railtransportation", List.of(Items.RAIL,Items.MINECART,Items.REDSTONE,Items.KNOWLEDGE_BOOK));
+        tut.put("tut_itemtransportation", List.of(Items.KNOWLEDGE_BOOK,Items.REDSTONE,Items.HOPPER,Items.WATER_BUCKET,Items.DROPPER));
+        tut.put("tut_random", List.of(Items.REDSTONE,Items.DISPENSER));
+        tut.put("tut_tick", List.of(Items.KNOWLEDGE_BOOK,Items.REDSTONE));
+        tut.put("tut_update", List.of(Items.KNOWLEDGE_BOOK));
+        tut.put("tut_perimeter", List.of(Items.ANVIL,Items.BEDROCK,Items.TNT));
+        tut.put("tut_railway", List.of(Items.RAIL,Items.MINECART,Items.KNOWLEDGE_BOOK));
+        tut.put("tut_iceway", List.of(Items.KNOWLEDGE_BOOK,Items.OAK_BOAT,Items.BLUE_ICE));
+        tut.put("tut_flying", List.of(Items.REDSTONE,Items.PISTON,Items.SLIME_BLOCK));
+        tut.put("tut_unit", List.of(Items.KNOWLEDGE_BOOK));
+        tut.put("tut_term", List.of(Items.KNOWLEDGE_BOOK));
+        return tut;
     }
     public Map<String, List<List<String>>> OutputIng() {
         Map<String, List<List<String>>> Ing = new HashMap<>();
@@ -859,6 +989,15 @@ public class OutputRecipe {
                 List.of("FISH"),
                 List.of()
         ));
+        Ing.put("furnace2", List.of(
+                List.of(),
+                List.of("CARPET")));
+        Ing.put("wood", List.of(
+                List.of("SAPLING"),
+                List.of()));
+        Ing.put("wood2", List.of(
+                List.of("SAPLING"),
+                List.of()));
         return Ing;
     }
 }
