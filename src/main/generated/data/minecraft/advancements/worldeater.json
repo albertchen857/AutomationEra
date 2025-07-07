@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:tntquarry",
+  "criteria": {
+    "worldeater": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.worldeater.descr"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:tnt_minecart"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.worldeater.title"
+    }
+  },
+  "requirements": [
+    [
+      "worldeater"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

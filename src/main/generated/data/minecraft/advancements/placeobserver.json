@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:automaticfactory",
+  "criteria": {
+    "placeobserver": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.placeobserver.descr"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:observer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.placeobserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "placeobserver"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

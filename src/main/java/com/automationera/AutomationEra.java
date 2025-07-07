@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class Automationera implements ModInitializer {
+public class AutomationEra implements ModInitializer {
 	public static final String MOD_ID = "automationera";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final FullStackCriterion FULL_STACK_CRITERION = new FullStackCriterion();
@@ -222,56 +222,56 @@ public class Automationera implements ModInitializer {
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				lastTickStartTime = System.nanoTime();
-				if (server.getTicks() % 36000 == 0){ //10min
-					BlockPos pos = player.getBlockPos();
-					//LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
-					if (Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()})){
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:afk"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "afk");
-						}
-						MinecraftClient.getInstance().player.sendMessage(Text.literal("You already AFK "+(afkperiod*0.5)+" Hours"));
-						afkperiod+=1;
-						afk = true;
-					}else{
-						afkperiod = 0;
-						afk = false;
-					}
-				}else if (server.getTicks() % 200 == 0) {
-					ChunkPos chunkPos = player.getChunkPos();
-					if (isChunkAirSpace(player.getWorld(), chunkPos, -64)){
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:realperimeter"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "realperimeter");
-						}
-					}else if (isChunkAirSpace(player.getWorld(), chunkPos, -59)) {
-						if (player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:perimeter"));
-							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "perimeter");
-							}
-						} else if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:netherperimeter"));
-							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "netherperimeter");
-							}
-						}
-					}else{
-						ServerWorld world = player.getServerWorld();
-						boolean peaceful = world.getDifficulty() == Difficulty.PEACEFUL;
-						int mobCount = world.getEntitiesByClass(MobEntity.class, new Box(player.getBlockPos()).expand(64), Entity::isAlive).size();
-						long timeOfDay = world.getTimeOfDay() % 24000;
-						if (!peaceful && mobCount == 0 && timeOfDay >= 13000 && timeOfDay <= 23000) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:fakepeaceful"));
-							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "fakepeaceful");
-							}
-						}
-					}
-				}else if (server.getTicks() % 20 == 0) {
+				 if (server.getTicks() % 36000 == 0){ //10min
+					 BlockPos pos = player.getBlockPos();
+					 //LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
+					 if (Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()})){
+						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:afk"));
+						 if (adv != null) {
+							 player.getAdvancementTracker().grantCriterion(adv, "afk");
+						 }
+						 MinecraftClient.getInstance().player.sendMessage(Text.literal("You already AFK "+(afkperiod*0.5)+" Hours"));
+						 afkperiod+=1;
+						 afk = true;
+					 }else{
+						 afkperiod = 0;
+						 afk = false;
+					 }
+				 }else if (server.getTicks() % 200 == 0) {
+					 ChunkPos chunkPos = player.getChunkPos();
+					 if (isChunkAirSpace(player.getWorld(), chunkPos, -64)){
+						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:realperimeter"));
+						 if (adv != null) {
+							 player.getAdvancementTracker().grantCriterion(adv, "realperimeter");
+						 }
+				 	 }else if (isChunkAirSpace(player.getWorld(), chunkPos, -59)) {
+						 if (player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
+							 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:perimeter"));
+							 if (adv != null) {
+								 player.getAdvancementTracker().grantCriterion(adv, "perimeter");
+							 }
+						 } else if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
+							 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:netherperimeter"));
+							 if (adv != null) {
+								 player.getAdvancementTracker().grantCriterion(adv, "netherperimeter");
+							 }
+						 }
+					 }else{
+						 ServerWorld world = player.getServerWorld();
+						 boolean peaceful = world.getDifficulty() == Difficulty.PEACEFUL;
+						 int mobCount = world.getEntitiesByClass(MobEntity.class, new Box(player.getBlockPos()).expand(64), Entity::isAlive).size();
+						 long timeOfDay = world.getTimeOfDay() % 24000;
+						 if (!peaceful && mobCount == 0 && timeOfDay >= 13000 && timeOfDay <= 23000) {
+							 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:fakepeaceful"));
+							 if (adv != null) {
+								 player.getAdvancementTracker().grantCriterion(adv, "fakepeaceful");
+							 }
+						 }
+					 }
+				 }else if (server.getTicks() % 20 == 0) {
 					int online = server.getCurrentPlayerCount();
 					//LOGGER.info("Checking player {} for advancements", player.getName().getString());
-
+					
 					// 检查单物品成就
 					checkPlayerStacks(player, Items.COBBLESTONE, 9);
 					checkPlayerStacks(player, Items.ICE, 9);
@@ -315,7 +315,7 @@ public class Automationera implements ModInitializer {
 					checkPlayerStacks(player, Items.HONEY_BLOCK, 4);
 					checkPlayerStacks(player, Items.EMERALD, 9);
 					checkPlayerStacks(player, Items.BEDROCK, 1);
-
+					
 					// 检查物品集合成就
 					checkAnyItemStacks(player, LOG_ITEMS, 9);
 					checkAnyItemStacks(player, LOG_ITEMS, 27);
@@ -340,7 +340,7 @@ public class Automationera implements ModInitializer {
 					//LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
 					FULL_SHULKER_BOX_CRITERION.trigger(player);
 
-					BlockPos pos = player.getBlockPos();
+					 BlockPos pos = player.getBlockPos();
 					// 检查地狱上层成就
 					if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
 						// 确保玩家真的在地狱上层，并且已经在那里待了一段时间
@@ -403,38 +403,38 @@ public class Automationera implements ModInitializer {
 						}
 					}
 
-					ServerWorld world = player.getServerWorld();
-					int entityCount = 0;
-					for (Entity entity : world.iterateEntities()) {
-						if (entity instanceof TntEntity) entityCount++;
-					}
-					if (entityCount  > 1000) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:worldeater"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "worldeater");
-						}
-					}else if (entityCount  > 10) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:tntquarry"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "tntquarry");
-						}
-					}
+					 ServerWorld world = player.getServerWorld();
+					 int entityCount = 0;
+					 for (Entity entity : world.iterateEntities()) {
+						 if (entity instanceof TntEntity) entityCount++;
+					 }
+					 if (entityCount  > 1000) {
+						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:worldeater"));
+						 if (adv != null) {
+							 player.getAdvancementTracker().grantCriterion(adv, "worldeater");
+						 }
+					 }else if (entityCount  > 10) {
+						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:tntquarry"));
+						 if (adv != null) {
+							 player.getAdvancementTracker().grantCriterion(adv, "tntquarry");
+						 }
+					 }
 
-					BlockPos posB = player.getBlockPos();
-					long timeOfDay = world.getTimeOfDay() % 24000;
-					int lightLevel = world.getLightLevel(LightType.BLOCK, posB);
-					int skyLevel = world.getLightLevel(LightType.SKY, posB);
-					int real = world.getLightLevel(posB);
-					if (real == 0 && lightLevel == 0 && skyLevel == 0 && player.getWorld().getRegistryKey().equals(World.OVERWORLD) && timeOfDay>0 && timeOfDay<12000 && world.isSkyVisible(posB.up())) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:lightsuppression"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "lightsuppression");
-						}
-					}
+					 BlockPos posB = player.getBlockPos();
+					 long timeOfDay = world.getTimeOfDay() % 24000;
+					 int lightLevel = world.getLightLevel(LightType.BLOCK, posB);
+					 int skyLevel = world.getLightLevel(LightType.SKY, posB);
+					 int real = world.getLightLevel(posB);
+					 if (real == 0 && lightLevel == 0 && skyLevel == 0 && player.getWorld().getRegistryKey().equals(World.OVERWORLD) && timeOfDay>0 && timeOfDay<12000 && world.isSkyVisible(posB.up())) {
+						 Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:lightsuppression"));
+						 if (adv != null) {
+							 player.getAdvancementTracker().grantCriterion(adv, "lightsuppression");
+						 }
+					 }
 
 
 
-				}
+				 }
 			}
 		});
 

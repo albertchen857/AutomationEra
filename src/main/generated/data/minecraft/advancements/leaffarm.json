@@ -1,0 +1,106 @@
+{
+  "parent": "minecraft:bonefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:birch_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:mangrove_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:oak_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:dark_oak_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:acacia_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cherry_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:flowering_azalea_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:jungle_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:azalea_leaves"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:spruce_leaves"
+            }
+          ],
+          "required_stacks": 9
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.leaffarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:oak_leaves"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.leaffarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

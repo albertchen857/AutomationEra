@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:autofarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:honey_block"
+            }
+          ],
+          "required_stacks": 9
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.beehive.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:honey_block"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.beehive.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

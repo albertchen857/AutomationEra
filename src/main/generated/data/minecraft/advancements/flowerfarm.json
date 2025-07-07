@@ -1,0 +1,120 @@
+{
+  "parent": "minecraft:beehive",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:red_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:azure_bluet"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:wither_rose"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:blue_orchid"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:allium"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pink_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:lily_of_the_valley"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:orange_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:poppy"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:dandelion"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:white_tulip"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cornflower"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.flowerfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:poppy"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.flowerfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

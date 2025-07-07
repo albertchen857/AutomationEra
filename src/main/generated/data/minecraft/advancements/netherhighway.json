@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:abovenether",
+  "criteria": {
+    "ice": {
+      "conditions": {
+        "location": {
+          "dimension": "minecraft:the_nether"
+        }
+      },
+      "trigger": "automationera:placed_block_in_nether"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.netherhighway.descr"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:blue_ice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.netherhighway.title"
+    }
+  },
+  "requirements": [
+    [
+      "ice"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

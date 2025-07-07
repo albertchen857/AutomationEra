@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:mobfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:ghast_tear"
+            }
+          ],
+          "required_stacks": 4
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ghastfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:ghast_tear"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ghastfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

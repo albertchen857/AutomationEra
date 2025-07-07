@@ -16,10 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.automationera.Automationera"
+			"com.automationera.AutomationEra"
 		],
 		"fabric-datagen": [
-			"com.automationera.AutomationeraDataGenerator"
+			"com.automationera.DataGeneration"
+		],
+		"emi": [
+			"com.automationera.emi.emiPlugin"
 		]
 	},
 	"mixins": [
@@ -27,11 +30,15 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.4",
-		"java": ">=21",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
 		"fabric-api": "*"
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"optional": {
+		"jei": "*",
+		"emi": "*"
 	}
 }

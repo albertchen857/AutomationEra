@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:stuckserver",
+  "criteria": {
+    "large_server": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.largeserver.descr"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:chain_command_block"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.largeserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "large_server"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

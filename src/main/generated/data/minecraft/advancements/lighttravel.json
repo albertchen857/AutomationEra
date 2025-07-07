@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:fastesttravel",
+  "criteria": {
+    "light_travel": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.lighttravel.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:barrier"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.lighttravel.title"
+    }
+  },
+  "requirements": [
+    [
+      "light_travel"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

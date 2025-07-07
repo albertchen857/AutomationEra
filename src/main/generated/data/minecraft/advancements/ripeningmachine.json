@@ -1,0 +1,113 @@
+{
+  "parent": "minecraft:autofarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "conditions": {
+          "items": [
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:vine"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:rose_bush"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:peony"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:cocoa_beans"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:hanging_roots"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:big_dripleaf"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:sunflower"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:pink_petals"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:lilac"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_berries"
+            },
+            {
+              "count": {
+                "max": 64,
+                "min": 64
+              },
+              "item": "minecraft:glow_lichen"
+            }
+          ],
+          "required_stacks": 9
+        }
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ripeningmachine.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:dispenser"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ripeningmachine.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

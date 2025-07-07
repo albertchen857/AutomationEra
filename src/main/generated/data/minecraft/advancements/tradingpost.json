@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:village",
+  "criteria": {
+    "trading_post": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.tradingpost.descr"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.tradingpost.title"
+    }
+  },
+  "requirements": [
+    [
+      "trading_post"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:perimeter",
+  "criteria": {
+    "realperimeter": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.realperimeter.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:structure_void"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.realperimeter.title"
+    }
+  },
+  "requirements": [
+    [
+      "realperimeter"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

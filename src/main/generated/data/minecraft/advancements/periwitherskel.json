@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:perimeter",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:wither_skeleton_skull"
+          ]
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.periwitherskel.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.periwitherskel.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

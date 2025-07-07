@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:agriculture",
+  "criteria": {
+    "a": {
+      "conditions": {},
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.animalfarm.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:beef"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.animalfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

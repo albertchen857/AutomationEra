@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:fakepeaceful",
+  "criteria": {
+    "lightsuppression": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.lightsuppression.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:light"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.lightsuppression.title"
+    }
+  },
+  "requirements": [
+    [
+      "lightsuppression"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

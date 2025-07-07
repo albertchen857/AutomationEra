@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:curcuitrevolution",
+  "criteria": {
+    "fakepeaceful": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.fakepeaceful.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:barrier"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.fakepeaceful.title"
+    }
+  },
+  "requirements": [
+    [
+      "fakepeaceful"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

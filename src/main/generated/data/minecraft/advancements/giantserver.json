@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:largeserver",
+  "criteria": {
+    "giant_server": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.giantserver.descr"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:repeating_command_block"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.giantserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "giant_server"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

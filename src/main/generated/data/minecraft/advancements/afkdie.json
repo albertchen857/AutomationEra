@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:afk",
+  "criteria": {
+    "afkdie": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.afkdie.descr"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:barrier"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.afkdie.title"
+    }
+  },
+  "requirements": [
+    [
+      "afkdie"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
