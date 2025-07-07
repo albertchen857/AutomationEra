@@ -2,6 +2,7 @@ package com.automationera;
 
 import com.automationera.advance.FullShulkerBoxCriterion;
 import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.*;
 import com.automationera.advance.PlacedBlockInNetherCriterion;
@@ -31,20 +32,23 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     private int createAdvancement = 0;
 
     public void autoRoot(Consumer<Advancement> consumer){
-        Advancement automaticFactory = Advancement.Builder.create()
+        AdvancementEntry automaticFactory = Advancement.Builder.create()
                 .display(
                         Items.REDSTONE,
                         Text.translatable("advancements.automaticfactory.title"),
                         Text.translatable("advancements.automaticfactory.descr"),
-                        new Identifier("textures/block/redstone_ore.png"),
+                        Identifier.of("textures/block/redstone_ore.png"),
                         AdvancementFrame.TASK,
                         true, true, false
                 )
                 .criterion("a", InventoryChangedCriterion.Conditions.items(Items.REDSTONE))
-                .build(consumer, "automaticfactory");
-        advancementMap.put("automaticfactory", automaticFactory);
+                .build(entry -> {
+                    consumer.accept(entry.value());
+                    advancementMap.put("automaticfactory", entry.value());
+                }, "automaticfactory");
 
-        Advancement village = Advancement.Builder.create()//村民工程类
+        AdvancementEntry village = Advancement.Builder.create(
+)//村民工程类
                 .parent(automaticFactory)
                 .display(
                         Items.BELL,
@@ -57,12 +61,16 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                 .criterion("a", OnKilledCriterion.Conditions.createPlayerKilledEntity(
                         EntityPredicate.Builder.create().type(EntityType.IRON_GOLEM)
                 ))
-                .build(consumer, "village");
-        advancementMap.put("village", village);
+                .build(entry -> {
+                    consumer.accept(entry.value());
+                    advancementMap.put("village", entry.value());
+                }, "village");
+
         registerSingleItemAdvancement(consumer, "stringfarm", Items.STRING, AdvancementFrame.TASK, Items.STRING, 9, village);
         registerSingleItemAdvancement(consumer, "tripwire", Items.TRIPWIRE_HOOK, AdvancementFrame.TASK, Items.TRIPWIRE_HOOK, 9, village);
         registerSingleItemAdvancement(consumer, "raidfarm", Items.EMERALD, AdvancementFrame.TASK, Items.EMERALD, 9, village);
-        Advancement tradingpost = Advancement.Builder.create()
+        AdvancementEntry tradingpost = Advancement.Builder.create(
+)
                 .parent(village)
                 .display(
                         Items.EMERALD,
@@ -73,8 +81,11 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("trading_post", new ImpossibleCriterion.Conditions())
-                .build(consumer, "tradingpost");
-        advancementMap.put("tradingpost", tradingpost);
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("tradingpost", entry.value());
+}, "tradingpost");
+
 
 
         registerSingleItemAdvancement(consumer, "stonefarm", Items.COBBLESTONE, AdvancementFrame.GOAL, Items.COBBLESTONE, 9, automaticFactory); // 圆石农场
@@ -91,7 +102,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
         registerSingleItemAdvancement(consumer, "bonefarm", Items.BONE_MEAL, AdvancementFrame.GOAL, Items.BONE_MEAL, 9, advancementMap.get("woodfarm")); // 骨粉农场
         registerSingleItemAdvancement(consumer, "obsidianfarm", Items.OBSIDIAN, AdvancementFrame.TASK, Items.OBSIDIAN, 9, advancementMap.get("sandfarm")); // 黑曜石农场
 
-        Advancement abovenether = Advancement.Builder.create()
+        AdvancementEntry abovenether = Advancement.Builder.create(
+)
                 .parent(automaticFactory)
                 .display(
                         Items.BEDROCK,
@@ -102,9 +114,13 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("above_nether", new ImpossibleCriterion.Conditions())
-                .build(consumer, "abovenether");
-        advancementMap.put("abovenether", abovenether);
-        Advancement netherhighway = Advancement.Builder.create()
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("abovenether", entry.value());
+}, "abovenether");
+
+        AdvancementEntry netherhighway = Advancement.Builder.create(
+)
                 .parent(abovenether)
                 .display(
                         Items.BLUE_ICE,
@@ -118,8 +134,11 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         BlockPredicate.Builder.create().blocks(net.minecraft.block.Blocks.PACKED_ICE).build(),
                         LocationPredicate.Builder.create().dimension(World.NETHER).build()
                 ))
-                .build(consumer, "netherhighway");
-        advancementMap.put("netherhighway", netherhighway);
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("netherhighway", entry.value());
+}, "netherhighway");
+
 
         registerItemSetAdvancement(consumer, "woodfarm",Items.OAK_LOG, Set.of( // 木材农场
                 Items.OAK_LOG,
@@ -193,21 +212,26 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     }
 
     public void agricultureRoot(Consumer<Advancement> consumer){
-        Advancement agriculture = Advancement.Builder.create()
+        AdvancementEntry agriculture = Advancement.Builder.create(
+)
                 .display(
                         Items.HAY_BLOCK,
                         Text.translatable("advancements.agriculture.title"),
                         Text.translatable("advancements.agriculture.descr"),
-                        new Identifier("textures/block/smooth_stone.png"),
+                        Identifier.of("textures/block/smooth_stone.png"),
                         AdvancementFrame.TASK,
                         true, true, false
                 )
                 .criterion("a", InventoryChangedCriterion.Conditions.items(Items.WHEAT_SEEDS))
-                .build(consumer, "agriculture");
-        advancementMap.put("agriculture", agriculture);
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("agriculture", entry.value());
+}, "agriculture");
 
 
-        Advancement animalfarm = Advancement.Builder.create()//动物农场类
+
+        AdvancementEntry animalfarm = Advancement.Builder.create(
+)//动物农场类
                 .parent(agriculture)
                 .display(
                         Items.BEEF,
@@ -218,8 +242,11 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("a", BredAnimalsCriterion.Conditions.create(EntityPredicate.ANY, EntityPredicate.ANY, EntityPredicate.ANY))
-                .build(consumer, "animalfarm");
-        advancementMap.put("animalfarm", animalfarm);
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("animalfarm", entry.value());
+}, "animalfarm");
+
         registerSingleItemAdvancement(consumer, "turtlefarm", Items.TURTLE_EGG, AdvancementFrame.TASK, Items.TURTLE_EGG, 4, advancementMap.get("animalfarm")); // 海龟农场
         registerSingleItemAdvancement(consumer, "snowfarm", Items.SNOW_BLOCK, AdvancementFrame.TASK, Items.SNOW_BLOCK, 9, advancementMap.get("animalfarm")); // 雪农场
         registerItemSetAdvancement(consumer, "woolfarm",Items.WHITE_WOOL, Set.of( // 羊毛农场
@@ -337,19 +364,24 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     }
 
     public void curcuitrevolutionRoot(Consumer<Advancement> consumer){
-        Advancement curcuitrevolution = Advancement.Builder.create()
+        AdvancementEntry curcuitrevolution = Advancement.Builder.create(
+)
                 .display(
                         Items.BEACON,
                         Text.translatable("advancements.curcuitrevolution.title"),
                         Text.translatable("advancements.curcuitrevolution.descr"),
-                        new Identifier("textures/block/bedrock.png"),
+                        Identifier.of("textures/block/bedrock.png"),
                         AdvancementFrame.TASK,
                         true, true, false
                 )
                 .criterion("a", InventoryChangedCriterion.Conditions.items(Items.SHULKER_BOX))
-                .build(consumer, "curcuitrevolution");
-        advancementMap.put("curcuitrevolution", curcuitrevolution);
-        Advancement tntquarry = Advancement.Builder.create()
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("curcuitrevolution", entry.value());
+}, "curcuitrevolution");
+
+        AdvancementEntry tntquarry = Advancement.Builder.create(
+)
                 .parent(curcuitrevolution)
                 .display(
                         Items.TNT,
@@ -360,8 +392,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("tntquarry", new ImpossibleCriterion.Conditions())
-                .build(consumer, "tntquarry");
-        Advancement worldeater = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "tntquarry").value();        AdvancementEntry worldeater = Advancement.Builder.create(
+)
                 .parent(tntquarry)
                 .display(
                         Items.TNT_MINECART,
@@ -372,8 +404,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("worldeater", new ImpossibleCriterion.Conditions())
-                .build(consumer, "worldeater");
-        Advancement perimeter = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "worldeater").value();        AdvancementEntry perimeter = Advancement.Builder.create(
+)
                 .parent(worldeater)
                 .display(
                         Items.BEDROCK,
@@ -384,9 +416,13 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("perimeter", new ImpossibleCriterion.Conditions())
-                .build(consumer, "perimeter");
-        advancementMap.put("perimeter", perimeter);
-        Advancement realperimeter = Advancement.Builder.create()
+                .build(entry -> {
+    consumer.accept(entry.value());
+    advancementMap.put("perimeter", entry.value());
+}, "perimeter");
+
+        AdvancementEntry realperimeter = Advancement.Builder.create(
+)
                 .parent(perimeter)
                 .display(
                         Items.STRUCTURE_VOID,
@@ -397,8 +433,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("realperimeter", new ImpossibleCriterion.Conditions())
-                .build(consumer, "realperimeter");
-        Advancement netherperimeter = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "realperimeter").value();        AdvancementEntry netherperimeter = Advancement.Builder.create(
+)
                 .parent(realperimeter)
                 .display(
                         Items.LAVA_BUCKET,
@@ -409,9 +445,9 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("netherperimeter", new ImpossibleCriterion.Conditions())
-                .build(consumer, "netherperimeter");
-
-        Advancement fakepeaceful = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "netherperimeter").value();
+        AdvancementEntry fakepeaceful = Advancement.Builder.create(
+)
                 .parent(curcuitrevolution)
                 .display(
                         Items.BARRIER,
@@ -422,8 +458,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("fakepeaceful", new ImpossibleCriterion.Conditions())
-                .build(consumer, "fakepeaceful");
-        Advancement lightsuppression = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "fakepeaceful").value();        AdvancementEntry lightsuppression = Advancement.Builder.create(
+)
                 .parent(fakepeaceful)
                 .display(
                         Items.LIGHT,
@@ -434,8 +470,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("lightsuppression", new ImpossibleCriterion.Conditions())
-                .build(consumer, "lightsuppression");
-        registerSingleShulkerBoxAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, Items.GOLD_INGOT, 27, AdvancementFrame.TASK, curcuitrevolution); // 双倍猪人农场
+                .build(entry -> consumer.accept(entry.value()), "lightsuppression").value();        registerSingleShulkerBoxAdvancement(consumer, "doublepigman", Items.GOLD_BLOCK, Items.GOLD_INGOT, 27, AdvancementFrame.TASK, curcuitrevolution); // 双倍猪人农场
         registerSingleShulkerBoxAdvancement(consumer, "bigfurnace", Items.BLAST_FURNACE, Items.SMOOTH_STONE, 27, AdvancementFrame.TASK, curcuitrevolution); // 大型熔炉
         registerMultiShulkerBoxAdvancement(consumer, "alltree", Items.OAK_WOOD, Set.of( // 全木材农场
                 Items.OAK_LOG,
@@ -457,7 +492,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     }
 
     public void Achivements(Consumer<Advancement> consumer){
-        Advancement stuckserver = Advancement.Builder.create()
+        AdvancementEntry stuckserver = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("curcuitrevolution"))
                 .display(
                         Items.COMMAND_BLOCK,
@@ -468,8 +504,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("stuck_server", new ImpossibleCriterion.Conditions())
-                .build(consumer, "stuckserver");
-        Advancement largeserver = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "stuckserver").value();        AdvancementEntry largeserver = Advancement.Builder.create(
+)
                 .parent(stuckserver)
                 .display(
                         Items.CHAIN_COMMAND_BLOCK,
@@ -480,8 +516,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("large_server", new ImpossibleCriterion.Conditions())
-                .build(consumer, "largeserver");
-        Advancement giantserver = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "largeserver").value();        AdvancementEntry giantserver = Advancement.Builder.create(
+)
                 .parent(largeserver)
                 .display(
                         Items.REPEATING_COMMAND_BLOCK,
@@ -492,8 +528,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("giant_server", new ImpossibleCriterion.Conditions())
-                .build(consumer, "giantserver");
-        Advancement fastesttravel = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "giantserver").value();        AdvancementEntry fastesttravel = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("netherhighway"))
                 .display(
                         Items.ENDER_PEARL,
@@ -504,8 +540,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("fastest_travel", new ImpossibleCriterion.Conditions())
-                .build(consumer, "fastesttravel");
-        Advancement lighttravel = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "fastesttravel").value();        AdvancementEntry lighttravel = Advancement.Builder.create(
+)
                 .parent(fastesttravel)
                 .display(
                         Items.BARRIER,
@@ -516,8 +552,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("light_travel", new ImpossibleCriterion.Conditions())
-                .build(consumer, "lighttravel");
-        Advancement killdragon10time = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "lighttravel").value();        AdvancementEntry killdragon10time = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("agriculture"))
                 .display(
                         Items.DRAGON_HEAD,
@@ -528,8 +564,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("kill_10time", new ImpossibleCriterion.Conditions())
-                .build(consumer, "killdragon10time");
-        Advancement afk = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "killdragon10time").value();        AdvancementEntry afk = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("automaticfactory"))
                 .display(
                         Items.STRUCTURE_VOID,
@@ -540,8 +576,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("afk", new ImpossibleCriterion.Conditions())
-                .build(consumer, "afk");
-        Advancement afkdie = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "afk").value();        AdvancementEntry afkdie = Advancement.Builder.create(
+)
                 .parent(afk)
                 .display(
                         Items.BARRIER,
@@ -552,8 +588,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("afkdie", new ImpossibleCriterion.Conditions())
-                .build(consumer, "afkdie");
-        Advancement openfurnace = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "afkdie").value();        AdvancementEntry openfurnace = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("furnacegroup"))
                 .display(
                         Items.BLAST_FURNACE,
@@ -564,8 +600,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("openfurnace", new ImpossibleCriterion.Conditions())
-                .build(consumer, "openfurnace");
-        Advancement placeobserver = Advancement.Builder.create()
+                .build(entry -> consumer.accept(entry.value()), "openfurnace").value();        AdvancementEntry placeobserver = Advancement.Builder.create(
+)
                 .parent(advancementMap.get("automaticfactory"))
                 .display(
                         Items.OBSERVER,
@@ -576,8 +612,7 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
                         true, true, false
                 )
                 .criterion("placeobserver", new ImpossibleCriterion.Conditions())
-                .build(consumer, "placeobserver");
-    }
+                .build(entry -> consumer.accept(entry.value()), "placeobserver").value();    }
 
     @Override
     public void accept(Consumer<Advancement> consumer) {
@@ -597,7 +632,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             Item targetItem,
             int requiredStacks,
             Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
+        AdvancementEntry advancement = Advancement.Builder.create(
+)
                 .parent(parent)
                 .display(
                         displayItem,
@@ -622,7 +658,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             Item targetItem,
             int requiredStacks,
             Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
+        AdvancementEntry advancement = Advancement.Builder.create(
+)
                 .parent(parent)
                 .display(
                         displayItem,
@@ -647,7 +684,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             int requiredStacks,
             AdvancementFrame frame,
             Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
+        AdvancementEntry advancement = Advancement.Builder.create(
+)
                 .parent(parent)
                 .display(
                         displayItem,
@@ -672,7 +710,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             int requiredStacks,
             AdvancementFrame frame,
             Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
+        AdvancementEntry advancement = Advancement.Builder.create(
+)
                 .parent(parent)
                 .display(
                         displayItem,
@@ -697,7 +736,8 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
             int requiredStacks,
             AdvancementFrame frame,
             Advancement parent) {
-        Advancement advancement = Advancement.Builder.create()
+        AdvancementEntry advancement = Advancement.Builder.create(
+)
                 .parent(parent)
                 .display(
                         displayItem,
