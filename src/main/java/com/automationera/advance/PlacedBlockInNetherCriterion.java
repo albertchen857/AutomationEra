@@ -1,15 +1,15 @@
 package com.automationera.advance;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.predicate.BlockPredicate;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,10 +23,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockInNetherCriterion.Conditions> {
-    private static final Identifier ID = new Identifier("automationera", "placed_block_in_nether");
+    public static final Identifier ID = Identifier.of("automationera", "placed_block_in_nether");
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEra/PlacedBlockInNetherCriterion");
     private static PlacedBlockInNetherCriterion INSTANCE;
     private static final double ICE_BOAT_SPEED = 5; // 每秒方块数
@@ -39,18 +40,16 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
 
     public PlacedBlockInNetherCriterion() {}
 
-    @Override
-    public Identifier getId() {
-        return ID;
+    public static AdvancementCriterion<Conditions> conditions(BlockPredicate block, LocationPredicate location) {
+        return PlacedBlockInNetherCriterion.INSTANCE.create(new Conditions(ID, block, location));
     }
 
-    public static Conditions conditions(BlockPredicate build, LocationPredicate location) {
-        return new Conditions(ID, LootContextPredicate.EMPTY, location);
-    }
+    protected Conditions conditionsFromJson(JsonObject obj,BlockPredicate playerPredicate) {
+        LocationPredicate locationPredicate = LocationPredicate.CODEC
+                .parse(JsonOps.INSTANCE, obj.get("location"))
+                .result()
+                .orElseThrow(() -> new IllegalArgumentException("无法解析 location predicate"));
 
-    @Override
-    protected Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        LocationPredicate locationPredicate = LocationPredicate.fromJson(obj.get("location"));
         return new Conditions(ID, playerPredicate, locationPredicate);
     }
 
@@ -104,11 +103,16 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
         return false;
     }
 
-    public static class Conditions extends AbstractCriterionConditions {
+    @Override
+    public Codec<Conditions> getConditionsCodec() {
+        return null;
+    }
+
+    public static class Conditions extends AbstractCriterion implements AbstractCriterion.Conditions {
         private final LocationPredicate location;
 
-        public Conditions(Identifier id, LootContextPredicate playerPredicate, LocationPredicate location) {
-            super(id, playerPredicate);
+        public Conditions(Identifier id,BlockPredicate playerPredicate, LocationPredicate location) {
+            super();
             this.location = location;
         }
 
@@ -116,17 +120,28 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
             return this.location.test(world, pos.getX(), pos.getY(), pos.getZ());
         }
 
-        public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
-            JsonObject jsonObject = super.toJson(predicateSerializer);
-            jsonObject.add("location", this.location.toJson());
+        public JsonObject toJson() {
+            JsonObject jsonObject = new JsonObject();
+            var encoded = LocationPredicate.CODEC.encodeStart(JsonOps.INSTANCE, this.location);
+            encoded.result().ifPresent(jsonElement -> jsonObject.add("location", jsonElement));
             return jsonObject;
+        }
+
+        @Override
+        public Optional<LootContextPredicate> player() {
+            return Optional.empty();
+        }
+
+        @Override
+        public Codec getConditionsCodec() {
+            return null;
         }
     }
 
     public static PlacedBlockInNetherCriterion register() {
         if (INSTANCE == null) {
             INSTANCE = new PlacedBlockInNetherCriterion();
-            Criteria.register(INSTANCE);
+            Criteria.register(String.valueOf(ID), INSTANCE);
             LOGGER.info("!!!成功 registered PlacedBlockInNetherCriterion");
             
             // 注册服务器tick事件监听器

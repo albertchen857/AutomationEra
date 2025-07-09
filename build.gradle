@@ -29,7 +29,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation("dev.emi:emi-fabric:1.1.22+1.21.1")
+	modImplementation("dev.emi:emi-fabric:1.1.12+1.21")
 
 }
 

@@ -13,7 +13,7 @@ import java.util.Map;
 public class MachineRecipeCategory extends EmiRecipeCategory {
     public MachineRecipeCategory() {
         super(
-                new Identifier("automationera", "machine"),
+                Identifier.of("automationera", "machine"),
                 EmiStack.of(Items.REDSTONE_BLOCK) // 类别图标
         );
     }

@@ -6,26 +6,20 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -39,12 +33,10 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.foliage.FoliagePlacer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class Automationera implements ModInitializer {
 	public static final String MOD_ID = "automationera";
@@ -204,14 +196,16 @@ public class Automationera implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		Criteria.register(FULL_STACK_CRITERION);
+		Criteria.register(FullStackCriterion.ID.toString(), FULL_STACK_CRITERION);
+		Criteria.register(FullShulkerBoxCriterion.ID.toString(), FULL_SHULKER_BOX_CRITERION);
+		//Registry.register(Registries.CRITERION, FullStackCriterion.ID, FULL_STACK_CRITERION);
+		//Registry.register(Registries.CRITERION, FullShulkerBoxCriterion.ID, FULL_SHULKER_BOX_CRITERION);
 		PlacedBlockInNetherCriterion.register();
-		Criteria.register(FULL_SHULKER_BOX_CRITERION);
 
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			if (afk){
 				MinecraftServer server = newPlayer.getServer();
-				Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:afkdie"));
+				AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:afkdie"));
 				if (adv != null) {
 					newPlayer.getAdvancementTracker().grantCriterion(adv, "afkdie");
 				}
@@ -226,11 +220,11 @@ public class Automationera implements ModInitializer {
 					BlockPos pos = player.getBlockPos();
 					//LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
 					if (Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()})){
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:afk"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:afk"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "afk");
 						}
-						MinecraftClient.getInstance().player.sendMessage(Text.literal("You already AFK "+(afkperiod*0.5)+" Hours"));
+						player.sendMessage(Text.literal("You already AFK "+(afkperiod*0.5)+" Hours"));
 						afkperiod+=1;
 						afk = true;
 					}else{
@@ -240,18 +234,18 @@ public class Automationera implements ModInitializer {
 				}else if (server.getTicks() % 200 == 0) {
 					ChunkPos chunkPos = player.getChunkPos();
 					if (isChunkAirSpace(player.getWorld(), chunkPos, -64)){
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:realperimeter"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:realperimeter"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "realperimeter");
 						}
 					}else if (isChunkAirSpace(player.getWorld(), chunkPos, -59)) {
 						if (player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:perimeter"));
+							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:perimeter"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "perimeter");
 							}
 						} else if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:netherperimeter"));
+							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:netherperimeter"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "netherperimeter");
 							}
@@ -262,7 +256,7 @@ public class Automationera implements ModInitializer {
 						int mobCount = world.getEntitiesByClass(MobEntity.class, new Box(player.getBlockPos()).expand(64), Entity::isAlive).size();
 						long timeOfDay = world.getTimeOfDay() % 24000;
 						if (!peaceful && mobCount == 0 && timeOfDay >= 13000 && timeOfDay <= 23000) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:fakepeaceful"));
+							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:fakepeaceful"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "fakepeaceful");
 							}
@@ -348,7 +342,7 @@ public class Automationera implements ModInitializer {
 							LOGGER.info("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
 							Long entryTime = netherEntryTimes.get(player.getUuid());
 							// 检查玩家是否已经获得过这个成就
-							Advancement adv = player.getServer().getAdvancementLoader().get(new Identifier("minecraft:abovenether"));
+							AdvancementEntry adv = player.getServer().getAdvancementLoader().get(Identifier.of("minecraft:abovenether"));
 							//LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
 							if (!player.getAdvancementTracker().getProgress(adv).isDone()) {
 								//ABOVE_NETHER_CRITERION.trigger(player);
@@ -362,12 +356,12 @@ public class Automationera implements ModInitializer {
 						long distance = (long)Math.sqrt(x*x+y*y);
 						LOGGER.info("distance:{}, {}", distance, lastpos);
 						if (distance > 10000){
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:fastesttravel"));
+							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:fastesttravel"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "fastest_travel");
 							}
 						} else if (Math.abs(pos.getX()) > 4285700 || Math.abs(pos.getZ()) > 4285700) {
-							Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:lighttravel"));
+							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:lighttravel"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "light_travel");
 							}
@@ -378,17 +372,17 @@ public class Automationera implements ModInitializer {
 					double mspt = Arrays.stream(tickTimes).average().orElse(0.0);
 					LOGGER.info("MSPT:{}, ONLINE:{}",mspt,online);
 					if (mspt > 100 && server.getTicks()>600) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:stuckserver"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:stuckserver"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "stuck_server");
 						}
 					} else if (online > 9) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:largeserver"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:largeserver"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "large_server");
 						}
 					} else if (online > 49) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:giantserver"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:giantserver"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "giant_server");
 						}
@@ -397,7 +391,7 @@ public class Automationera implements ModInitializer {
 					int dragonKills = player.getStatHandler().getStat(Stats.KILLED.getOrCreateStat(EntityType.ENDER_DRAGON));
 					//LOGGER.info("dragon: {}",dragonKills);
 					if (dragonKills > 9) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:killdragon10time"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:killdragon10time"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "kill_10time");
 						}
@@ -409,12 +403,12 @@ public class Automationera implements ModInitializer {
 						if (entity instanceof TntEntity) entityCount++;
 					}
 					if (entityCount  > 1000) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:worldeater"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:worldeater"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "worldeater");
 						}
 					}else if (entityCount  > 10) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:tntquarry"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:tntquarry"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "tntquarry");
 						}
@@ -426,7 +420,7 @@ public class Automationera implements ModInitializer {
 					int skyLevel = world.getLightLevel(LightType.SKY, posB);
 					int real = world.getLightLevel(posB);
 					if (real == 0 && lightLevel == 0 && skyLevel == 0 && player.getWorld().getRegistryKey().equals(World.OVERWORLD) && timeOfDay>0 && timeOfDay<12000 && world.isSkyVisible(posB.up())) {
-						Advancement adv = server.getAdvancementLoader().get(new Identifier("minecraft:lightsuppression"));
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of("minecraft:lightsuppression"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "lightsuppression");
 						}
@@ -454,7 +448,7 @@ public class Automationera implements ModInitializer {
 					if(entity instanceof VillagerEntity villager){
 						LOGGER.info("Player {} traded with villager", player.getName().getString());
 						// 检查玩家是否已经获得过这个成就
-						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:tradingpost"));
+						AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of("minecraft:tradingpost"));
 						if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
 							tradeCounts.merge(player.getUuid(), 1, Integer::sum);
 							int tradeCount = tradeCounts.get(player.getUuid());
@@ -467,7 +461,7 @@ public class Automationera implements ModInitializer {
 					}else if (stack.getItem() == Items.OBSERVER) {
 						Observer+=1;
 						if (Observer>9999){
-							Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:placeobserver"));
+							AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of("minecraft:placeobserver"));
 							if (adv != null) {
 								serverPlayer.getAdvancementTracker().grantCriterion(adv, "placeobserver");
 							}
@@ -484,7 +478,7 @@ public class Automationera implements ModInitializer {
 				if (state.getBlock() == Blocks.FURNACE) {
 					furnace+=1;
 					if(furnace>1999){
-						Advancement adv = serverPlayer.getServer().getAdvancementLoader().get(new Identifier("minecraft:openfurnace"));
+						AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of("minecraft:openfurnace"));
 						if (adv != null) {
 							serverPlayer.getAdvancementTracker().grantCriterion(adv, "openfurnace");
 						}

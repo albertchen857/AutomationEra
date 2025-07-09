@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 public class TutorialRecipeCategory extends EmiRecipeCategory {
     public TutorialRecipeCategory() {
         super(
-                new Identifier("automationera", "tutorial"),
+                Identifier.of("automationera", "tutorial"),
                 EmiStack.of(Items.KNOWLEDGE_BOOK) // 类别图标
         );
     }

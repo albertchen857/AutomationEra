@@ -190,7 +190,7 @@ public class OutputRecipe {
 
         trade.put("leatherworker", List.of(
                 List.of(
-                        Items.LEATHER, Items.RABBIT_HIDE, Items.FLINT, Items.SCUTE
+                        Items.LEATHER, Items.RABBIT_HIDE, Items.FLINT, Items.TURTLE_SCUTE
                 ),
                 List.of(
                         Items.LEATHER_HORSE_ARMOR, Items.SADDLE
@@ -208,7 +208,7 @@ public class OutputRecipe {
 
         trade.put("cleric", List.of(
                 List.of(
-                        Items.ROTTEN_FLESH, Items.GOLD_INGOT, Items.RABBIT_FOOT, Items.SCUTE, Items.GLASS_BOTTLE, Items.NETHER_WART
+                        Items.ROTTEN_FLESH, Items.GOLD_INGOT, Items.RABBIT_FOOT, Items.TURTLE_SCUTE, Items.GLASS_BOTTLE, Items.NETHER_WART
                 ),
                 List.of(
                         Items.REDSTONE, Items.LAPIS_LAZULI, Items.GLOWSTONE, Items.ENDER_PEARL, Items.EXPERIENCE_BOTTLE
@@ -537,7 +537,7 @@ public class OutputRecipe {
         ), List.of(Items.SHEARS,Items.BONE_MEAL)));
         ore.put("turtle",List.of(List.of(
                 Items.TURTLE_EGG,
-                Items.SCUTE,
+                Items.TURTLE_SCUTE,
                 Items.SEAGRASS
         ), List.of(Items.TURTLE_SPAWN_EGG,Items.SEAGRASS)));
         ore.put("basalt",List.of(List.of(

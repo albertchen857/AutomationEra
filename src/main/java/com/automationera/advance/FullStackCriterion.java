@@ -1,27 +1,31 @@
-package com.automationera;
+package com.automationera.advance;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.item.Item;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Conditions> {
-    public static final Identifier ID = new Identifier("automationera", "full_stack");
+    public static final Identifier ID = Identifier.of("automationera", "full_stack");
+    public static final FullStackCriterion INSTANCE = new FullStackCriterion();
 
     @Override
-    public Identifier getId() {
-        return ID;
+    public Codec<Conditions> getConditionsCodec() {
+        return Conditions.CODEC;
     }
 
     // 触发进度条件 - 单物品版本
@@ -35,20 +39,23 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
     }
 
     // 进度条件实例
-    public static class Conditions extends AbstractCriterionConditions {
+    public static class Conditions implements AbstractCriterion.Conditions {
+        public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Registries.ITEM.getCodec().listOf().fieldOf("items").forGetter(c -> List.copyOf(c.items)),
+            Codec.INT.fieldOf("required_stacks").forGetter(c -> c.requiredStacks)
+        ).apply(instance, Conditions::new));
+
         private final Set<Item> items;
         private final int requiredStacks;
 
-        public Conditions(Set<Item> items, int requiredStacks) {
-            super(ID, LootContextPredicate.EMPTY);
-            this.items = items;
+        public Conditions(List<Item> items, int requiredStacks) {
+            super(); // null 或 LootContextPredicate.ALWAYS
+            this.items = Set.copyOf(items);
             this.requiredStacks = requiredStacks;
         }
 
-        // 将条件转换为JSON（用于生成进度JSON文件）
-        @Override
-        public JsonObject toJson(AdvancementEntityPredicateSerializer serializer) {
-            JsonObject json = super.toJson(serializer);
+        public JsonObject toJson() {
+            JsonObject json = new JsonObject();
 
             // 创建items数组
             JsonArray itemsArray = new JsonArray();
@@ -73,22 +80,21 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
 
             return json;
         }
+
+        @Override
+        public Optional<LootContextPredicate> player() {
+            return Optional.empty();
+        }
     }
 
-    // 从JSON解析条件
-    @Override
-    protected Conditions conditionsFromJson(JsonObject json,
-                                            LootContextPredicate player,
-                                            AdvancementEntityPredicateDeserializer deserializer) {
-        // 获取items数组
-        JsonArray items = json.getAsJsonObject("conditions").getAsJsonArray("items");
-        Set<Item> itemSet = new java.util.HashSet<>();
+    protected Conditions conditionsFromJson(JsonObject json, LootContextPredicate player) {
+        JsonArray itemsArray = json.getAsJsonObject("conditions").getAsJsonArray("items");
+        List<Item> itemSet = List.of();
 
-        // 解析所有物品
-        for (var itemElement : items) {
+        for (JsonElement itemElement : itemsArray) {
             JsonObject itemObj = itemElement.getAsJsonObject();
             String itemId = JsonHelper.getString(itemObj, "item");
-            Identifier itemIdentifier = new Identifier(itemId);
+            Identifier itemIdentifier = Identifier.of(itemId);
             Item item = Registries.ITEM.get(itemIdentifier);
 
             if (item == null) {
@@ -97,19 +103,18 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
             itemSet.add(item);
         }
 
-        // 从JSON中获取所需堆叠数量
         int requiredStacks = JsonHelper.getInt(json.getAsJsonObject("conditions"), "required_stacks");
 
         return new Conditions(itemSet, requiredStacks);
     }
 
+
     // 创建进度条件实例 - 单物品版本
-    public static AdvancementCriterion createCriterion(Item item, int requiredStacks) {
-        return new AdvancementCriterion(new Conditions(Set.of(item), requiredStacks));
+    public static AdvancementCriterion<Conditions> createCriterion(Item item, int requiredStacks) {
+        return new AdvancementCriterion<>(new FullStackCriterion(), new Conditions(List.of(item), requiredStacks));
     }
 
-    // 创建进度条件实例 - 多物品版本
-    public static AdvancementCriterion createCriterion(Set<Item> items, int requiredStacks) {
-        return new AdvancementCriterion(new Conditions(items, requiredStacks));
+    public static AdvancementCriterion<Conditions> createCriterion(Set<Item> items, int requiredStacks) {
+        return new AdvancementCriterion<>(new FullStackCriterion(), new Conditions(List.copyOf(items), requiredStacks));
     }
 }

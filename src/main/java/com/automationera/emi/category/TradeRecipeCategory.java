@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 public class TradeRecipeCategory extends EmiRecipeCategory {
     public TradeRecipeCategory() {
         super(
-                new Identifier("automationera", "trade"),
+                Identifier.of("automationera", "trade"),
                 EmiStack.of(Items.EMERALD) // 类别图标
         );
     }
