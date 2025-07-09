@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:largeserver",
+  "criteria": {
+    "giant_server": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.giantserver.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:repeating_command_block"
+    },
+    "title": {
+      "translate": "advancements.giantserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "giant_server"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

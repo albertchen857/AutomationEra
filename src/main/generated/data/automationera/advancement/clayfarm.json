@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:dirtfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:clay"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.clayfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:clay"
+    },
+    "title": {
+      "translate": "advancements.clayfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

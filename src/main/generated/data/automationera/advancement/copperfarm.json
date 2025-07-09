@@ -1,0 +1,34 @@
+{
+  "parent": "automationera:stonefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:oxidized_copper",
+          "minecraft:exposed_copper",
+          "minecraft:weathered_copper"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.copperfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:exposed_copper"
+    },
+    "title": {
+      "translate": "advancements.copperfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

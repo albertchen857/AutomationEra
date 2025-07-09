@@ -1,0 +1,42 @@
+{
+  "parent": "automationera:automaticfactory",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:birch_log",
+          "minecraft:mangrove_log",
+          "minecraft:dark_oak_log",
+          "minecraft:acacia_log",
+          "minecraft:crimson_stem",
+          "minecraft:cherry_log",
+          "minecraft:spruce_log",
+          "minecraft:jungle_log",
+          "minecraft:oak_log",
+          "minecraft:warped_stem"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.woodfarm.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:oak_log"
+    },
+    "title": {
+      "translate": "advancements.woodfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

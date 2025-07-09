@@ -59,7 +59,7 @@ public class TradeEmiRecipe implements EmiRecipe {
     @Override
     public Identifier getId() {
         // 使用机器标识来生成唯一配方 ID
-        return new Identifier("automationera", "machine_recipe_" + key);
+        return Identifier.of("automationera", "machine_recipe_" + key);
     }
 
     @Override
@@ -121,12 +121,12 @@ public class TradeEmiRecipe implements EmiRecipe {
             for (int i = 0; i<=descr.length(); i+=textlen){
                 widgets.addText(Text.literal(descr.substring(i, Math.min(descr.length(), i + textlen))), 5, 20 + (i/textlen*8), 0x404040, false);
             }
-            widgets.addTexture(new Identifier("automationera", "icon.png"),
+            widgets.addTexture(Identifier.of("automationera", "icon.png"),
                     48, 60,  // 坐标
                     64, 64, // 显示宽高
                     0, 0, // 纹理起始坐标（纹理内偏移）
                     1000, 1000, 1000, 1000); // 纹理大小（用于裁剪/缩放）
-            widgets.addButton(2, 120, 32, 12,0,0, new Identifier("automationera", "textures/gui/wikibutton.png"), () -> true, (mouseX, mouseY, button) -> {
+            widgets.addButton(2, 120, 32, 12,0,0, Identifier.of("automationera", "textures/gui/wikibutton.png"), () -> true, (mouseX, mouseY, button) -> {
                 Util.getOperatingSystem().open(I18n.translate("emi.automationera.circuit.wiki"));
             });
             return;
@@ -134,7 +134,7 @@ public class TradeEmiRecipe implements EmiRecipe {
 
         widgets.addText(Text.literal(I18n.translate("emi.automationera." + key + ".title")), 5, 5, 0x404040, false);
         String descr = I18n.translate("emi.automationera." + key + ".descr");
-        widgets.addButton(128, 0, 32, 12,0,0, new Identifier("automationera", "textures/gui/wikibutton.png"), () -> true, (mouseX, mouseY, button) -> {
+        widgets.addButton(128, 0, 32, 12,0,0, Identifier.of("automationera", "textures/gui/wikibutton.png"), () -> true, (mouseX, mouseY, button) -> {
             Util.getOperatingSystem().open(I18n.translate("emi.automationera.trade.wiki"));
         });
         int ingOlen, ingIlen;
@@ -148,7 +148,7 @@ public class TradeEmiRecipe implements EmiRecipe {
             widgets.addText(Text.literal(descr.substring(i, Math.min(descr.length(), i + textlen))), 5, 20 + (i/textlen*8), 0x404040, false);
         }
 
-        widgets.addTexture(new Identifier("automationera", "textures/villager/" + key.split("_")[0] + ".png"),
+        widgets.addTexture(Identifier.of("automationera", "textures/villager/" + key.split("_")[0] + ".png"),
                 0, 30,  // 坐标
                 48, 96, // 显示宽高
                 0, 0, // 纹理起始坐标（纹理内偏移）

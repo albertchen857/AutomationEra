@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:automaticfactory",
+  "criteria": {
+    "above_nether": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.abovenether.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:bedrock"
+    },
+    "title": {
+      "translate": "advancements.abovenether.title"
+    }
+  },
+  "requirements": [
+    [
+      "above_nether"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

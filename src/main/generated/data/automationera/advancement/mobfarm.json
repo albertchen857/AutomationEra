@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:agriculture",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:bone"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.mobfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:rotten_flesh"
+    },
+    "title": {
+      "translate": "advancements.mobfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:woolfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:torchflower_seeds",
+          "minecraft:pitcher_pod"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.snifferfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:sniffer_egg"
+    },
+    "title": {
+      "translate": "advancements.snifferfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

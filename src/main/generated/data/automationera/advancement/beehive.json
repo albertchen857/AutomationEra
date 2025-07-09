@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:autofarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:honey_block"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.beehive.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:honey_block"
+    },
+    "title": {
+      "translate": "advancements.beehive.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

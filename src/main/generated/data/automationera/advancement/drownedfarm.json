@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:guardianfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:trident"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.drownedfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:trident"
+    },
+    "title": {
+      "translate": "advancements.drownedfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

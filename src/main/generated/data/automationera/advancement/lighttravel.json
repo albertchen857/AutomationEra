@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:fastesttravel",
+  "criteria": {
+    "light_travel": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.lighttravel.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:barrier"
+    },
+    "title": {
+      "translate": "advancements.lighttravel.title"
+    }
+  },
+  "requirements": [
+    [
+      "light_travel"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

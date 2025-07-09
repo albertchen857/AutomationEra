@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:witherskel",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:nether_star"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.witherkill.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:nether_star"
+    },
+    "title": {
+      "translate": "advancements.witherkill.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

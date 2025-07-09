@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:stonefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:ice"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.icefarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:ice"
+    },
+    "title": {
+      "translate": "advancements.icefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

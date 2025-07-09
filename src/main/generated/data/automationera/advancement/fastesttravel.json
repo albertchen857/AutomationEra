@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:netherhighway",
+  "criteria": {
+    "fastest_travel": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.fastesttravel.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:ender_pearl"
+    },
+    "title": {
+      "translate": "advancements.fastesttravel.title"
+    }
+  },
+  "requirements": [
+    [
+      "fastest_travel"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

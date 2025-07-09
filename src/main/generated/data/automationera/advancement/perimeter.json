@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:worldeater",
+  "criteria": {
+    "perimeter": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.perimeter.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:bedrock"
+    },
+    "title": {
+      "translate": "advancements.perimeter.title"
+    }
+  },
+  "requirements": [
+    [
+      "perimeter"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

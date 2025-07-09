@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:wheatfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:sugar_cane"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sugarcane.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:sugar_cane"
+    },
+    "title": {
+      "translate": "advancements.sugarcane.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

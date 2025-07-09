@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:fakepeaceful",
+  "criteria": {
+    "lightsuppression": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.lightsuppression.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:light"
+    },
+    "title": {
+      "translate": "advancements.lightsuppression.title"
+    }
+  },
+  "requirements": [
+    [
+      "lightsuppression"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,42 @@
+{
+  "parent": "automationera:autofarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:sunflower",
+          "minecraft:hanging_roots",
+          "minecraft:vine",
+          "minecraft:lilac",
+          "minecraft:pink_petals",
+          "minecraft:rose_bush",
+          "minecraft:cocoa_beans",
+          "minecraft:big_dripleaf",
+          "minecraft:glow_lichen",
+          "minecraft:peony",
+          "minecraft:glow_berries"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ripeningmachine.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:dispenser"
+    },
+    "title": {
+      "translate": "advancements.ripeningmachine.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

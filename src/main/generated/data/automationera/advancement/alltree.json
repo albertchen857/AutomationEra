@@ -1,0 +1,43 @@
+{
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:birch_log",
+            "minecraft:mangrove_log",
+            "minecraft:dark_oak_log",
+            "minecraft:acacia_log",
+            "minecraft:crimson_stem",
+            "minecraft:cherry_log",
+            "minecraft:spruce_log",
+            "minecraft:jungle_log",
+            "minecraft:oak_log",
+            "minecraft:warped_stem"
+          ]
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alltree.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:oak_wood"
+    },
+    "title": {
+      "translate": "advancements.alltree.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:mobfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:prismarine_shard"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.guardianfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:prismarine_shard"
+    },
+    "title": {
+      "translate": "advancements.guardianfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

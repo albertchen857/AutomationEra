@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:hoglinfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:rabbit_hide"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.rabbitfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:rabbit_hide"
+    },
+    "title": {
+      "translate": "advancements.rabbitfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

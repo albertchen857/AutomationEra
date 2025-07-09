@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:realperimeter",
+  "criteria": {
+    "netherperimeter": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.netherperimeter.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:lava_bucket"
+    },
+    "title": {
+      "translate": "advancements.netherperimeter.title"
+    }
+  },
+  "requirements": [
+    [
+      "netherperimeter"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

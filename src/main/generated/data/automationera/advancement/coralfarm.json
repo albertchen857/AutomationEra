@@ -1,0 +1,36 @@
+{
+  "parent": "automationera:seapicklefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:horn_coral_fan",
+          "minecraft:bubble_coral_fan",
+          "minecraft:brain_coral_fan",
+          "minecraft:tube_coral_fan",
+          "minecraft:fire_coral_fan"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.coralfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:brain_coral_fan"
+    },
+    "title": {
+      "translate": "advancements.coralfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:pumpkinfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:melon"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.melonfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:melon"
+    },
+    "title": {
+      "translate": "advancements.melonfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

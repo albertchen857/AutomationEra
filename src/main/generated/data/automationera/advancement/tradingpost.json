@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:village",
+  "criteria": {
+    "trading_post": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.tradingpost.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:emerald"
+    },
+    "title": {
+      "translate": "advancements.tradingpost.title"
+    }
+  },
+  "requirements": [
+    [
+      "trading_post"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

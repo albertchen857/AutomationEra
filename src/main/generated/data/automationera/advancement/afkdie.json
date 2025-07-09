@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:afk",
+  "criteria": {
+    "afkdie": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.afkdie.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:barrier"
+    },
+    "title": {
+      "translate": "advancements.afkdie.title"
+    }
+  },
+  "requirements": [
+    [
+      "afkdie"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

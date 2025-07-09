@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:perimeter",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:slime_ball"
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.perislimefarm.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:slime_block"
+    },
+    "title": {
+      "translate": "advancements.perislimefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

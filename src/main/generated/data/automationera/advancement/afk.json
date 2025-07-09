@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:automaticfactory",
+  "criteria": {
+    "afk": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.afk.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:structure_void"
+    },
+    "title": {
+      "translate": "advancements.afk.title"
+    }
+  },
+  "requirements": [
+    [
+      "afk"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

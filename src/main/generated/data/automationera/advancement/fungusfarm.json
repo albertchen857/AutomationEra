@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:bonefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:crimson_stem",
+          "minecraft:warped_stem"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.fungusfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:crimson_stem"
+    },
+    "title": {
+      "translate": "advancements.fungusfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

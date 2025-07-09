@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:perimeter",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:sea_lantern"
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.periguardianfarm.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:sea_lantern"
+    },
+    "title": {
+      "translate": "advancements.periguardianfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

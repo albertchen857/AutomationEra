@@ -1,0 +1,35 @@
+{
+  "parent": "automationera:ironfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:detector_rail",
+          "minecraft:powered_rail",
+          "minecraft:activator_rail",
+          "minecraft:rail"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.railfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:powered_rail"
+    },
+    "title": {
+      "translate": "advancements.railfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

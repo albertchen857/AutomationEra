@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:stonefarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:dripstone_block"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.dripstonefarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:dripstone_block"
+    },
+    "title": {
+      "translate": "advancements.dripstonefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

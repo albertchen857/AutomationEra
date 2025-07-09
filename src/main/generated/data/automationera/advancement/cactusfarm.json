@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:sugarcane",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:cactus"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.cactusfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:cactus"
+    },
+    "title": {
+      "translate": "advancements.cactusfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

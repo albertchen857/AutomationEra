@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:wheatfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:sweet_berries"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sweetberryfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:sweet_berries"
+    },
+    "title": {
+      "translate": "advancements.sweetberryfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

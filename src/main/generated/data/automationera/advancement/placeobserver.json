@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:automaticfactory",
+  "criteria": {
+    "placeobserver": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.placeobserver.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:observer"
+    },
+    "title": {
+      "translate": "advancements.placeobserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "placeobserver"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

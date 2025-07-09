@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "stuck_server": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.stuckserver.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:command_block"
+    },
+    "title": {
+      "translate": "advancements.stuckserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "stuck_server"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

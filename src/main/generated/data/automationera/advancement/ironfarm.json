@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:automaticfactory",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:iron_ingot"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ironfarm.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:iron_ingot"
+    },
+    "title": {
+      "translate": "advancements.ironfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:sugarcane",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:bamboo"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bamboo.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:bamboo"
+    },
+    "title": {
+      "translate": "advancements.bamboo.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

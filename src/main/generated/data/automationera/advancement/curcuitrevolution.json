@@ -1,0 +1,33 @@
+{
+  "criteria": {
+    "a": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:shulker_box"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/block/bedrock.png",
+    "description": {
+      "translate": "advancements.curcuitrevolution.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:beacon"
+    },
+    "title": {
+      "translate": "advancements.curcuitrevolution.title"
+    }
+  },
+  "requirements": [
+    [
+      "a"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

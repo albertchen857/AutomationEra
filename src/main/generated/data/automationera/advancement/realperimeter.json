@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:perimeter",
+  "criteria": {
+    "realperimeter": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.realperimeter.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:structure_void"
+    },
+    "title": {
+      "translate": "advancements.realperimeter.title"
+    }
+  },
+  "requirements": [
+    [
+      "realperimeter"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

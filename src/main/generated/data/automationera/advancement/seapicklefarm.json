@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:autofarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:sea_pickle"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.seapicklefarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:sea_pickle"
+    },
+    "title": {
+      "translate": "advancements.seapicklefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

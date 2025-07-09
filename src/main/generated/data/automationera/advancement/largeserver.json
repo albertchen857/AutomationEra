@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:stuckserver",
+  "criteria": {
+    "large_server": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.largeserver.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:chain_command_block"
+    },
+    "title": {
+      "translate": "advancements.largeserver.title"
+    }
+  },
+  "requirements": [
+    [
+      "large_server"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

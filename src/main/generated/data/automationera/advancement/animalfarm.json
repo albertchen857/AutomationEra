@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:agriculture",
+  "criteria": {
+    "a": {
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.animalfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:beef"
+    },
+    "title": {
+      "translate": "advancements.animalfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

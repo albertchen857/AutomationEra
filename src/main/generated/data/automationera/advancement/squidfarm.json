@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:animalfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:ink_sac",
+          "minecraft:glow_ink_sac"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.squidfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:ink_sac"
+    },
+    "title": {
+      "translate": "advancements.squidfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:smooth_stone"
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bigfurnace.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:blast_furnace"
+    },
+    "title": {
+      "translate": "advancements.bigfurnace.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

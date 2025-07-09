@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:tntquarry",
+  "criteria": {
+    "worldeater": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.worldeater.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:tnt_minecart"
+    },
+    "title": {
+      "translate": "advancements.worldeater.title"
+    }
+  },
+  "requirements": [
+    [
+      "worldeater"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

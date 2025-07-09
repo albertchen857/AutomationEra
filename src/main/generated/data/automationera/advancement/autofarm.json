@@ -1,0 +1,34 @@
+{
+  "parent": "automationera:agriculture",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:wheat",
+          "minecraft:carrot",
+          "minecraft:potato"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.autofarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:carrot"
+    },
+    "title": {
+      "translate": "advancements.autofarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "automationera:pigmanfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:quartz",
+          "minecraft:crying_obsidian"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.piglintrade.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:quartz"
+    },
+    "title": {
+      "translate": "advancements.piglintrade.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

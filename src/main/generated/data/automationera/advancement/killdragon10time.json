@@ -1,0 +1,27 @@
+{
+  "parent": "automationera:agriculture",
+  "criteria": {
+    "kill_10time": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.killdragon10time.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:dragon_head"
+    },
+    "title": {
+      "translate": "advancements.killdragon10time.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_10time"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

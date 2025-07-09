@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:village",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:emerald"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.raidfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:emerald"
+    },
+    "title": {
+      "translate": "advancements.raidfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

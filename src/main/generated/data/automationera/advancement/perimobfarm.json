@@ -1,0 +1,36 @@
+{
+  "parent": "automationera:perimeter",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:bone",
+            "minecraft:rotten_flesh"
+          ]
+        },
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_shulker_box"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.perimobfarm.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:rotten_flesh"
+    },
+    "title": {
+      "translate": "advancements.perimobfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

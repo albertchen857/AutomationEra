@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "tntquarry": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.tntquarry.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:tnt"
+    },
+    "title": {
+      "translate": "advancements.tntquarry.title"
+    }
+  },
+  "requirements": [
+    [
+      "tntquarry"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

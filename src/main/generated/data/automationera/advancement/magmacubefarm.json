@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:witherrose",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:magma_cream"
+        ],
+        "required_stacks": 9
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.magmacubefarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:magma_cream"
+    },
+    "title": {
+      "translate": "advancements.magmacubefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

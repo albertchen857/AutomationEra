@@ -1,52 +1,47 @@
 package com.automationera.advance;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-import net.minecraft.item.Item;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
-import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.minecraft.component.type.ContainerComponent;
+import net.minecraft.component.DataComponentTypes;
 
-import java.util.Set;
+import java.util.Optional;
 
 public class FullShulkerBoxCriterion extends AbstractCriterion<FullShulkerBoxCriterion.Conditions> {
-    private static final Identifier ID = new Identifier("automationera", "full_shulker_box");
+    public static final Identifier ID = Identifier.of("automationera", "full_shulker_box");
+    public static final FullShulkerBoxCriterion INSTANCE = new FullShulkerBoxCriterion();
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEra/FullShulkerBoxCriterion");
 
-    @Override
-    public Identifier getId() {
-        return ID;
-    }
 
     @Override
-    public Conditions conditionsFromJson(JsonObject json, LootContextPredicate player, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        ItemPredicate itemPredicate = ItemPredicate.fromJson(json.get("item"));
-        int requiredStacks = JsonHelper.getInt(json, "required_stacks", 1);
-        return new Conditions(player, itemPredicate, requiredStacks);
+    public Codec<Conditions> getConditionsCodec() {
+        LOGGER.info("FullStackCriterion CODEC");
+        return Conditions.CODEC;
     }
 
     public void trigger(ServerPlayerEntity player) {
+        LOGGER.info("FullShulkerBoxCriterion TRIGGER");
         this.trigger(player, conditions -> {
             Inventory inventory = player.getInventory();
             for (int i = 0; i < inventory.size(); i++) {
                 ItemStack stack = inventory.getStack(i);
                 if (stack.isOf(Items.SHULKER_BOX)) {
-                    if (conditions.matches(stack)) {
-                        return true;
+                    if (conditions.itemPredicate.test(stack)) { // 必须用 itemPredicate 判断
+                        if (conditions.matches(stack)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -54,103 +49,55 @@ public class FullShulkerBoxCriterion extends AbstractCriterion<FullShulkerBoxCri
         });
     }
 
-    public static class Conditions extends AbstractCriterionConditions {
+
+
+    public static class Conditions implements AbstractCriterion.Conditions {
+        public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ItemPredicate.CODEC.fieldOf("item").forGetter(c -> c.itemPredicate),
+                Codec.INT.fieldOf("required_stacks").forGetter(c -> c.requiredStacks)
+        ).apply(instance, Conditions::new));
+
         private final ItemPredicate itemPredicate;
         private final int requiredStacks;
 
-        public Conditions(LootContextPredicate player, ItemPredicate itemPredicate, int requiredStacks) {
-            super(ID, player);
+        public Conditions(ItemPredicate itemPredicate, int requiredStacks) {
             this.itemPredicate = itemPredicate;
             this.requiredStacks = requiredStacks;
         }
 
+        public ItemPredicate getItemPredicate() {
+            return itemPredicate;
+        }
+
+        public int getRequiredStacks() {
+            return requiredStacks;
+        }
+
         public boolean matches(ItemStack shulkerBox) {
-            if (shulkerBox == null || !shulkerBox.hasNbt()) {
+            if (shulkerBox == null || shulkerBox.isEmpty()) {
                 return false;
             }
-
-            NbtCompound nbt = shulkerBox.getNbt();
-            if (!nbt.contains("BlockEntityTag")) {
+            ContainerComponent container = shulkerBox.get(DataComponentTypes.CONTAINER);
+            if (container == null) {
                 return false;
             }
-
-            NbtCompound blockEntityTag = nbt.getCompound("BlockEntityTag");
-            if (!blockEntityTag.contains("Items")) {
-                return false;
-            }
-
-            NbtList items = blockEntityTag.getList("Items", 10);
-
             int matchingStacks = 0;
-            for (int i = 0; i < items.size(); i++) {
-                NbtCompound item = items.getCompound(i);
-                ItemStack itemStack = ItemStack.fromNbt(item);
-                if (itemPredicate.test(itemStack)) {
+            for (ItemStack itemStack : container.iterateNonEmpty()) {
+                if (itemStack.getCount() == 64) {
                     matchingStacks++;
                 }
             }
-
             return matchingStacks >= requiredStacks;
         }
 
         @Override
-        public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
-            JsonObject json = super.toJson(predicateSerializer);
-            json.add("item", this.itemPredicate.toJson());
-            json.addProperty("required_stacks", this.requiredStacks);
-            return json;
+        public Optional<LootContextPredicate> player() {
+            return Optional.empty();
         }
     }
 
-    public static Conditions createCriterion(Item targetItem, int requiredStacks) {
-        return new Conditions(
-            LootContextPredicate.EMPTY,
-            ItemPredicate.Builder.create().items(targetItem).build(),
-            requiredStacks
-        );
+    public static AdvancementCriterion<Conditions> createCriterion(ItemPredicate itemPredicate, int requiredStacks) {
+        LOGGER.info("FullStackCriterion CREATE");
+        return INSTANCE.create(new Conditions(itemPredicate, requiredStacks));
     }
-
-    public static Conditions createCriterion(Set<Item> targetItems, int requiredStacks) {
-        return new Conditions(
-            LootContextPredicate.EMPTY,
-            ItemPredicate.Builder.create().items(targetItems.toArray(new Item[0])).build(),
-            requiredStacks
-        );
-    }
-
-    public boolean matches(ServerPlayerEntity player) {
-        for (int i = 0; i < player.getInventory().size(); i++) {
-            ItemStack stack = player.getInventory().getStack(i);
-            if (stack.isOf(Items.SHULKER_BOX)) {
-                if (stack == null || !stack.hasNbt()) {
-                    continue;
-                }
-
-                NbtCompound nbt = stack.getNbt();
-                if (!nbt.contains("BlockEntityTag")) {
-                    continue;
-                }
-
-                NbtCompound blockEntityTag = nbt.getCompound("BlockEntityTag");
-                if (!blockEntityTag.contains("Items")) {
-                    continue;
-                }
-
-                NbtList items = blockEntityTag.getList("Items", 10);
-
-                int matchingStacks = 0;
-                for (int j = 0; j < items.size(); j++) {
-                    NbtCompound item = items.getCompound(j);
-                    ItemStack itemStack = ItemStack.fromNbt(item);
-                    if (itemStack.getCount() == 64) {
-                        matchingStacks++;
-                    }
-                }
-                if (matchingStacks >= 27) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-} 
+}

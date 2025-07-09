@@ -1,0 +1,32 @@
+{
+  "parent": "automationera:animalfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:turtle_egg"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.turtlefarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:turtle_egg"
+    },
+    "title": {
+      "translate": "advancements.turtlefarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

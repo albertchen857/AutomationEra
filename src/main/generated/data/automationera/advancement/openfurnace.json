@@ -1,0 +1,26 @@
+{
+  "parent": "automationera:furnacegroup",
+  "criteria": {
+    "openfurnace": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.openfurnace.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:blast_furnace"
+    },
+    "title": {
+      "translate": "advancements.openfurnace.title"
+    }
+  },
+  "requirements": [
+    [
+      "openfurnace"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,43 @@
+{
+  "parent": "automationera:beehive",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:allium",
+          "minecraft:blue_orchid",
+          "minecraft:pink_tulip",
+          "minecraft:dandelion",
+          "minecraft:red_tulip",
+          "minecraft:wither_rose",
+          "minecraft:lily_of_the_valley",
+          "minecraft:white_tulip",
+          "minecraft:cornflower",
+          "minecraft:azure_bluet",
+          "minecraft:orange_tulip",
+          "minecraft:poppy"
+        ],
+        "required_stacks": 4
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.flowerfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:poppy"
+    },
+    "title": {
+      "translate": "advancements.flowerfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
