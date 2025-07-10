@@ -4,17 +4,17 @@
     "a1": {
       "conditions": {
         "items": [
+          "minecraft:pink_petals",
+          "minecraft:glow_lichen",
+          "minecraft:glow_berries",
           "minecraft:sunflower",
           "minecraft:hanging_roots",
-          "minecraft:vine",
-          "minecraft:lilac",
-          "minecraft:pink_petals",
-          "minecraft:rose_bush",
-          "minecraft:cocoa_beans",
           "minecraft:big_dripleaf",
-          "minecraft:glow_lichen",
+          "minecraft:rose_bush",
+          "minecraft:lilac",
+          "minecraft:vine",
           "minecraft:peony",
-          "minecraft:glow_berries"
+          "minecraft:cocoa_beans"
         ],
         "required_stacks": 9
       },
