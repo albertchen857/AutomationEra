@@ -50,7 +50,7 @@ public class TutorialEmiRecipe implements EmiRecipe {
     @Override
     public Identifier getId() {
         // 使用机器标识来生成唯一配方 ID
-        return Identifier.of("automationera", "machine_recipe_" + key);
+        return Identifier.of("automationera", "/machine_recipe_" + key);
     }
 
     @Override
