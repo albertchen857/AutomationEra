@@ -4,8 +4,8 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:ink_sac",
-          "minecraft:glow_ink_sac"
+          "minecraft:glow_ink_sac",
+          "minecraft:ink_sac"
         ],
         "required_stacks": 9
       },

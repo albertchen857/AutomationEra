@@ -4,15 +4,15 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:dark_oak_log",
           "minecraft:oak_log",
-          "minecraft:birch_log",
-          "minecraft:warped_stem",
-          "minecraft:crimson_stem",
-          "minecraft:mangrove_log",
-          "minecraft:spruce_log",
           "minecraft:jungle_log",
+          "minecraft:spruce_log",
+          "minecraft:birch_log",
+          "minecraft:dark_oak_log",
+          "minecraft:mangrove_log",
+          "minecraft:warped_stem",
           "minecraft:cherry_log",
+          "minecraft:crimson_stem",
           "minecraft:acacia_log"
         ],
         "required_stacks": 9

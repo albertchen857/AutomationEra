@@ -16,6 +16,8 @@ import net.minecraft.predicate.entity.EntityTypePredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -27,18 +29,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
+public class Advancements{
     private static final String MOD_ID = "automationera";
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEra/Advancements");
     private final Map<String, AdvancementEntry> advancementMap = new HashMap<>();
     private int createAdvancement = 0;
-    private RegistryEntryLookup<EntityType<?>> entityTypeRegistry;
+    private RegistryEntryLookup<EntityType<?>> entityTypeLookup;
     private RegistryEntryLookup<Item> itemTypeRegistry;
     private RegistryEntryLookup<Block> blockTypeRegistry;
 
     private AdvancementEntry curcuitrevolution;
     private AdvancementEntry netherhighway;
-    private AdvancementEntry agriculture;
+    private AdvancementEntry attribute;
     private AdvancementEntry automaticFactory;
     private AdvancementEntry furnacegroup;
 
@@ -68,9 +70,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                 )
                 .criterion("a", OnKilledCriterion.Conditions.createPlayerKilledEntity(
                         EntityPredicate.Builder.create().type(
-                                EntityTypePredicate.create(
-                                        EntityType.IRON_GOLEM
-                                )
+                                EntityTypePredicate.create(entityTypeLookup, EntityType.IRON_GOLEM)
                         )
                 ))
                 .build(consumer, MOD_ID+":"+"village");
@@ -133,7 +133,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                 .build(consumer, MOD_ID+":"+"abovenether");
         advancementMap.put("abovenether", abovenether);
         BlockPredicate.Builder blockPredicateBuilder = BlockPredicate.Builder.create()
-                .blocks(Blocks.PACKED_ICE);
+                .blocks(blockTypeRegistry, Blocks.PACKED_ICE);
         netherhighway = Advancement.Builder.create()
                 .parent(abovenether)
                 .display(
@@ -145,7 +145,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                         true, true, false
                 )
                 .criterion("ice", PlacedBlockInNetherCriterion.conditions(
-                        BlockPredicate.Builder.create().blocks(Blocks.PACKED_ICE).build(),
+                        BlockPredicate.Builder.create().blocks(blockTypeRegistry, Blocks.PACKED_ICE).build(),
                         LocationPredicate.Builder.create().dimension(World.NETHER).build()
                 ))
                 .build(consumer, MOD_ID+":"+"netherhighway");
@@ -210,22 +210,22 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
         ), 9, AdvancementFrame.TASK, sandfarm);
     }
 
-    public void agricultureRoot(Consumer<AdvancementEntry> consumer){
-        agriculture = Advancement.Builder.create()
+    public void attributeRoot(Consumer<AdvancementEntry> consumer){
+        attribute = Advancement.Builder.create()
                 .display(
-                        Items.HAY_BLOCK,
-                        Text.translatable("advancements.agriculture.title"),
-                        Text.translatable("advancements.agriculture.descr"),
+                        Items.VILLAGER_SPAWN_EGG,
+                        Text.translatable("advancements.attribute.title"),
+                        Text.translatable("advancements.attribute.descr"),
                         Identifier.of("textures/block/smooth_stone.png"),
                         AdvancementFrame.TASK,
                         true, true, false
                 )
                 .criterion("a", InventoryChangedCriterion.Conditions.items(Items.WHEAT_SEEDS))
-                .build(consumer, MOD_ID+":"+"agriculture");
-        advancementMap.put("agriculture", agriculture);
+                .build(consumer, MOD_ID+":"+"attribute");
+        advancementMap.put("attribute", attribute);
 
         AdvancementEntry animalfarm = Advancement.Builder.create()//动物农场类
-                .parent(agriculture)
+                .parent(attribute)
                 .display(
                         Items.BEEF,
                         Text.translatable("advancements.animalfarm.title"),
@@ -269,7 +269,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
         AdvancementEntry honeyfarm = registerSingleItemAdvancement(consumer, "honeyfarm", Items.BEEHIVE, AdvancementFrame.TASK, Items.HONEY_BLOCK, 4, animalfarm); // 骨粉农场
 
 
-        AdvancementEntry mobfarm = registerSingleItemAdvancement(consumer, "mobfarm", Items.ROTTEN_FLESH, AdvancementFrame.TASK, Items.BONE, 4, agriculture); // 怪物农场
+        AdvancementEntry mobfarm = registerSingleItemAdvancement(consumer, "mobfarm", Items.ROTTEN_FLESH, AdvancementFrame.TASK, Items.BONE, 4, attribute); // 怪物农场
         AdvancementEntry shulkerfarm = registerSingleItemAdvancement(consumer, "shulkerfarm", Items.SHULKER_SHELL, AdvancementFrame.GOAL, Items.SHULKER_SHELL, 9, mobfarm); // 潜影贝农场
         AdvancementEntry witchfarm = registerSingleItemAdvancement(consumer, "witchfarm", Items.REDSTONE, AdvancementFrame.TASK, Items.REDSTONE, 9, mobfarm); // 女巫农场
         AdvancementEntry creeperfarm = registerSingleItemAdvancement(consumer, "creeperfarm", Items.GUNPOWDER, AdvancementFrame.TASK, Items.GUNPOWDER, 9, mobfarm); // 女巫农场
@@ -299,7 +299,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                 Items.WHEAT,
                 Items.POTATO,
                 Items.CARROT
-        ), 4, AdvancementFrame.TASK, agriculture);
+        ), 4, AdvancementFrame.TASK, attribute);
         AdvancementEntry wheatfarm = registerSingleItemAdvancement(consumer, "wheatfarm", Items.WHEAT, AdvancementFrame.TASK, Items.WHEAT, 9, autofarm); // 小麦农场
         AdvancementEntry sugarcane = registerSingleItemAdvancement(consumer, "sugarcane", Items.SUGAR_CANE, AdvancementFrame.TASK, Items.SUGAR_CANE, 9, wheatfarm); // 甘蔗农场
         AdvancementEntry cactusfarm = registerSingleItemAdvancement(consumer, "cactusfarm", Items.CACTUS, AdvancementFrame.TASK, Items.CACTUS, 9, sugarcane); // 仙人掌农场
@@ -553,7 +553,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
 
         AdvancementEntry killdragon10time = Advancement.Builder.create(
 )
-                .parent(agriculture)
+                .parent(attribute)
                 .display(
                         Items.DRAGON_HEAD,
                         Text.translatable("advancements.killdragon10time.title"),
@@ -622,10 +622,13 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                 .build(consumer, MOD_ID+":"+"placeobserver"); }
 
 
-    public void accept(Consumer<AdvancementEntry> consumer) {
+    public void accept(Consumer<AdvancementEntry> consumer, RegistryWrapper.WrapperLookup registryLookup) {
         LOGGER.info("Registering advancements...");
+        entityTypeLookup = registryLookup.getOrThrow(RegistryKeys.ENTITY_TYPE);
+        blockTypeRegistry = registryLookup.getOrThrow(RegistryKeys.BLOCK);
+        itemTypeRegistry = registryLookup.getOrThrow(RegistryKeys.ITEM);
         autoRoot(consumer);
-        agricultureRoot(consumer);
+        attributeRoot(consumer);
         curcuitrevolutionRoot(consumer);
         Achivements(consumer);
         LOGGER.info("成功注册{}成就",createAdvancement);
@@ -728,7 +731,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                         frame,
                         true, true, false
                 )
-                .criterion("a1", FullShulkerBoxCriterion.createCriterion(ItemPredicate.Builder.create().items(targetItem).build(), requiredStacks))
+                .criterion("a1", FullShulkerBoxCriterion.createCriterion(ItemPredicate.Builder.create().items(itemTypeRegistry, targetItem).build(), requiredStacks))
                 .build(consumer, MOD_ID+":"+id);
         advancementMap.put(id, advancement);
         createAdvancement++;
@@ -754,7 +757,7 @@ public class Advancements implements Consumer<Consumer<AdvancementEntry>> {
                         frame,
                         true, true, false
                 )
-                .criterion("a1", FullShulkerBoxCriterion.createCriterion(ItemPredicate.Builder.create().items(targetItems.toArray(new ItemConvertible[0])).build(), requiredStacks))
+                .criterion("a1", FullShulkerBoxCriterion.createCriterion(ItemPredicate.Builder.create().items(itemTypeRegistry, targetItems.toArray(new ItemConvertible[0])).build(), requiredStacks))
                 .build(consumer, MOD_ID+":"+id);
         advancementMap.put(id, advancement);
         createAdvancement++;

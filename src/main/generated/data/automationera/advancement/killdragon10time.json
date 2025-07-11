@@ -1,5 +1,5 @@
 {
-  "parent": "automationera:agriculture",
+  "parent": "automationera:attribute",
   "criteria": {
     "kill_10time": {
       "trigger": "minecraft:impossible"

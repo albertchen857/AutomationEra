@@ -4,18 +4,18 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:white_tulip",
-          "minecraft:poppy",
-          "minecraft:allium",
-          "minecraft:azure_bluet",
-          "minecraft:dandelion",
-          "minecraft:orange_tulip",
-          "minecraft:red_tulip",
-          "minecraft:cornflower",
           "minecraft:lily_of_the_valley",
           "minecraft:wither_rose",
+          "minecraft:white_tulip",
+          "minecraft:cornflower",
+          "minecraft:azure_bluet",
+          "minecraft:allium",
+          "minecraft:orange_tulip",
           "minecraft:blue_orchid",
-          "minecraft:pink_tulip"
+          "minecraft:pink_tulip",
+          "minecraft:red_tulip",
+          "minecraft:dandelion",
+          "minecraft:poppy"
         ],
         "required_stacks": 4
       },

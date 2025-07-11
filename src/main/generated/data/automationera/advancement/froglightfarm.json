@@ -4,9 +4,9 @@
     "a1": {
       "conditions": {
         "items": [
+          "minecraft:ochre_froglight",
           "minecraft:verdant_froglight",
-          "minecraft:pearlescent_froglight",
-          "minecraft:ochre_froglight"
+          "minecraft:pearlescent_froglight"
         ],
         "required_stacks": 9
       },

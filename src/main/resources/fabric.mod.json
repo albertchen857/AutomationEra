@@ -21,8 +21,8 @@
 		"fabric-datagen": [
 			"com.automationera.AutomationeraDataGenerator"
 		],
-		"emi": [
-			"com.automationera.emi.emiPlugin"
+		"rei_common": [
+			"com.automationera.rei.reiPlugin"
 		]
 	},
 	"mixins": [
@@ -30,7 +30,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.1",
+		"minecraft": "~1.21.4",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

@@ -6,8 +6,8 @@
         "items": [
           "minecraft:detector_rail",
           "minecraft:activator_rail",
-          "minecraft:rail",
-          "minecraft:powered_rail"
+          "minecraft:powered_rail",
+          "minecraft:rail"
         ],
         "required_stacks": 9
       },

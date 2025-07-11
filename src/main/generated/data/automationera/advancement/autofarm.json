@@ -1,12 +1,12 @@
 {
-  "parent": "automationera:agriculture",
+  "parent": "automationera:attribute",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
           "minecraft:wheat",
-          "minecraft:carrot",
-          "minecraft:potato"
+          "minecraft:potato",
+          "minecraft:carrot"
         ],
         "required_stacks": 4
       },

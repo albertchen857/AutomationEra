@@ -14,14 +14,14 @@
   "display": {
     "background": "minecraft:textures/block/smooth_stone.png",
     "description": {
-      "translate": "advancements.agriculture.descr"
+      "translate": "advancements.attribute.descr"
     },
     "icon": {
       "count": 1,
-      "id": "minecraft:hay_block"
+      "id": "minecraft:villager_spawn_egg"
     },
     "title": {
-      "translate": "advancements.agriculture.title"
+      "translate": "advancements.attribute.title"
     }
   },
   "requirements": [

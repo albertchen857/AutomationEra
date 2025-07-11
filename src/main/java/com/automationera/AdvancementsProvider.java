@@ -16,6 +16,6 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
 
     @Override
     public void generateAdvancement(RegistryWrapper.WrapperLookup wrapperLookup, Consumer<AdvancementEntry> consumer) {
-        new Advancements().accept(consumer);
+        new Advancements().accept(consumer, wrapperLookup);
     }
 }

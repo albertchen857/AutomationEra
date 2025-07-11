@@ -1,4 +1,4 @@
-package com.automationera.emi.recipe;
+package com.automationera.rei.recipe;
 
 import net.minecraft.item.Item;
 

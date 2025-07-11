@@ -1,5 +1,5 @@
 {
-  "parent": "automationera:agriculture",
+  "parent": "automationera:attribute",
   "criteria": {
     "a": {
       "trigger": "minecraft:bred_animals"

@@ -4,8 +4,8 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:quartz",
-          "minecraft:crying_obsidian"
+          "minecraft:crying_obsidian",
+          "minecraft:quartz"
         ],
         "required_stacks": 9
       },
