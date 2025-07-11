@@ -43,7 +43,7 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
 
     @Override
     public int getDisplayHeight() {
-        return 130;
+        return 146;
     }
 
     @Override
@@ -72,12 +72,8 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
                     reiPlugin.ICON_TEXTURE,
                     new Rectangle(originX + 48, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            widgets.add(Widgets.createTexturedWidget(
-                    reiPlugin.WIKI_BUTTON_TEXTURE,
-                    new Rectangle(0, 0, 32, 12),
-                    0, 0, 32, 12, 32, 12
-            ));
             Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal(""))
+                    .text(Text.of("WIKI"))
                     .onClick(button -> {
                         String url = I18n.translate("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
@@ -85,17 +81,17 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
             widgets.add(wikiButton);
             return widgets;
         }
-
+        // Tutorial image (80x80) for this key
+        widgets.add(Widgets.createTexturedWidget(
+                reiPlugin.getTutorialTexture(key),
+                new Rectangle(originX + 16, originY + 62, 80, 80),
+                0, 0, 500, 500, 500, 500));
         // Standard tutorial display
         widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
                         Text.literal(I18n.translate("emi.automationera." + key + ".title")))
                 .color(0x404040, 0x404040).noShadow().leftAligned());
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.WIKI_BUTTON_TEXTURE,
-                new Rectangle(0, 0, 32, 12),
-                0, 0, 32, 12, 32, 12
-        ));
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 0, 32, 12), Text.literal(""))
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
+                .text(Text.of("WIKI"))
                 .onClick(button -> {
                     String url = I18n.translate("emi.automationera." + key + ".wiki");
                     reiPlugin.openWiki(url);
@@ -107,16 +103,11 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
             widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
                     Text.literal(line)).color(0x404040, 0x404040).noShadow().leftAligned());
         }
-        // Tutorial image (80x80) for this key
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.getTutorialTexture(key),
-                new Rectangle(originX + 16, originY + 50, 80, 80),
-                0, 0, 500, 500, 500, 500));
         // List all tutorial output items at bottom
         List<net.minecraft.item.Item> outputs = display.getAllOutputs();
         for (int i = 0; i < outputs.size(); i++) {
-            int sx = originX + i * 18;
-            int sy = originY + 114;
+            int sx = originX + 136;
+            int sy = originY + 124 - i * 18;
             widgets.add(Widgets.createSlot(new Point(sx, sy))
                     .entry(EntryStacks.of(outputs.get(i)))
                     //.disableBackground()

@@ -203,7 +203,7 @@
 
   "emi.category.automationera.machine": "生电",
   "emi.automationera.circuit.title": "主界面",
-  "emi.automationera.circuit.descr": "页面顶上文字是机器名和主要产出物品, 其下面是原理解释和建造方法, 左下是机器概念结构,结构仅供理解, 右下是机器产出(农场)/相关方块(特殊机器), 最底下是wiki键可以快速链接对应机器",
+  "emi.automationera.circuit.descr": "自动化时代-EMI主界面. 右边是输出栏, 底部是链接物品栏, 图片是机器的概念图仅用于理解. 如有介绍错误请在github或B站发表你的问题.",
   "emi.automationera.iron.title": "刷铁机-主产铁",
   "emi.automationera.iron.descr": "利用怪物恐吓村民刷出铁傀儡从其中获得铁锭",
   "emi.automationera.stone.title": "刷石机-产圆石",
@@ -502,7 +502,7 @@
 
   "emi.automationera.bedrock2.title": "破基岩机",
   "emi.automationera.bedrock2.descr": "利用活塞和更新机制大范围破坏基岩有些需预留移动沟",
-  "emi.automationera.bedrock2.wiki": "https://zh.minecraft.wiki/w/穿越和破坏基岩",
+  "emi.automationera.bedrock2.wiki": "https://zh.minecraft.wiki/w/Tutorial:穿越和破坏基岩",
   "emi.automationera.brew2.title": "全炼药机",
   "emi.automationera.brew2.descr": "全自动炼药系统,讲台选择种类箱子输入瓶子和烈焰粉,自动输出药水",
   "emi.automationera.brew2.wiki": "https://zh.minecraft.wiki/w/药水酿造",
@@ -566,7 +566,7 @@
   "emi.automationera.tut_0tcircuit.wiki": "https://zh.minecraft.wiki/w/Tutorial:零刻活塞",
   "emi.automationera.tut_bedrock.title": "教程-穿基岩",
   "emi.automationera.tut_bedrock.descr": "在顶上仅1格方块时利用梯子让玩家移动到方块顶部并瞄准三个方块的夹角右键末影珍珠即可穿墙,如失败多试几次",
-  "emi.automationera.tut_bedrock.wiki": "https://zh.minecraft.wiki/w/穿越和破坏基岩",
+  "emi.automationera.tut_bedrock.wiki": "https://zh.minecraft.wiki/w/Tutorial:穿越和破坏基岩",
   "emi.automationera.tut_bud.title": "方块更新感应器BUD",
   "emi.automationera.tut_bud.descr": "利用方块更新工作的红石设备,本质是将红石电路置于一种不稳定的状态,当临近方块造成方块更新时触发电路.左1为单稳态BUD(类似按钮),左2为双稳态BUD(类似拉杆).一般基于活塞实现也可以用红石线,动力铁轨等实现",
   "emi.automationera.tut_bud.wiki": "https://zh.minecraft.wiki/w/Tutorial:方块更新感应器",

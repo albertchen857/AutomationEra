@@ -49,7 +49,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
     @Override
     public int getDisplayHeight() {
         // Match the custom height used in EMI
-        return 130;
+        return 146;
     }
 
     @Override
@@ -70,9 +70,14 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         // Special case: "circuit" machine – highlighted title and icon
         if (Objects.equals(key, "circuit")) {
             // Title in red
-            widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
+            widgets.add(Widgets.createLabel(new Point(originX + 30, originY + 5),
                             Text.literal(I18n.translate("emi.automationera.circuit.title")))
                     .color(0xE71B1B, 0xE71B1B).noShadow());
+            // Machine icon image (scaled down)
+            widgets.add(Widgets.createTexturedWidget(
+                    reiPlugin.ICON_TEXTURE, // Identifier.of("automationera", "icon.png")
+                    new Rectangle(originX + 96, originY + 60, 64, 64),
+                    0, 0, 1000, 1000, 1000, 1000));
             // Description text (wrapped)
             String descr = I18n.translate("emi.automationera.circuit.descr");
             for (int i = 0; i <= descr.length(); i += textLen) {
@@ -80,17 +85,8 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                 widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
                         Text.literal(line)).color(0x404040, 0x404040).noShadow().leftAligned());
             }
-            // Machine icon image (scaled down)
-            widgets.add(Widgets.createTexturedWidget(
-                    reiPlugin.ICON_TEXTURE, // Identifier.of("automationera", "icon.png")
-                    new Rectangle(originX + 48, originY + 60, 64, 64),
-                    0, 0, 1000, 1000, 1000, 1000));
-            widgets.add(Widgets.createTexturedWidget(
-                    reiPlugin.WIKI_BUTTON_TEXTURE,
-                    new Rectangle(0, 0, 32, 12),
-                    0, 0, 32, 12, 32, 12
-            ));
             Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal(""))
+                    .text(Text.of("WIKI"))
                     .onClick(button -> {
                         String url = I18n.translate("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
@@ -105,17 +101,18 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
                         Text.literal(I18n.translate("emi.automationera." + key + ".title")))
                 .color(0x404040, 0x404040).noShadow().leftAligned());
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.WIKI_BUTTON_TEXTURE,
-                new Rectangle(0, 0, 32, 12),
-                0, 0, 32, 12, 32, 12
-        ));
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 0, 32, 12), Text.literal(""))
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
+                .text(Text.of("WIKI"))
                 .onClick(button -> {
                     String url = I18n.translate("emi.automationera." + key + ".wiki");
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
+        // Machine image (e.g., textures/<key>.png scaled to 96x96)
+        widgets.add(Widgets.createTexturedWidget(
+                reiPlugin.getMachineTexture(key),  // Identifier.of("automationera", "textures/" + key + ".png")
+                new Rectangle(originX -8 , originY + 48, 96, 96),
+                0, 0, 500, 500, 500, 500));
         // Description (wrapped lines)
         String descr = I18n.translate("emi.automationera." + key + ".descr");
         for (int i = 0; i <= descr.length(); i += textLen) {
@@ -123,11 +120,6 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
             widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
                     Text.literal(line)).color(0x404040, 0x404040).noShadow().leftAligned());
         }
-        // Machine image (e.g., textures/<key>.png scaled to 96x96)
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.getMachineTexture(key),  // Identifier.of("automationera", "textures/" + key + ".png")
-                new Rectangle(originX, originY + 40, 96, 96),
-                0, 0, 500, 500, 500, 500));
 
         // Compute counts for alternate outputs/inputs if any (from Ing map)
         int ingOlen = 0;
@@ -146,7 +138,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                     // Direct output item
                     widgets.add(Widgets.createSlot(new Point(sx, sy))
                             .entry(EntryStacks.of(display.getAllOutputs().get(i)))
-                            //.disableBackground()
+                            .disableBackground()
                     );
                 } else {
                     // Alternate output ingredient (template-defined)
@@ -158,7 +150,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                             .collect(Collectors.toList());
                     widgets.add(Widgets.createSlot(new Point(sx, sy))
                             .entries(stacks)
-                            //.disableBackground()
+                            .disableBackground()
                     );
                 }
             }
@@ -167,8 +159,8 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         int totalInputs = display.getAllInputs().size() + ingIlen;
         if (totalInputs > 0) {
             for (int i = 0; i < totalInputs; i++) {
-                int sx = originX + i * 18;
-                int sy = originY + 114;
+                int sx = originX - 8 + i * 18;
+                int sy = originY + 130;
                 if (ingIlen == 0 || i < display.getAllInputs().size()) {
                     widgets.add(Widgets.createSlot(new Point(sx, sy))
                             .entry(EntryStacks.of(display.getAllInputs().get(i)))
