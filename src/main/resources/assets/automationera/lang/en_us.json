@@ -202,10 +202,10 @@
 
   "emi.category.automationera.machine": "Circuit",
   "emi.automationera.circuit.title": "Circuit Page",
-  "emi.automationera.circuit.descr": "The title is the name of the circuit. Text below title is the descriptions about how to build the circuit. The image is about the structure of the circuit, only use for understand how to work. The bars are output products (farms) or link blocks (special machines). The WIKI button is used to open the wiki page of the circuit",
+  "emi.automationera.circuit.descr": "The title is the name of the circuit. Circuit page right slots are inputs and bottom slots are linkin items. Top button link in its wiki page. !Remember to open Unicode Font for better watching experience!  !If you think some machine's name or descriptions are incorrect pls publish your issue on Github! ",
   "emi.automationera.iron.title": "Iron Farm - Iron",
   "emi.automationera.iron.descr": "Use zombies or pillagers to frighten villagers and spawn iron golems, then kill them to obtain iron ingots.",
-  "emi.automationera.stone.title": "Cobblestone Generator - Cobblestone",
+  "emi.automationera.stone.title": "Cobblestone farm - Cobblestone",
   "emi.automationera.stone.descr": "Generate cobblestone using water and lava, then use a TNT duplicator to blast and collect cobblestone.",
   "emi.automationera.wood.title": "Tree Farm - Logs",
   "emi.automationera.wood.descr": "Hold saplings in your hand and bonemeal in your offhand. Use a TNT duplicator to blow up grown trees for logs.",
@@ -213,11 +213,11 @@
   "emi.automationera.mob.descr": "AFK 128 blocks above ground to limit the mob spawn area for high-efficiency mob farming.",
   "emi.automationera.farm.title": "Villager Auto Farm - Carrots/Potatoes",
   "emi.automationera.farm.descr": "Use the villager food sharing mechanic to automatically harvest and collect crops.",
-  "emi.automationera.sand.title": "Sand Duplicator - Falling Blocks",
+  "emi.automationera.sand.title": "Sand farm - Falling Blocks",
   "emi.automationera.sand.descr": "Use the End portal entity bouncing method to duplicate and collect falling blocks (see Wiki for details).",
   "emi.automationera.ice.title": "Ice Farm - Ice",
   "emi.automationera.ice.descr": "Create ice at high altitudes and manually mine it with Silk Touch tools.",
-  "emi.automationera.rail.title": "Rail Duplicator - Rails",
+  "emi.automationera.rail.title": "Rail farm - Rails",
   "emi.automationera.rail.descr": "Duplicate rails using coral fans or use piston pushers to automatically farm rails.",
   "emi.automationera.bonemeal.title": "Bonemeal Farm - Bonemeal/Moss",
   "emi.automationera.bonemeal.descr": "Use bonemeal to convert stone to moss, compost moss for bonemeal, and loop the process for positive feedback.",
@@ -257,7 +257,7 @@
   "emi.automationera.concrete.descr": "Hold an efficiency pickaxe in your hand and concrete powder in your offhand, then use auto-clicking and water to instantly convert and mine concrete.",
   "emi.automationera.copper.title": "Copper Weathering Farm - Oxidized Copper",
   "emi.automationera.copper.descr": "Expose copper blocks to air for natural oxidation, use pistons to move, then TNT for collection.",
-  "emi.automationera.cow.title": "Cow Cooker - Steak",
+  "emi.automationera.cow.title": "Cow Farm - Steak",
   "emi.automationera.cow.descr": "Breed cows in pens and kill adults for steak after calves grow up.",
   "emi.automationera.creeper.title": "Creeper Farm - Gunpowder",
   "emi.automationera.creeper.descr": "Use trapdoors and carpets to filter and farm only creepers for gunpowder.",
@@ -319,7 +319,7 @@
   "emi.automationera.wheat.descr": "Fill villager inventories with seeds so they drop wheat for minecart collection.",
   "emi.automationera.witch.title": "Witch Farm - Redstone",
   "emi.automationera.witch.descr": "Use witch huts to spawn and kill witches for redstone.",
-  "emi.automationera.wither.title": "Wither Killer - Nether Star",
+  "emi.automationera.wither.title": "Wither Farm - Nether Star",
   "emi.automationera.wither.descr": "Manually place soul sand to spawn the wither, then trap and kill it with obsidian.",
   "emi.automationera.witherrose.title": "Wither Rose Farm - Wither Roses",
   "emi.automationera.witherrose.descr": "Let withers kill mobs to produce wither roses.",
@@ -331,7 +331,7 @@
   "emi.automationera.bat.descr": "AFK to let bats spawn in low areas and use piston worms to send them into the Nether portal.",
   "emi.automationera.bedrock.title": "Bedrock Breaker",
   "emi.automationera.bedrock.descr": "Uses special structures to break bedrock. See image for details.",
-  "emi.automationera.brew.title": "Single-Item Brewer",
+  "emi.automationera.brew.title": "Potion Brewing Station",
   "emi.automationera.brew.descr": "Place as many layers of hoppers & droppers above the structure as there are brewing steps.",
   "emi.automationera.carpet.title": "Carpet Duplicator",
   "emi.automationera.carpet.descr": "Three designs: slime-free, coral fan duplication, and single-core basic version.",
@@ -504,9 +504,9 @@
   "emi.automationera.bedrock2.descr": "Use pistons and update suppression to break bedrock; some designs require movement trenches.",
   "emi.automationera.bedrock2.wiki": "https://minecraft.wiki/w/Tutorials/Breaking_bedrock",
 
-  "emi.automationera.brew2.title": "Fully Automated Brewing Machine",
+  "emi.automationera.brew2.title": "Auto Potion Brewer",
   "emi.automationera.brew2.descr": "Fully automated brewing system: use a lectern to select potion, chest for bottles and blaze powder, automatic output.",
-  "emi.automationera.brew2.wiki": "",
+  "emi.automationera.brew2.wiki": "https://www.youtube.com/watch?v=jN06fBZbG24",
 
   "emi.automationera.dirt2.title": "Podzol & Dirt Generator / Giant Spruce Tree Farm",
   "emi.automationera.dirt2.descr": "Convert stone to moss with bone meal, use 2x2 spruce saplings to create podzol, TNT to break and get dirt.",
@@ -526,39 +526,39 @@
 
   "emi.automationera.furnace2.title": "Furnace Array",
   "emi.automationera.furnace2.descr": "Fully automatic carpet fuel input, minecart delivers items, furnace smelts, hoppers collect output.",
-  "emi.automationera.furnace2.wiki": "",
+  "emi.automationera.furnace2.wiki": "https://www.youtube.com/watch?v=v0Q1YAtloTU",
 
-  "emi.automationera.melon2.title": "End Melon Mover",
+  "emi.automationera.melon2.title": "Enderman Melon Farm",
   "emi.automationera.melon2.descr": "Use endermite to lure endermen into melon field; endermen may pick up melons and drop them on death.",
-  "emi.automationera.melon2.wiki": "",
+  "emi.automationera.melon2.wiki": "https://www.youtube.com/watch?v=jBma-2qAgno",
 
   "emi.automationera.mob2.title": "Standard Mob Farm",
   "emi.automationera.mob2.descr": "Common mob tower, 2 blocks high for zombies, creepers, skeletons, witches, spiders.",
   "emi.automationera.mob2.wiki": "https://minecraft.wiki/w/Tutorials/Mob_farm",
 
-  "emi.automationera.mob3.title": "TNT Mob Farm",
+  "emi.automationera.mob3.title": "TNTBase Mob Farm",
   "emi.automationera.mob3.descr": "Use TNT explosion to kill mobs; structure may differ depending on design.",
-  "emi.automationera.mob3.wiki": "",
+  "emi.automationera.mob3.wiki": "https://www.youtube.com/watch?v=VbX1p_161Nw",
 
   "emi.automationera.mob4.title": "Pathfinding Mob Farm",
   "emi.automationera.mob4.descr": "Lure mobs with pathfinding and solid blocks; trapdoors often used to block spider spawns.",
-  "emi.automationera.mob4.wiki": "",
+  "emi.automationera.mob4.wiki": "https://www.youtube.com/watch?v=gibE51sgutg",
 
   "emi.automationera.mobswitch.title": "Warden Mob Switch",
   "emi.automationera.mobswitch.descr": "Infinitely spawn wardens to fill mob cap (70, or 70n+1 for multiplayer) and prevent other mobs from spawning.",
-  "emi.automationera.mobswitch.wiki": "",
+  "emi.automationera.mobswitch.wiki": "https://www.youtube.com/watch?v=5PlomwRyV0g",
 
   "emi.automationera.pearlcannon.title": "Ender Pearl Cannon",
   "emi.automationera.pearlcannon.descr": "Use a large amount of TNT to accelerate ender pearls for long-range teleport.",
-  "emi.automationera.pearlcannon.wiki": "",
+  "emi.automationera.pearlcannon.wiki": "https://www.youtube.com/watch?v=Bh-78d0Ru9s",
 
   "emi.automationera.snow2.title": "Snowball Farm",
   "emi.automationera.snow2.descr": "TNT explosion destroys snow golem trails to get snowballs.",
-  "emi.automationera.snow2.wiki": "",
+  "emi.automationera.snow2.wiki": "https://www.youtube.com/watch?v=yNjwnJAzpEY",
 
   "emi.automationera.sugarcane2.title": "Piston Worm Sugarcane Farm",
   "emi.automationera.sugarcane2.descr": "Redstone clock triggers piston worm to harvest, minecarts collect crops.",
-  "emi.automationera.sugarcane2.wiki": "",
+  "emi.automationera.sugarcane2.wiki": "https://www.youtube.com/watch?v=167OL2dsey4",
 
   "emi.automationera.suppression.title": "Update Suppressor (Very Risky)",
   "emi.automationera.suppression.descr": "Massive updates cause memory overflow/type errors/stack overflow to force skipping pending updates; used for door cutting/duplication.",
@@ -606,11 +606,11 @@
 
   "emi.automationera.tut_hfcircuit.title": "Tutorial - High-Frequency Circuits",
   "emi.automationera.tut_hfcircuit.descr": "Common high-frequency circuit designs: from 1gt pulse to 6gt pulse. Face-to-face observer circuits are typical.",
-  "emi.automationera.tut_hfcircuit.wiki": "",
+  "emi.automationera.tut_hfcircuit.wiki": "https://minecraft.wiki/w/Redstone_circuits/Clock",
 
   "emi.automationera.tut_performance.title": "Tutorial - Performance",
   "emi.automationera.tut_performance.descr": "TPS and MSPT are key values; lag increases MSPT and lowers TPS. World eaters, too many entities, update suppressors all cause lag.",
-  "emi.automationera.tut_performance.wiki": "",
+  "emi.automationera.tut_performance.wiki": "https://minecraft.wiki/w/Tick",
 
   "emi.automationera.tut_qc.title": "Tutorial - Quasi-Connectivity / QC Activation (BUD Activation)",
   "emi.automationera.tut_qc.descr": "Droppers/dispensers/pistons can be activated by powering the block above. Immediate (direct) or update (neighbor block) activation.",
@@ -638,15 +638,15 @@
 
   "emi.automationera.tut_perimeter.title": "Tutorial - Perimeter",
   "emi.automationera.tut_perimeter.descr": "17x17 chunk empty area from bedrock to top. Built by world eater, optional anvil walls to prevent explosion/liquid spread.",
-  "emi.automationera.tut_perimeter.wiki": "",
+  "emi.automationera.tut_perimeter.wiki": "https://minecraft.wiki/w/Tutorial:Game_terms#perimeter",
 
   "emi.automationera.tut_railway.title": "Tutorial - Mob Transportation",
   "emi.automationera.tut_railway.descr": "Use rails for large-scale, cross-dimensional mob transport; push into portal, minecart returns. For few mobs, use ice track.",
-  "emi.automationera.tut_railway.wiki": "",
+  "emi.automationera.tut_railway.wiki": "https://minecraft.wiki/w/Tutorial:Transportation_methods",
 
   "emi.automationera.tut_iceway.title": "Tutorial - Ice Road Speedrun",
   "emi.automationera.tut_iceway.descr": "Nether ceiling ice boat highway for fast travel. Use buttons to prevent mob spawns.",
-  "emi.automationera.tut_iceway.wiki": "",
+  "emi.automationera.tut_iceway.wiki": "https://minecraft.wiki/w/Tutorial:Nether_hub",
 
   "emi.automationera.tut_flying.title": "Tutorial - Piston Worm",
   "emi.automationera.tut_flying.descr": "Slime/honey-based trackless movers. Variants with and without observers; use quasi-connectivity.",
@@ -656,8 +656,8 @@
   "emi.automationera.tut_unit.descr": "Common in-game units; shulker box in chest = 'box in chest'. Distances marked as side length, not area/volume.",
   "emi.automationera.tut_unit.wiki": "https://minecraft.wiki/w/Tutorials/Units_of_measurement",
 
-  "emi.automationera.tut_term.title": "Tutorial - Game Terms",
-  "emi.automationera.tut_term.descr": "Common terms: OP=operator, AFK, Vanilla, Pigman=zombified piglin, Enderman, Skeleton, Redstone, Automation Farm, AFK Farm.",
+  "emi.automationera.tut_term.title": "Tutorial - Game Terms (Circuit)",
+  "emi.automationera.tut_term.descr": "OP=operator(admin), AFK=Away From Keyboard Condition, Vanilla=Unmodified, Pigman=Zombified piglin, Automation Farm = Loader only farm, AFK Farm = Need a player AFK in farm or do simple stuff.",
   "emi.automationera.tut_term.wiki": "https://minecraft.wiki/w/Tutorials/Glossary",
 
 
