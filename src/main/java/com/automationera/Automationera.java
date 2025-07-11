@@ -16,6 +16,7 @@ import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -497,7 +498,9 @@ public class Automationera implements ModInitializer {
 		int stackSize = item.getMaxCount();
 
 		// 扫描玩家背包
-		for (var stack : player.getInventory().main) {
+		PlayerInventory inv = player.getInventory();
+		for (int i = 0; i<=inv.size(); i++) {
+			ItemStack stack = inv.getStack(i);
 			if (!stack.isEmpty() &&
 					stack.getItem() == item &&
 					stack.getCount() == stackSize) {
@@ -516,7 +519,9 @@ public class Automationera implements ModInitializer {
 		for (Item item : items) {
 			int fullStackCount = 0;
 			int stackSize = item.getMaxCount();
-			for (var stack : player.getInventory().main) {
+			PlayerInventory inv = player.getInventory();
+			for (int i = 0; i<=inv.size(); i++) {
+				ItemStack stack = inv.getStack(i);
 				if (!stack.isEmpty() && stack.getItem() == item && stack.getCount() == stackSize) {
 					fullStackCount++;
 				}

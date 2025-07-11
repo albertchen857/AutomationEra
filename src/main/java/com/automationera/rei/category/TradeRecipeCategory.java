@@ -75,12 +75,8 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
                     reiPlugin.ICON_TEXTURE,
                     new Rectangle(originX + 48, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            widgets.add(Widgets.createTexturedWidget(
-                    reiPlugin.WIKI_BUTTON_TEXTURE,
-                    new Rectangle(0, 0, 32, 12),
-                    0, 0, 32, 12, 32, 12
-            ));
             Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal(""))
+                    .text(Text.of("WIKI"))
                     .onClick(button -> {
                         String url = I18n.translate("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
@@ -93,12 +89,9 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
         widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
                         Text.literal(I18n.translate("emi.automationera." + key + ".title")))
                 .color(0x404040, 0x404040).noShadow().leftAligned());
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.WIKI_BUTTON_TEXTURE,
-                new Rectangle(0, 0, 32, 12),
-                0, 0, 32, 12, 32, 12
-        ));
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 0, 32, 12), Text.literal(""))
+
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
+                .text(Text.of("WIKI"))
                 .onClick(button -> {
                     String url = I18n.translate("emi.automationera.trade.wiki");
                     reiPlugin.openWiki(url);
@@ -136,7 +129,7 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
             if (inglen == 0 || i < primaryList.size()) {
                 widgets.add(Widgets.createSlot(new Point(sx, sy))
                         .entry(EntryStacks.of(primaryList.get(i)))
-                        //.disableBackground()
+                        .disableBackground()
                 );
             } else {
                 int altIndex = i - primaryList.size();
@@ -147,12 +140,12 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
                         .collect(Collectors.toList());
                 widgets.add(Widgets.createSlot(new Point(sx, sy))
                         .entries(stacks)
-                        //.disableBackground()
+                        .disableBackground()
                 );
             }
         }
         // Always show an emerald icon at bottom-left as currency indicator
-        widgets.add(Widgets.createSlot(new Point(originX + 0, originY + 114))
+        widgets.add(Widgets.createSlot(new Point(originX -4, originY + 114))
                 .entry(EntryStacks.of(Items.EMERALD))
                 //.disableBackground()
         );

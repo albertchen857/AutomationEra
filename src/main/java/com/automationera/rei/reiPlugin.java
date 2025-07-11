@@ -33,8 +33,6 @@ public class reiPlugin implements REIClientPlugin {
     public static final Map<String, List<List<Item>>> trade = new OutputRecipe().TradeRecipy();
     public static final Map<String, List<Item>> tut = new OutputRecipe().TutorialRecipy();
 
-    // Textures for wiki button and icon (for convenience)
-    public static final Identifier WIKI_BUTTON_TEXTURE = Identifier.of("automationera", "textures/gui/wikibutton.png");
     public static final Identifier ICON_TEXTURE = Identifier.of("automationera", "icon.png");
 
     @Override

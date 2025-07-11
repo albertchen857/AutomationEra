@@ -7,7 +7,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -39,7 +41,9 @@ public class FullStackCriterion extends AbstractCriterion<FullStackCriterion.Con
             // 只要当前 items 里有任意一个达标就触发
             for (Item item : conditions.items) {
                 int fullStackCount = 0;
-                for (var stack : player.getInventory().main) {
+                PlayerInventory inv = player.getInventory();
+                for (int i = 0; i<=inv.size(); i++) {
+                    ItemStack stack = inv.getStack(i);
                     if (!stack.isEmpty() && stack.getItem() == item && stack.getCount() == item.getMaxCount()) {
                         fullStackCount++;
                     }
