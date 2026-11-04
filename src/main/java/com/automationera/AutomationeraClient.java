@@ -25,7 +25,7 @@ public class AutomationeraClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModKeyBinding.register();
-        PictureInPictureRendererRegistry.register(ctx -> new TutorialStructureRenderer(ctx.vertexConsumers()));
+        PictureInPictureRendererRegistry.register(ctx -> new TutorialStructureRenderer());
         if (FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
             com.automationera.rei.ReiDisplayCache.init();
         }

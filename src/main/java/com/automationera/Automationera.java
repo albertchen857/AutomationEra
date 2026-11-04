@@ -1,5 +1,8 @@
 package com.automationera;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityTypes;
 import com.automationera.advance.*;
 import com.automationera.network.ClientModsPayload;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -66,7 +69,7 @@ public class Automationera implements ModInitializer {
 		//Automationera.register("full_shulker_box", FullStackCriterion.INSTANCE);
 		ModConfig.load();
 		AdvancementsEnabledCondition.register();
-		CriteriaTriggers.register(FullStackCriterion.ID.toString(), FullStackCriterion.INSTANCE);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, FullStackCriterion.ID, FullStackCriterion.INSTANCE);
 		PayloadTypeRegistry.serverboundPlay().register(ClientModsPayload.ID, ClientModsPayload.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(ClientModsPayload.ID,
 				(payload, context) -> onClientMods(context.player(), payload.mods()));
@@ -194,7 +197,7 @@ public class Automationera implements ModInitializer {
 						}
 					}
 
-					int dragonKills = player.getStats().getValue(Stats.ENTITY_KILLED.get(EntityType.ENDER_DRAGON));
+					int dragonKills = player.getStats().getValue(Stats.ENTITY_KILLED.get(EntityTypes.ENDER_DRAGON));
 					//LOGGER.info("dragon: {}",dragonKills);
 					if (dragonKills > 9) {
 						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":killdragon10time"));

@@ -123,7 +123,7 @@ public class TutorialGroupScreen extends Screen {
 
         int y = this.height - 25;
         this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.close"),
-                btn -> this.minecraft.setScreen(new TutorialMainScreen())).bounds(20, y, 60, 20).build());
+                btn -> this.minecraft.gui.setScreen(new TutorialMainScreen())).bounds(20, y, 60, 20).build());
         this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.prev"),
                 btn -> lastStep()).bounds(120, y, 40, 20).build()).active = currentStep > 1;
         this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.next"),
@@ -266,7 +266,7 @@ public class TutorialGroupScreen extends Screen {
             boxes = machine.selectionBoxes().get(currentStep - 1);
         }
         float alpha = 0.5f + 0.3f * (float) Math.abs(Math.sin(System.currentTimeMillis() / 300.0));
-        ctx.guiRenderState.submitPicturesInPictureState(new TutorialStructureRenderState(structure, renderState.rotation, renderState.pitch,
+        ctx.guiRenderState.addPicturesInPictureState(new TutorialStructureRenderState(structure, renderState.rotation, renderState.pitch,
                 centerX, centerY, blockSize, boxes, alpha, x1, y1, x2, y2, null));
     }
 
@@ -350,7 +350,7 @@ public class TutorialGroupScreen extends Screen {
     @Override
     public boolean keyPressed(KeyEvent input) {
         if (ModKeyBinding.openTutorialKey.matches(input)) {
-            this.minecraft.setScreen(new TutorialMainScreen());
+            this.minecraft.gui.setScreen(new TutorialMainScreen());
             return true;
         }
         if (ModKeyBinding.leftKey.matches(input)) { rotateKey(-10f); return true; }

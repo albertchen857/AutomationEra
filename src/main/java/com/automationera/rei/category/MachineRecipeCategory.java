@@ -111,7 +111,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                             new Rectangle(originX + 135, originY + 120, 22, 22),
                             Component.literal(""))
                     .tooltipLines(Component.translatable("tutorial.ui.open"))
-                    .onClick(button -> Minecraft.getInstance().setScreen(new TutorialGroupScreen(
+                    .onClick(button -> Minecraft.getInstance().gui.setScreen(new TutorialGroupScreen(
                             (String) tutorial.getFirst(), (int) tutorial.getLast(), 1, new IsometricRenderState()))));
             widgets.add(Widgets.createTexturedWidget(Identifier.fromNamespaceAndPath("automationera", "textures/gui/wikibutton.png"),
                     originX + 136, originY + 121, 1, 1, 20, 20));

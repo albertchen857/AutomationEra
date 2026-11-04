@@ -31,21 +31,21 @@ public class TutorialMainScreen extends Screen {
                 new ItemStack(Items.IRON_INGOT),
                 Component.translatable("tutorial.group.factory"),
                 startX, y, buttonWidth, 32,
-                btn -> this.minecraft.setScreen(new TutorialGroupScreen("factory", 0, 1, new IsometricRenderState()))
+                btn -> this.minecraft.gui.setScreen(new TutorialGroupScreen("factory", 0, 1, new IsometricRenderState()))
         ));
         // 农场
         this.addRenderableWidget(new ItemIconButton(
                 new ItemStack(Items.WHEAT),
                 Component.translatable("tutorial.group.farm"),
                 startX + buttonWidth + spacing, y, buttonWidth, 32,
-                btn -> this.minecraft.setScreen(new TutorialGroupScreen("farm", 0, 1, new IsometricRenderState()))
+                btn -> this.minecraft.gui.setScreen(new TutorialGroupScreen("farm", 0, 1, new IsometricRenderState()))
         ));
         // 特殊
         this.addRenderableWidget(new ItemIconButton(
                 new ItemStack(Items.TNT),
                 Component.translatable("tutorial.group.special"),
                 startX + 2 * (buttonWidth + spacing), y, buttonWidth, 32,
-                btn -> this.minecraft.setScreen(new TutorialGroupScreen("special", 0, 1, new IsometricRenderState()))
+                btn -> this.minecraft.gui.setScreen(new TutorialGroupScreen("special", 0, 1, new IsometricRenderState()))
         ));
         this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.schem"),
                 btn -> ExportFile.openAutomationEraDir()).bounds(startX, this.height - 40, buttonWidth, 20).build());

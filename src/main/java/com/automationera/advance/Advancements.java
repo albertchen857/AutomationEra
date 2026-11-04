@@ -9,6 +9,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.core.ClientAsset;
+import net.minecraft.world.item.ItemStackTemplate;
+import java.util.Optional;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.advancements.triggers.Criterion;
@@ -73,14 +77,14 @@ public class Advancements {
 
     // ---------------------------------------------------------------- 自动化工厂
     public void autoRoot(Consumer<AdvancementHolder> consumer) {
-        automaticFactory = Advancement.Builder.advancement()
-                .display(Items.REDSTONE,
+        automaticFactory = accept(consumer, Advancement.Builder.advancement()
+                .display(new DisplayInfo(new ItemStackTemplate(Items.REDSTONE),
                         Component.translatable("advancements.automaticfactory.title"),
                         Component.translatable("advancements.automaticfactory.descr"),
-                        Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/rs"),
-                        AdvancementType.TASK, true, true, false)
+                        Optional.of(new ClientAsset.ResourceTexture(Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/rs"))),
+                        AdvancementType.TASK, true, true, false))
                 .addCriterion("a", InventoryChangeTrigger.TriggerInstance.hasItems(Items.REDSTONE))
-                .save(consumer, MOD_ID + ":" + "automaticfactory");
+                .build(Identifier.parse(MOD_ID + ":" + "automaticfactory")));
         advancementMap.put("automaticfactory", automaticFactory);
 
         AdvancementHolder woodfarm = collect(consumer, "woodfarm", Items.OAK_LOG, AdvancementType.GOAL, automaticFactory, stacks27(LOGS));
@@ -100,16 +104,16 @@ public class Advancements {
         collect(consumer, "obsidianfarm", Items.OBSIDIAN, AdvancementType.TASK, sandfarm, stacks27(Items.OBSIDIAN));
 
         AdvancementHolder abovenether = impossible(consumer, "abovenether", Items.BEDROCK, AdvancementType.TASK, automaticFactory, "above_nether");
-        netherhighway = Advancement.Builder.advancement()
+        netherhighway = accept(consumer, Advancement.Builder.advancement()
                 .parent(abovenether)
                 .display(Items.BLUE_ICE,
                         Component.translatable("advancements.netherhighway.title"),
                         Component.translatable("advancements.netherhighway.descr"),
-                        null, AdvancementType.GOAL, true, true, false)
+                        AdvancementType.GOAL, true, true, false)
                 .addCriterion("ice", PlacedBlockInNetherCriterion.conditions(
                         BlockPredicate.Builder.block().of(blockTypeRegistry, Blocks.PACKED_ICE).build(),
                         LocationPredicate.Builder.location().setDimension(Level.NETHER).build()))
-                .save(consumer, MOD_ID + ":" + "netherhighway");
+                .build(Identifier.parse(MOD_ID + ":" + "netherhighway")));
         advancementMap.put("netherhighway", netherhighway);
 
         collect(consumer, "railfarm", Items.POWERED_RAIL, AdvancementType.TASK, ironfarm,
@@ -135,41 +139,41 @@ public class Advancements {
     // ---------------------------------------------------------------- 生物农场（原“村民工程”根）
     public void attributeRoot(Consumer<AdvancementHolder> consumer) {
         // id 保持 attribute，玩家已有进度不丢；获得小麦/土豆/胡萝卜或红石粉即可
-        attribute = Advancement.Builder.advancement()
-                .display(Items.VILLAGER_SPAWN_EGG,
+        attribute = accept(consumer, Advancement.Builder.advancement()
+                .display(new DisplayInfo(new ItemStackTemplate(Items.VILLAGER_SPAWN_EGG),
                         Component.translatable("advancements.attribute.title"),
                         Component.translatable("advancements.attribute.descr"),
-                        Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/ss"),
-                        AdvancementType.TASK, true, true, false)
+                        Optional.of(new ClientAsset.ResourceTexture(Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/ss"))),
+                        AdvancementType.TASK, true, true, false))
                 .addCriterion("a", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item()
                         .of(itemTypeRegistry, Items.WHEAT, Items.POTATO, Items.CARROT, Items.REDSTONE)))
-                .save(consumer, MOD_ID + ":" + "attribute");
+                .build(Identifier.parse(MOD_ID + ":" + "attribute")));
         advancementMap.put("attribute", attribute);
 
         // 村民工程：二级成就（与畜牧业同级），到达村庄触发；自动农场挂在它下面
-        AdvancementHolder village = Advancement.Builder.advancement()
+        AdvancementHolder village = accept(consumer, Advancement.Builder.advancement()
                 .parent(attribute)
                 .display(Items.BELL,
                         Component.translatable("advancements.village.title"),
                         Component.translatable("advancements.village.descr"),
-                        null, AdvancementType.TASK, true, true, false)
+                        AdvancementType.TASK, true, true, false)
                 .addCriterion("village", PlayerTrigger.TriggerInstance.located(
                         LocationPredicate.Builder.location().setStructures(structureRegistry.getOrThrow(StructureTags.VILLAGE))))
-                .save(consumer, MOD_ID + ":" + "village");
+                .build(Identifier.parse(MOD_ID + ":" + "village")));
         advancementMap.put("village", village);
         collect(consumer, "stringfarm", Items.STRING, AdvancementType.TASK, village, stacks27(Items.STRING));
         collect(consumer, "tripwire", Items.TRIPWIRE_HOOK, AdvancementType.TASK, village, stacks27(Items.TRIPWIRE_HOOK));
         collect(consumer, "raidfarm", Items.EMERALD, AdvancementType.TASK, village, stacks27(Items.EMERALD));
         impossible(consumer, "tradingpost", Items.EMERALD, AdvancementType.GOAL, village, "trading_post");
 
-        AdvancementHolder animalfarm = Advancement.Builder.advancement()
+        AdvancementHolder animalfarm = accept(consumer, Advancement.Builder.advancement()
                 .parent(attribute)
                 .display(Items.BEEF,
                         Component.translatable("advancements.animalfarm.title"),
                         Component.translatable("advancements.animalfarm.descr"),
-                        null, AdvancementType.TASK, true, true, false)
+                        AdvancementType.TASK, true, true, false)
                 .addCriterion("a", BredAnimalsTrigger.TriggerInstance.bredAnimals())
-                .save(consumer, MOD_ID + ":" + "animalfarm");
+                .build(Identifier.parse(MOD_ID + ":" + "animalfarm")));
         advancementMap.put("animalfarm", animalfarm);
 
         collect(consumer, "turtlefarm", Items.TURTLE_EGG, AdvancementType.TASK, animalfarm, stacks(4, Items.TURTLE_EGG)); // 保持原条件
@@ -239,14 +243,14 @@ public class Advancements {
 
     // ---------------------------------------------------------------- 生电革命
     public void curcuitrevolutionRoot(Consumer<AdvancementHolder> consumer) {
-        curcuitrevolution = Advancement.Builder.advancement()
-                .display(Items.BEACON,
+        curcuitrevolution = accept(consumer, Advancement.Builder.advancement()
+                .display(new DisplayInfo(new ItemStackTemplate(Items.BEACON),
                         Component.translatable("advancements.curcuitrevolution.title"),
                         Component.translatable("advancements.curcuitrevolution.descr"),
-                        Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/br"),
-                        AdvancementType.TASK, true, true, false)
+                        Optional.of(new ClientAsset.ResourceTexture(Identifier.fromNamespaceAndPath("automationera", "gui/advancements/backgrounds/br"))),
+                        AdvancementType.TASK, true, true, false))
                 .addCriterion("a", InventoryChangeTrigger.TriggerInstance.hasItems(Items.SHULKER_BOX)) // 普通（未染色）潜影盒
-                .save(consumer, MOD_ID + ":" + "curcuitrevolution");
+                .build(Identifier.parse(MOD_ID + ":" + "curcuitrevolution")));
         advancementMap.put("curcuitrevolution", curcuitrevolution);
 
         AdvancementHolder tntquarry = impossible(consumer, "tntquarry", Items.TNT, AdvancementType.TASK, curcuitrevolution, "tntquarry");
@@ -307,17 +311,23 @@ public class Advancements {
         LOGGER.info("成功注册{}成就", createAdvancement);
     }
 
+    /** 26.x：Builder.save 改成了 BootstrapContext，datagen 这里自己 build 再交给 consumer */
+    private static AdvancementHolder accept(Consumer<AdvancementHolder> consumer, AdvancementHolder holder) {
+        consumer.accept(holder);
+        return holder;
+    }
+
     // ---------------------------------------------------------------- 工具
     private AdvancementHolder collect(Consumer<AdvancementHolder> consumer, String id, Item displayItem, AdvancementType frame,
                                      AdvancementHolder parent, Criterion<?> criterion) {
-        AdvancementHolder advancement = Advancement.Builder.advancement()
+        AdvancementHolder advancement = accept(consumer, Advancement.Builder.advancement()
                 .parent(parent)
                 .display(displayItem,
                         Component.translatable("advancements." + id + ".title"),
                         Component.translatable("advancements." + id + ".descr"),
-                        null, frame, true, true, false)
+                        frame, true, true, false)
                 .addCriterion("a1", criterion)
-                .save(consumer, MOD_ID + ":" + id);
+                .build(Identifier.parse(MOD_ID + ":" + id)));
         advancementMap.put(id, advancement);
         createAdvancement++;
         return advancement;
@@ -326,14 +336,14 @@ public class Advancements {
     /** 由服务端代码 grantCriterion(adv, criterionName) 发放的进度 */
     private AdvancementHolder impossible(Consumer<AdvancementHolder> consumer, String id, Item displayItem, AdvancementType frame,
                                         AdvancementHolder parent, String criterionName) {
-        AdvancementHolder advancement = Advancement.Builder.advancement()
+        AdvancementHolder advancement = accept(consumer, Advancement.Builder.advancement()
                 .parent(parent)
                 .display(displayItem,
                         Component.translatable("advancements." + id + ".title"),
                         Component.translatable("advancements." + id + ".descr"),
-                        null, frame, true, true, false)
+                        frame, true, true, false)
                 .addCriterion(criterionName, CriteriaTriggers.IMPOSSIBLE.createCriterion(new ImpossibleTrigger.TriggerInstance()))
-                .save(consumer, MOD_ID + ":" + id);
+                .build(Identifier.parse(MOD_ID + ":" + id)));
         advancementMap.put(id, advancement);
         createAdvancement++;
         return advancement;

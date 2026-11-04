@@ -53,11 +53,11 @@ public class OutputRecipe {
                 Items.DIAMOND_LEGGINGS,
                 Items.DIAMOND_BOOTS));
         Template.put("TERRACOTTA", List.of(
-                Items.WHITE_TERRACOTTA, Items.LIGHT_GRAY_TERRACOTTA, Items.GRAY_TERRACOTTA, Items.BLACK_TERRACOTTA,
-                Items.BROWN_TERRACOTTA, Items.RED_TERRACOTTA, Items.ORANGE_TERRACOTTA, Items.YELLOW_TERRACOTTA, Items.LIME_TERRACOTTA, Items.GREEN_TERRACOTTA, Items.CYAN_TERRACOTTA
+                Items.DYED_TERRACOTTA.white(), Items.DYED_TERRACOTTA.lightGray(), Items.DYED_TERRACOTTA.gray(), Items.DYED_TERRACOTTA.black(),
+                Items.DYED_TERRACOTTA.brown(), Items.DYED_TERRACOTTA.red(), Items.DYED_TERRACOTTA.orange(), Items.DYED_TERRACOTTA.yellow(), Items.DYED_TERRACOTTA.lime(), Items.DYED_TERRACOTTA.green(), Items.DYED_TERRACOTTA.cyan()
         ));
         Template.put("GLAZED_TERRACOTTA", List.of(
-                Items.GLAZED_TERRACOTTA.white(), Items.LIGHT_BLUE_TERRACOTTA, Items.BLUE_TERRACOTTA, Items.PURPLE_TERRACOTTA, Items.MAGENTA_TERRACOTTA, Items.PINK_TERRACOTTA,
+                Items.GLAZED_TERRACOTTA.white(), Items.DYED_TERRACOTTA.lightBlue(), Items.DYED_TERRACOTTA.blue(), Items.DYED_TERRACOTTA.purple(), Items.DYED_TERRACOTTA.magenta(), Items.DYED_TERRACOTTA.pink(),
                 Items.GLAZED_TERRACOTTA.lightGray(), Items.GLAZED_TERRACOTTA.gray(), Items.GLAZED_TERRACOTTA.black(),
                 Items.GLAZED_TERRACOTTA.brown(), Items.GLAZED_TERRACOTTA.red(), Items.GLAZED_TERRACOTTA.orange(), Items.GLAZED_TERRACOTTA.yellow(), Items.GLAZED_TERRACOTTA.lime(), Items.GLAZED_TERRACOTTA.green(),
                 Items.GLAZED_TERRACOTTA.cyan(), Items.GLAZED_TERRACOTTA.lightBlue(), Items.GLAZED_TERRACOTTA.blue(), Items.GLAZED_TERRACOTTA.purple(), Items.GLAZED_TERRACOTTA.magenta(), Items.GLAZED_TERRACOTTA.pink()
@@ -388,7 +388,7 @@ public class OutputRecipe {
                 Items.COPPER_BLOCK.weathering().exposed(),
                 Items.COPPER_BLOCK.weathering().weathered(),
                 Items.COPPER_BLOCK.weathering().oxidized()
-        ), List.of(Items.COPPER_BLOCK)));
+        ), List.of(Items.COPPER_BLOCK.weathering().unaffected())));
         ore.put("creeper",List.of(List.of(
                 Items.GUNPOWDER
         ), List.of(Items.CREEPER_SPAWN_EGG)));

@@ -42,17 +42,17 @@ public class ModKeyBinding {
         // 其余按键只在教程界面里生效，由 TutorialGroupScreen.keyPressed 处理（界面打开时 KeyBinding 不会收到按键）
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (openTutorialKey.consumeClick()) {
-                if (client.screen == null) {
-                    client.setScreen(new TutorialMainScreen());
+                if (client.gui.screen() == null) {
+                    client.gui.setScreen(new TutorialMainScreen());
                 }
             }
         });
     }
 
     private static KeyMapping registerKey(String translationKey, int keyCode) {
-        return KeyMappingHelper.registerKeyBinding(new KeyMapping(
+        return KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 translationKey,
-                InputConstants.Type.KEYSYM,
+                InputConstants.Type.KEYBOARD,
                 keyCode,
                 CATEGORY
         ));

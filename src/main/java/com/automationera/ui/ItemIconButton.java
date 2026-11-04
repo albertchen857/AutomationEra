@@ -16,9 +16,9 @@ public class ItemIconButton extends Button {
     }
 
     @Override
-    protected void renderContents(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
+    protected void extractContents(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
         // 绘制按钮背景
-        this.renderDefaultSprite(ctx);
+        this.extractDefaultSprite(ctx);
         // 绘制物品图标 (左边留点边距)
         int iconX = this.getX() + 4;
         int iconY = this.getY() + (this.getHeight() - 16) / 2;

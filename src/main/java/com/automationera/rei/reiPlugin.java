@@ -135,6 +135,6 @@ public class reiPlugin implements REIClientPlugin {
 
     // Utility to open wiki URL (called from category widgets on button click)
     public static void openWiki(String url) {
-        net.minecraft.util.Util.getPlatform().openUri(url);
+        com.mojang.blaze3d.Blaze3D.openUri(java.net.URI.create(url));
     }
 }

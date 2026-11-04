@@ -1,5 +1,7 @@
 package com.automationera.advance;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
@@ -7,7 +9,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.predicates.BlockPredicate;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
@@ -130,7 +133,7 @@ public class PlacedBlockInNetherCriterion extends SimpleCriterionTrigger<PlacedB
         }
 
         @Override
-        public Optional<ContextAwarePredicate> player() {
+        public Optional<Holder<LootItemCondition>> player() {
             return Optional.empty();
         }
 
@@ -142,7 +145,7 @@ public class PlacedBlockInNetherCriterion extends SimpleCriterionTrigger<PlacedB
     public static PlacedBlockInNetherCriterion register() {
         if (INSTANCE == null) {
             INSTANCE = new PlacedBlockInNetherCriterion();
-            CriteriaTriggers.register(String.valueOf(ID), INSTANCE);
+            Registry.register(BuiltInRegistries.TRIGGER_TYPES, ID, INSTANCE);
             LOGGER.info("!!!成功 registered PlacedBlockInNetherCriterion");
             
             // 注册服务器tick事件监听器

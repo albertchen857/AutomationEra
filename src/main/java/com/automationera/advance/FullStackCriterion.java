@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import net.minecraft.advancements.triggers.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -61,7 +62,7 @@ public class FullStackCriterion extends SimpleCriterionTrigger<FullStackCriterio
                     Item only = null;
                     int full = 0;
                     boolean uniform = true;
-                    for (ItemStack inner : container.nonEmptyItems()) {
+                    for (ItemStack inner : (Iterable<ItemStack>) container.nonEmptyItemCopyStream()::iterator) {
                         countFull(inner, stacks);
                         if (inner.getCount() != inner.getMaxStackSize()) { uniform = false; continue; }
                         if (only == null) only = inner.getItem();
@@ -113,7 +114,7 @@ public class FullStackCriterion extends SimpleCriterionTrigger<FullStackCriterio
         }
 
         @Override
-        public Optional<ContextAwarePredicate> player() {
+        public Optional<Holder<LootItemCondition>> player() {
             return Optional.empty();
         }
     }

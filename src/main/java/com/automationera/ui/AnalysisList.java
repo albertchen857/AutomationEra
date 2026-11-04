@@ -98,7 +98,7 @@ public class AnalysisList {
     private List<Entry> toEntryList(Map<Item, Integer> map) {
         List<Entry> list = new ArrayList<>();
         for (var e : map.entrySet()) {
-            list.add(new Entry(new ItemStack(e.getKey()), e.getKey().getName(), e.getValue()));
+            list.add(new Entry(new ItemStack(e.getKey()), new ItemStack(e.getKey()).getHoverName(), e.getValue()));
         }
         list.sort((a, b) -> Integer.compare(b.count, a.count));
         return list;

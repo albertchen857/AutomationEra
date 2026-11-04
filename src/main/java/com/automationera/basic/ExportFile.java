@@ -1,5 +1,7 @@
 package com.automationera.basic;
 
+import com.mojang.blaze3d.Blaze3D;
+import java.net.URI;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
@@ -59,13 +61,13 @@ public class ExportFile {
     // 用原版的 Util 打开文件夹/链接：游戏里 java.awt 通常是 headless，Desktop 不可用
     public static void openAutomationEraDir() {
         try {
-            Util.getPlatform().openPath(ensureAutomationEraDir());
+            Blaze3D.openPath(ensureAutomationEraDir());
         } catch (IOException e) {
             LOGGER.error("Cannot open schematics folder", e);
         }
     }
 
     public static void buymeacoffee() {
-        Util.getPlatform().openUri("https://buymeacoffee.com/albertchen857");
+        Blaze3D.openUri(URI.create("https://buymeacoffee.com/albertchen857"));
     }
 }
