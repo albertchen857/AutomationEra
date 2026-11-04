@@ -10,8 +10,8 @@
       "conditions": {
         "items": [
           "minecraft:ochre_froglight",
-          "minecraft:pearlescent_froglight",
-          "minecraft:verdant_froglight"
+          "minecraft:verdant_froglight",
+          "minecraft:pearlescent_froglight"
         ],
         "required_boxes": 1,
         "required_stacks": 27
@@ -24,7 +24,6 @@
       "translate": "advancements.froglightfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:ochre_froglight"
     },
     "title": {

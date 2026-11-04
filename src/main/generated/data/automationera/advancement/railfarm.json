@@ -9,10 +9,10 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:detector_rail",
-          "minecraft:powered_rail",
           "minecraft:rail",
-          "minecraft:activator_rail"
+          "minecraft:powered_rail",
+          "minecraft:activator_rail",
+          "minecraft:detector_rail"
         ],
         "required_boxes": 1,
         "required_stacks": 27
@@ -25,7 +25,6 @@
       "translate": "advancements.railfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:powered_rail"
     },
     "title": {

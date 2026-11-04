@@ -9,10 +9,10 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:brown_mushroom",
+          "minecraft:brown_mushroom_block",
           "minecraft:red_mushroom",
-          "minecraft:red_mushroom_block",
-          "minecraft:brown_mushroom_block"
+          "minecraft:brown_mushroom",
+          "minecraft:red_mushroom_block"
         ],
         "required_boxes": 1,
         "required_stacks": 27
@@ -25,7 +25,6 @@
       "translate": "advancements.mushroomfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:red_mushroom_block"
     },
     "title": {

@@ -10,15 +10,15 @@
       "conditions": {
         "items": [
           "minecraft:rose_bush",
-          "minecraft:cocoa_beans",
-          "minecraft:lilac",
+          "minecraft:glow_berries",
+          "minecraft:big_dripleaf",
           "minecraft:vine",
           "minecraft:glow_lichen",
           "minecraft:hanging_roots",
           "minecraft:pink_petals",
-          "minecraft:glow_berries",
-          "minecraft:big_dripleaf",
           "minecraft:sunflower",
+          "minecraft:cocoa_beans",
+          "minecraft:lilac",
           "minecraft:peony"
         ],
         "required_boxes": 1,
@@ -32,7 +32,6 @@
       "translate": "advancements.ripeningmachine.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:dispenser"
     },
     "title": {

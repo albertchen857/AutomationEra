@@ -8,17 +8,15 @@
   "criteria": {
     "village": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structures": "#minecraft:village"
-              }
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "#minecraft:village"
             }
           }
-        ]
+        }
       },
       "trigger": "minecraft:location"
     }
@@ -28,7 +26,6 @@
       "translate": "advancements.village.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:bell"
     },
     "title": {

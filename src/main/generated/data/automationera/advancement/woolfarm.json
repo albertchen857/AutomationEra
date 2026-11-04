@@ -9,22 +9,22 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:brown_wool",
-          "minecraft:purple_wool",
-          "minecraft:light_gray_wool",
+          "minecraft:cyan_wool",
+          "minecraft:blue_wool",
+          "minecraft:magenta_wool",
+          "minecraft:black_wool",
+          "minecraft:light_blue_wool",
           "minecraft:pink_wool",
           "minecraft:white_wool",
-          "minecraft:black_wool",
-          "minecraft:cyan_wool",
+          "minecraft:purple_wool",
           "minecraft:red_wool",
-          "minecraft:blue_wool",
-          "minecraft:yellow_wool",
-          "minecraft:green_wool",
-          "minecraft:magenta_wool",
-          "minecraft:light_blue_wool",
           "minecraft:gray_wool",
-          "minecraft:lime_wool",
-          "minecraft:orange_wool"
+          "minecraft:yellow_wool",
+          "minecraft:light_gray_wool",
+          "minecraft:brown_wool",
+          "minecraft:green_wool",
+          "minecraft:orange_wool",
+          "minecraft:lime_wool"
         ],
         "required_boxes": 1,
         "required_stacks": 27
@@ -37,7 +37,6 @@
       "translate": "advancements.woolfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:white_wool"
     },
     "title": {

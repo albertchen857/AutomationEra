@@ -9,17 +9,17 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:crimson_stem",
-          "minecraft:spruce_log",
           "minecraft:pale_oak_log",
-          "minecraft:dark_oak_log",
-          "minecraft:warped_stem",
-          "minecraft:acacia_log",
           "minecraft:mangrove_log",
           "minecraft:jungle_log",
-          "minecraft:cherry_log",
+          "minecraft:dark_oak_log",
+          "minecraft:acacia_log",
           "minecraft:oak_log",
-          "minecraft:birch_log"
+          "minecraft:crimson_stem",
+          "minecraft:spruce_log",
+          "minecraft:birch_log",
+          "minecraft:cherry_log",
+          "minecraft:warped_stem"
         ],
         "required_boxes": 9
       },
@@ -31,7 +31,6 @@
       "translate": "advancements.alltree.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:oak_wood"
     },
     "title": {

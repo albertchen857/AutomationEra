@@ -9,22 +9,22 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:purple_concrete",
-          "minecraft:lime_concrete",
-          "minecraft:light_gray_concrete",
-          "minecraft:gray_concrete",
-          "minecraft:white_concrete",
-          "minecraft:pink_concrete",
-          "minecraft:light_blue_concrete",
-          "minecraft:blue_concrete",
           "minecraft:yellow_concrete",
-          "minecraft:cyan_concrete",
-          "minecraft:green_concrete",
-          "minecraft:black_concrete",
+          "minecraft:lime_concrete",
           "minecraft:brown_concrete",
-          "minecraft:orange_concrete",
           "minecraft:red_concrete",
-          "minecraft:magenta_concrete"
+          "minecraft:green_concrete",
+          "minecraft:light_gray_concrete",
+          "minecraft:orange_concrete",
+          "minecraft:black_concrete",
+          "minecraft:cyan_concrete",
+          "minecraft:magenta_concrete",
+          "minecraft:pink_concrete",
+          "minecraft:purple_concrete",
+          "minecraft:light_blue_concrete",
+          "minecraft:gray_concrete",
+          "minecraft:blue_concrete",
+          "minecraft:white_concrete"
         ],
         "required_stacks": 9
       },
@@ -36,7 +36,6 @@
       "translate": "advancements.concretefarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:white_concrete"
     },
     "title": {

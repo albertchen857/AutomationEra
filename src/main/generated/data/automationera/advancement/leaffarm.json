@@ -9,17 +9,17 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:jungle_leaves",
-          "minecraft:acacia_leaves",
           "minecraft:dark_oak_leaves",
+          "minecraft:mangrove_leaves",
+          "minecraft:cherry_leaves",
           "minecraft:azalea_leaves",
           "minecraft:flowering_azalea_leaves",
-          "minecraft:pale_oak_leaves",
-          "minecraft:cherry_leaves",
-          "minecraft:mangrove_leaves",
+          "minecraft:spruce_leaves",
           "minecraft:oak_leaves",
+          "minecraft:jungle_leaves",
+          "minecraft:pale_oak_leaves",
           "minecraft:birch_leaves",
-          "minecraft:spruce_leaves"
+          "minecraft:acacia_leaves"
         ],
         "required_boxes": 1,
         "required_stacks": 27
@@ -32,7 +32,6 @@
       "translate": "advancements.leaffarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:oak_leaves"
     },
     "title": {

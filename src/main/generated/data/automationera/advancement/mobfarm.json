@@ -10,8 +10,8 @@
       "conditions": {
         "items": [
           "minecraft:rotten_flesh",
-          "minecraft:bone",
-          "minecraft:gunpowder"
+          "minecraft:gunpowder",
+          "minecraft:bone"
         ],
         "required_stacks": 9
       },
@@ -23,7 +23,6 @@
       "translate": "advancements.mobfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:rotten_flesh"
     },
     "title": {

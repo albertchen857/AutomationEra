@@ -9,9 +9,9 @@
     "a1": {
       "conditions": {
         "items": [
+          "minecraft:exposed_copper",
           "minecraft:oxidized_copper",
-          "minecraft:weathered_copper",
-          "minecraft:exposed_copper"
+          "minecraft:weathered_copper"
         ],
         "required_stacks": 4
       },
@@ -23,7 +23,6 @@
       "translate": "advancements.copperfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:exposed_copper"
     },
     "title": {

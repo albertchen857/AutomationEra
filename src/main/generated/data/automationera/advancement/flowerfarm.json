@@ -9,18 +9,18 @@
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:wither_rose",
-          "minecraft:poppy",
-          "minecraft:red_tulip",
-          "minecraft:lily_of_the_valley",
-          "minecraft:allium",
-          "minecraft:azure_bluet",
-          "minecraft:pink_tulip",
-          "minecraft:dandelion",
-          "minecraft:cornflower",
-          "minecraft:blue_orchid",
           "minecraft:orange_tulip",
-          "minecraft:white_tulip"
+          "minecraft:allium",
+          "minecraft:white_tulip",
+          "minecraft:blue_orchid",
+          "minecraft:lily_of_the_valley",
+          "minecraft:cornflower",
+          "minecraft:red_tulip",
+          "minecraft:azure_bluet",
+          "minecraft:dandelion",
+          "minecraft:poppy",
+          "minecraft:pink_tulip",
+          "minecraft:wither_rose"
         ],
         "required_stacks": 9
       },
@@ -32,7 +32,6 @@
       "translate": "advancements.flowerfarm.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:poppy"
     },
     "title": {

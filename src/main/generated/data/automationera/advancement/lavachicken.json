@@ -10,8 +10,8 @@
       "conditions": {
         "items": [
           "minecraft:egg",
-          "minecraft:feather",
-          "minecraft:cooked_chicken"
+          "minecraft:cooked_chicken",
+          "minecraft:feather"
         ],
         "required_stacks": 9
       },
@@ -23,7 +23,6 @@
       "translate": "advancements.lavachicken.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:feather"
     },
     "title": {

@@ -15,7 +15,6 @@
       "translate": "advancements.stuckserver.descr"
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:command_block"
     },
     "title": {
