@@ -65,6 +65,15 @@ public class AnalysisList {
         this.result = toEntryList(statItem(nbt, true));
     }
 
+    /** 多个步骤文件的材料合计（累计渲染时用：第 1 步到当前步） */
+    public AnalysisList(List<NbtCompound> nbts) {
+        Map<Item, Integer> sum = new HashMap<>();
+        for (NbtCompound nbt : nbts) {
+            statItem(nbt, true).forEach((item, n) -> sum.merge(item, n, Integer::sum));
+        }
+        this.result = toEntryList(sum);
+    }
+
     private Map<Item, Integer> statItem(NbtCompound nbt, boolean include) {
         Map<Item, Integer> map = new HashMap<>();
         if (nbt == null || !nbt.contains("palette") || !nbt.contains("blocks")) return map;

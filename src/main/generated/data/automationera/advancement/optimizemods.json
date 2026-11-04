@@ -1,0 +1,31 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:notvanilla",
+  "criteria": {
+    "mod": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.optimizemods.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:clock"
+    },
+    "title": {
+      "translate": "advancements.optimizemods.title"
+    }
+  },
+  "requirements": [
+    [
+      "mod"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

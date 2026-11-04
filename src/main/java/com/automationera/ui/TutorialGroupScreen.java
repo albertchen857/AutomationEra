@@ -1,190 +1,298 @@
 package com.automationera.ui;
 
 import com.automationera.OutputRecipe;
+import com.automationera.OutputRecipe.MachineInfo;
+import com.automationera.OutputRecipe.SelectionBox;
 import com.automationera.basic.ExportFile;
-
-import com.automationera.rei.reiPlugin;
-import com.mojang.blaze3d.opengl.GlStateManager;
-import me.shedaniel.rei.api.client.ClientHelper;
-import me.shedaniel.rei.api.client.view.ViewSearchBuilder;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryStack;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
+import com.automationera.keybinding.ModKeyBinding;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.Click;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.NarratedMultilineTextWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDisplayContext;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.Formatting;
+import org.joml.Matrix3x2fStack;
 import org.slf4j.LoggerFactory;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TutorialGroupScreen extends Screen {
-    private final String group;
-    private final int rotateSpeed = 2;
-    private int selectedMac = 0;
-    private int currentStep = 1;
-    private boolean autoRotate = false;
-    private MachineInfo machine;
     public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("AutomationEraTutorial");
-
-    private IsometricRenderState renderState;
-    private NbtCompound blockListNbtCache;
-    private List<MachineInfo> choose = List.of();
-
-    private final List<AnalysisList.Entry> blockListExternal;
-    private List<AnalysisList.Entry> blockList;
-    private int blockScroll = 0;
+    private static final float ROTATE_DEG_PER_SEC = 90f;
     private static final int BLOCK_LINES = 6;
-    private boolean blocklistConsist;
+    private static final int BLOCK_LIST_W = 110;
+    private static final int BLOCK_ROW_H = 16;
+    private static final int BOTTOM_BAR_H = 28;
 
-    public TutorialGroupScreen(String group, int selectedMac, int currentStep, IsometricRenderState renderState, List<AnalysisList.Entry> blockListExternal, boolean blocklistConsist) {
+    private final String group;
+    private int selectedMac;
+    private int currentStep;
+    private boolean autoRotate = false;
+    private boolean blocklistConsist;
+    private IsometricRenderState renderState;
+
+    private List<MachineInfo> choose = List.of();
+    private MachineInfo machine;
+    private int stepCount;
+    private TutorialManager.Structure structure;      // 第 1 步到当前步的累计
+    private TutorialManager.Structure stepStructure;  // 只有当前这一步
+    private boolean cumulative;                        // 是否为累计渲染的新格式教程
+    private List<AnalysisList.Entry> blockList = List.of();
+    private int blockScroll = 0;
+    private int leftW;
+    private int descY;
+    private Text exportMessage;
+    private long lastFrameNanos = 0;
+
+    public TutorialGroupScreen(String group, int selectedMac, int currentStep, IsometricRenderState renderState, boolean blocklistConsist) {
         super(Text.translatable("tutorial.group." + group));
         this.group = group;
         this.selectedMac = selectedMac;
         this.currentStep = currentStep;
         this.renderState = renderState;
-        this.blockListExternal = blockListExternal;
         this.blocklistConsist = blocklistConsist;
     }
+
     public TutorialGroupScreen(String group, int selectedMac, int currentStep, IsometricRenderState renderState) {
-        this(group, selectedMac, currentStep, renderState, null, false);
+        this(group, selectedMac, currentStep, renderState, false);
     }
 
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if (button == 0) {
-            renderState.addRotation((float) deltaX);
-            renderState.addYc((float) deltaY);
-            autoRotate = false;
-            return true;
-        }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
-        int listW = 110, iconSize = 12, x = this.width - listW - 10, y0 = 10, height = BLOCK_LINES * (iconSize + 2);
-        if (mouseX >= x - 5 && mouseX < x + listW + 8 && mouseY >= y0 - 4 && mouseY < y0 + height + 4) {
-            int total = blockList == null ? 0 : blockList.size();
-            int maxScroll = Math.max(0, total - BLOCK_LINES);
-            blockScroll -= vertical > 0 ? 1 : -1;
-            if (blockScroll < 0) blockScroll = 0;
-            if (blockScroll > maxScroll) blockScroll = maxScroll;
-            LOGGER.info("Scrolled {}",renderState.rotation);
-            return true;
-        } else if (mouseX >= (double) this.width *0.4 && mouseY <= (double) this.height *0.75){
-            renderState.addScale(1.0f + (float) (vertical + horizontal) * 0.08f);
-        }
-        return super.mouseScrolled(mouseX, mouseY, horizontal, vertical);
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        int listW = 110, iconSize = 12, x = this.width - listW - 10, y0 = 10, listH = BLOCK_LINES * (iconSize + 2);
-        int barX = x + listW - 6, barW = 4;
-        int total = blockList == null ? 0 : blockList.size();
-        int maxScroll = Math.max(0, total - BLOCK_LINES);
-        if (maxScroll > 0 && mouseX >= barX && mouseX < barX + barW && mouseY >= y0 && mouseY < y0 + listH) {
-            int sliderH = Math.max(12, listH * BLOCK_LINES / total);
-            int relY = (int) mouseY - y0 - sliderH / 2;
-            blockScroll = Math.max(0, Math.min(maxScroll, relY * maxScroll / (listH - sliderH)));
-            return true;
-        }
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    protected void init() {
-        choose = switch (group) {
+    private static List<MachineInfo> machinesOf(String group) {
+        return switch (group) {
             case "factory" -> OutputRecipe.factoryMachines;
             case "special" -> OutputRecipe.specialMachines;
             default -> OutputRecipe.farmMachines;
         };
-        int listWidth = this.width / 5;
-        MachineEntryList list = new MachineEntryList(client, listWidth, this.height - 120, 25, 20);
+    }
+
+    // ---------------------------------------------------------------- 布局
+
+    private int blockListX() {
+        return this.width - BLOCK_LIST_W - 8;
+    }
+
+    private int blockListY() {
+        return 10;
+    }
+
+    private int blockListH() {
+        return Math.min(BLOCK_LINES, blockList.size()) * BLOCK_ROW_H;
+    }
+
+    private boolean inBlockList(double mouseX, double mouseY) {
+        int x = blockListX(), y = blockListY();
+        return !blockList.isEmpty() && mouseX >= x - 4 && mouseX < x + BLOCK_LIST_W + 4 && mouseY >= y - 4 && mouseY < y + blockListH() + 4;
+    }
+
+    private boolean inStructureView(double mouseX, double mouseY) {
+        return mouseX >= leftW && mouseY < this.height - BOTTOM_BAR_H && !inBlockList(mouseX, mouseY);
+    }
+
+    @Override
+    protected void init() {
+        choose = machinesOf(group);
+        if (choose.isEmpty()) {
+            machine = null;
+            return;
+        }
+        selectedMac = Math.max(0, Math.min(selectedMac, choose.size() - 1));
+        machine = choose.get(selectedMac);
+        stepCount = TutorialManager.countSteps(machine.id());
+        currentStep = Math.max(1, Math.min(currentStep, Math.max(1, stepCount)));
+        loadStep();
+
+        leftW = Math.max(110, this.width / 5);
+        int listTop = 25;
+        int listH = Math.max(40, Math.min(choose.size() * 20 + 4, this.height - listTop - BOTTOM_BAR_H - 70));
+        MachineEntryList list = new MachineEntryList(client, leftW, listH, listTop, 20);
         for (int m = 0; m < choose.size(); m++) {
             int idx = m;
             MachineInfo info = choose.get(m);
-            list.addEntry(idx, new ItemStack(info.icon), info.name, () -> {
-                if (this.client != null) {
-                    this.client.setScreen(new TutorialGroupScreen(group, idx, 1, renderState, blockListExternal, blocklistConsist));
-                }
-            });
+            list.addEntry(idx, new ItemStack(info.icon()), info.title(), () -> selectMachine(idx));
         }
         list.selectByIndex(selectedMac);
         this.addDrawableChild(list);
+        descY = listTop + listH + 6;
+
+        int y = this.height - 25;
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.close"),
-                        btn -> {
-                            if (this.client != null) {
-                                this.client.setScreen(new TutorialMainScreen());
-                            }
-                        })
-                .dimensions(20, this.height - 25, 60, 20).build());
-        machine = choose.isEmpty() ? new MachineInfo("NULL",Items.AIR,Text.literal("null"),List.of(),true) : choose.get(Math.min(selectedMac, choose.size() - 1));
-        TextWidget titleWidget = new TextWidget(0, 5, 200, 20, this.title.copy().append(Text.literal("-")).append(machine.name), this.textRenderer);
-        this.addDrawableChild(titleWidget);
+                btn -> this.client.setScreen(new TutorialMainScreen())).dimensions(20, y, 60, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.prev"),
+                btn -> lastStep()).dimensions(120, y, 40, 20).build()).active = currentStep > 1;
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.next"),
+                btn -> nextStep()).dimensions(160, y, 40, 20).build()).active = currentStep < stepCount;
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.output"),
+                btn -> output()).dimensions(200, y, 60, 20).build()).active = stepCount > 0;
+        // 仰角改为上下拖拽调整，原来的仰角按钮已删除
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("▶"),
+                btn -> autoRotate = !autoRotate).dimensions(260, y, 20, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("↺"),
+                btn -> resetKey()).dimensions(280, y, 20, 20).build());
+        ButtonWidget rei = this.addDrawableChild(ButtonWidget.builder(Text.literal("REI"),
+                btn -> openReiPage()).dimensions(300, y, 20, 20).build());
+        rei.active = FabricLoader.getInstance().isModLoaded("roughlyenoughitems") && OutputRecipe.reiKeyOfTutorial(machine.id()) != null;
+        this.addDrawableChild(ButtonWidget.builder(Text.literal(blocklistConsist ? "DIFF" : "NORM"),
+                btn -> {
+                    blocklistConsist = !blocklistConsist;
+                    loadStep();
+                    this.clearAndInit();
+                }).dimensions(320, y, 40, 20).build());
     }
+
+    /**
+     * 两种教程数据：
+     * - 有 steps.json（0.1.9.1 重新拆分的机器）：每个步骤文件只含本步新增方块，第 N 步显示第 1~N 步的累计；
+     *   材料表 NORM = 累计到当前步，DIFF = 只有这一步。
+     * - 没有 steps.json（特殊机器、小机器，保持原样）：每步就是一个完整投影，按旧逻辑显示。
+     */
+    private void loadStep() {
+        cumulative = !TutorialManager.loadStepMeta(machine.id()).isEmpty();
+        NbtCompound now = TutorialManager.loadNbtFromResource(machine.id(), currentStep);
+        if (!cumulative) {
+            structure = TutorialManager.loadStructure(machine.id(), currentStep);
+            stepStructure = null;
+            if (now == null) {
+                blockList = List.of();
+            } else if (blocklistConsist && currentStep > 1) {
+                NbtCompound prev = TutorialManager.loadNbtFromResource(machine.id(), currentStep - 1);
+                blockList = new AnalysisList(now, prev, machine.blockListConsistent()).getResult();
+            } else {
+                blockList = new AnalysisList(now).getResult();
+            }
+            blockScroll = 0;
+            return;
+        }
+        structure = TutorialManager.loadCumulative(machine.id(), currentStep);
+        stepStructure = TutorialManager.loadStructure(machine.id(), currentStep);
+        if (now == null) {
+            blockList = List.of();
+        } else if (blocklistConsist) {
+            blockList = new AnalysisList(now).getResult();
+        } else {
+            List<NbtCompound> upto = new ArrayList<>();
+            for (int s = 1; s <= currentStep; s++) {
+                NbtCompound n = TutorialManager.loadNbtFromResource(machine.id(), s);
+                if (n != null) upto.add(n);
+            }
+            blockList = new AnalysisList(upto).getResult();
+        }
+        blockScroll = 0;
+    }
+
+    /** 步骤说明：「Y 范围 · 这一步的类型」+ 这一步方块在旧教程里对应那一步的说明 */
+    private Text stepDescription() {
+        TutorialManager.StepMeta meta = TutorialManager.stepMeta(machine.id(), currentStep);
+        if (meta == null) {
+            return Text.translatable("tutorial." + machine.id() + ".step" + currentStep);
+        }
+        String y = meta.y0() == meta.y1() ? "Y" + meta.y0() : "Y" + meta.y0() + "–Y" + meta.y1();
+        Text head = Text.literal(y + " · ").append(Text.translatable("tutorial.ui.role." + meta.role())).formatted(Formatting.YELLOW);
+        return Text.empty().append(head).append("\n")
+                .append(Text.translatableWithFallback("tutorial." + machine.id() + ".step" + meta.old(), ""));
+    }
+
+    // ---------------------------------------------------------------- 渲染
 
     @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
         ctx.fill(0, 0, this.width, this.height, 0x77000000);
-        super.render(ctx, mouseX, mouseY, delta);
-        if (machine != null) {
-            NbtCompound structureNbt = TutorialManager.loadNbtFromResource(machine.id, currentStep);
-            TutorialManager.renderStructure3D(ctx, structureNbt, currentStep, renderState, width, height, width, machine.selectbox);
-            if (blockListExternal != null) { //???
-                blockList = blockListExternal;
-            } else if (blockList == null || !structureNbt.equals(blockListNbtCache)) {
-                if (blocklistConsist && currentStep>0){
-                    NbtCompound prevnbt = TutorialManager.loadNbtFromResource(machine.id, currentStep-1);
-                    blockList = new AnalysisList(structureNbt, prevnbt, machine.consist).getResult();
-                }else{
-                    blockList = new AnalysisList(structureNbt).getResult();
-                }
-                blockListNbtCache = structureNbt == null ? null : structureNbt.copy();
-            }
-            renderBlockList(ctx);
+        long now = System.nanoTime();
+        // 按真实时间旋转，旧版每帧 +2° 会随帧率变化
+        if (autoRotate && lastFrameNanos != 0) {
+            renderState.addRotation(ROTATE_DEG_PER_SEC * Math.min(0.1f, (now - lastFrameNanos) / 1e9f));
         }
-        if (autoRotate) renderState.addRotation(rotateSpeed);
-        renderUI();
+        lastFrameNanos = now;
+        if (machine != null) {
+            renderStructure(ctx);
+        }
+        super.render(ctx, mouseX, mouseY, delta);
+        Text title = machine == null ? this.title : this.title.copy().append(Text.literal(" - ")).append(machine.title());
+        ctx.drawTextWithShadow(this.textRenderer, title, 8, 8, 0xFFFFFFFF);
+        if (machine == null) return;
+
+        if (stepCount > 0) {
+            ctx.drawTextWithShadow(this.textRenderer, Text.literal(currentStep + " / " + stepCount), 205, this.height - 38, 0xFFBBBBBB);
+            drawFittedText(ctx, stepDescription(), 6, descY, leftW - 10, this.height - BOTTOM_BAR_H - 4 - descY, 0xFFFFFFFF);
+        } else {
+            ctx.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("tutorial.ui.missing"),
+                    (leftW + this.width) / 2, this.height / 2, 0xFFFFAA00);
+        }
+        if (exportMessage != null) {
+            ctx.drawTextWithShadow(this.textRenderer, exportMessage, leftW + 4, this.height - BOTTOM_BAR_H - 12, 0xFF55FF55);
+        }
+        renderBlockList(ctx);
     }
 
+    /** 自动换行；放不下时缩小字号（英文步骤说明比中文长很多，以前会压到底部按钮上） */
+    private void drawFittedText(DrawContext ctx, Text text, int x, int y, int maxWidth, int maxHeight, int color) {
+        float scale = 1f;
+        List<OrderedText> lines = this.textRenderer.wrapLines(text, maxWidth);
+        while (lines.size() * 9 * scale > maxHeight && scale > 0.55f) {
+            scale -= 0.05f;
+            lines = this.textRenderer.wrapLines(text, (int) (maxWidth / scale));
+        }
+        Matrix3x2fStack m = ctx.getMatrices();
+        m.pushMatrix();
+        m.translate(x, y);
+        m.scale(scale, scale);
+        for (int i = 0; i < lines.size(); i++) {
+            ctx.drawTextWithShadow(this.textRenderer, lines.get(i), 0, i * 9, color);
+        }
+        m.popMatrix();
+    }
 
+    private void renderStructure(DrawContext ctx) {
+        if (structure == null || structure.blocks().isEmpty()) return;
+        int x1 = leftW, y1 = 0, x2 = this.width, y2 = this.height - BOTTOM_BAR_H;
+        // 保持 0.1.9 的构图：中心点在屏幕 (2/3 宽 - 30, 5/8 高 - 40)，大小相对屏幕宽度
+        float centerX = this.width * 2f / 3f - 30 + renderState.xc - x1;
+        float centerY = this.height * 5f / 8f - 40 + renderState.yc - y1;
+        float blockSize = renderState.scale * this.width / structure.maxDimension() / 1.2f;
+        List<SelectionBox> boxes = List.of();
+        if (cumulative) {
+            // 框出这一步新增方块的范围（步骤是自动拆分的，旧的手写选区框对不上）
+            if (stepStructure != null && !stepStructure.blocks().isEmpty()) {
+                boxes = List.of(new SelectionBox(stepStructure.minX(), stepStructure.minY(), stepStructure.minZ(),
+                        stepStructure.maxX(), stepStructure.maxY(), stepStructure.maxZ()));
+            }
+        } else if (machine.selectionBoxes() != null && currentStep - 1 < machine.selectionBoxes().size()) {
+            boxes = machine.selectionBoxes().get(currentStep - 1);
+        }
+        float alpha = 0.5f + 0.3f * (float) Math.abs(Math.sin(System.currentTimeMillis() / 300.0));
+        ctx.state.addSpecialElement(new TutorialStructureRenderState(structure, renderState.rotation, renderState.pitch,
+                centerX, centerY, blockSize, boxes, alpha, x1, y1, x2, y2, null));
+    }
 
     private void renderBlockList(DrawContext ctx) {
-        if (blockList == null || blockList.isEmpty()) return;
-
+        if (blockList.isEmpty()) return;
         int total = blockList.size();
-        int listW = 100, iconSize = 12;
-        int x = this.width - listW - 5, y0 = 10, height = Math.min(BLOCK_LINES, total) * (iconSize + 4);
-        ctx.fill(x - 5, y0 - 4, x + listW + 8, y0 + height + 4, 0x40FFFFFF);
+        int x = blockListX(), y0 = blockListY(), height = blockListH();
+        ctx.fill(x - 4, y0 - 4, x + BLOCK_LIST_W + 4, y0 + height + 4, 0x40FFFFFF);
         int maxScroll = Math.max(0, total - BLOCK_LINES);
-        var fontSize = 0.75;
+        blockScroll = Math.max(0, Math.min(blockScroll, maxScroll));
+        int textMaxW = BLOCK_LIST_W - 18 - 38 - (maxScroll > 0 ? 6 : 0);
         for (int i = 0; i < BLOCK_LINES && (i + blockScroll) < total; i++) {
-            var entry = blockList.get(i + blockScroll);
-            if (entry.stack.equals(new ItemStack(Items.BARRIER))) continue;
-            int y = y0 + i * (iconSize + 4);
-            ctx.drawItem(entry.stack,x, y);
-            ctx.drawText(this.textRenderer, entry.displayName, x + iconSize + 10, y + 4, 0xFFEBEBEB, true);
-            ctx.drawText(this.textRenderer, entry.countBoxGroup(), x + listW - 35, y + 7, 0xFFFF512C, true);
+            AnalysisList.Entry entry = blockList.get(i + blockScroll);
+            int y = y0 + i * BLOCK_ROW_H;
+            ctx.drawItem(entry.stack, x, y);
+            String name = entry.displayName.getString();
+            if (this.textRenderer.getWidth(name) > textMaxW) {
+                name = this.textRenderer.trimToWidth(name, textMaxW - this.textRenderer.getWidth("…")) + "…";
+            }
+            ctx.drawText(this.textRenderer, name, x + 18, y + 4, 0xFFEBEBEB, true);
+            String count = entry.countBoxGroup();
+            int countX = x + BLOCK_LIST_W - (maxScroll > 0 ? 8 : 2) - this.textRenderer.getWidth(count);
+            ctx.drawText(this.textRenderer, count, countX, y + 4, 0xFFFF512C, true);
         }
-
         if (maxScroll > 0) {
-            int barX = x + listW - 6, barW = 4;
+            int barX = x + BLOCK_LIST_W - 4, barW = 4;
             ctx.fill(barX, y0, barX + barW, y0 + height, 0x22000000);
             int sliderH = Math.max(12, height * BLOCK_LINES / total);
             int sliderY = y0 + (height - sliderH) * blockScroll / maxScroll;
@@ -192,202 +300,140 @@ public class TutorialGroupScreen extends Screen {
         }
     }
 
+    // ---------------------------------------------------------------- 输入
 
-    public void renderUI() {
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.prev"),
-                btn -> lastStep()).dimensions(120, this.height - 25, 40, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.next"),
-                btn -> nextStep()).dimensions(160, this.height - 25, 40, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.output"),
-                btn -> output()).dimensions(200, this.height - 25, 60, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.literal((0f - renderState.pitch) + "P"),
-                btn -> {
-                    if (renderState.pitch > -60) renderState.addPitch(15);
-                    else renderState.addPitch(-120);
-                    this.client.setScreen(new TutorialGroupScreen(group, selectedMac, currentStep, renderState, blockListExternal, blocklistConsist));
-                }).dimensions(260, this.height - 25, 40, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("\u25B6"),
-                btn -> autoRotate = !autoRotate).dimensions(300, this.height - 25, 20, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("\u21BA"),
-                btn -> resetKey()).dimensions(320, this.height - 25, 20, 20).build());
-        NarratedMultilineTextWidget descWidget = new NarratedMultilineTextWidget(120, Text.translatable("tutorial." + machine.id + ".step" + currentStep), this.textRenderer);
-        descWidget.setPosition(5, 165);
-        this.addDrawableChild(descWidget);
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("REI"),
-                btn -> Openpage()).dimensions(340, this.height - 25, 20, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.literal(blocklistConsist ? "DIFF":"NORM"),
-                btn -> {
-                    blocklistConsist = !blocklistConsist;
-                    this.client.setScreen(new TutorialGroupScreen(group, selectedMac, currentStep, renderState, blockListExternal, blocklistConsist));
-                }).dimensions(360, this.height - 25, 40, 20).build());
-
+    @Override
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+        if (click.button() == 0 && inStructureView(click.x(), click.y())) {
+            if (this.client.isShiftPressed()) {
+                // Shift + 拖拽：平移
+                renderState.addPan((float) offsetX, (float) offsetY);
+            } else {
+                // 左右拖拽：旋转；上下拖拽：仰角（向下拖 = 更俯视）
+                renderState.addRotation((float) offsetX);
+                renderState.addPitch((float) -offsetY);
+            }
+            autoRotate = false;
+            return true;
+        }
+        return super.mouseDragged(click, offsetX, offsetY);
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
+        if (inBlockList(mouseX, mouseY)) {
+            int maxScroll = Math.max(0, blockList.size() - BLOCK_LINES);
+            blockScroll = Math.max(0, Math.min(maxScroll, blockScroll - (int) Math.signum(vertical)));
+            return true;
+        }
+        if (inStructureView(mouseX, mouseY)) {
+            renderState.addScale(1.0f + (float) (vertical + horizontal) * 0.08f);
+            return true;
+        }
+        return super.mouseScrolled(mouseX, mouseY, horizontal, vertical);
+    }
+
+    @Override
+    public boolean mouseClicked(Click click, boolean doubled) {
+        int total = blockList.size();
+        int maxScroll = Math.max(0, total - BLOCK_LINES);
+        int barX = blockListX() + BLOCK_LIST_W - 4, y0 = blockListY(), listH = blockListH();
+        if (maxScroll > 0 && click.x() >= barX && click.x() < barX + 4 && click.y() >= y0 && click.y() < y0 + listH) {
+            int sliderH = Math.max(12, listH * BLOCK_LINES / total);
+            int relY = (int) click.y() - y0 - sliderH / 2;
+            blockScroll = Math.max(0, Math.min(maxScroll, relY * maxScroll / Math.max(1, listH - sliderH)));
+            return true;
+        }
+        return super.mouseClicked(click, doubled);
+    }
+
+    @Override
+    public boolean keyPressed(KeyInput input) {
+        if (ModKeyBinding.openTutorialKey.matchesKey(input)) {
+            this.client.setScreen(new TutorialMainScreen());
+            return true;
+        }
+        if (ModKeyBinding.leftKey.matchesKey(input)) { rotateKey(-10f); return true; }
+        if (ModKeyBinding.rightKey.matchesKey(input)) { rotateKey(10f); return true; }
+        if (ModKeyBinding.downKey.matchesKey(input)) { pitchKey(-5f); return true; }
+        if (ModKeyBinding.upKey.matchesKey(input)) { pitchKey(5f); return true; }
+        if (ModKeyBinding.inKey.matchesKey(input)) { zoomKey(1.2f); return true; }
+        if (ModKeyBinding.outKey.matchesKey(input)) { zoomKey(1 / 1.2f); return true; }
+        if (ModKeyBinding.nextKey.matchesKey(input)) { nextStep(); return true; }
+        if (ModKeyBinding.prevKey.matchesKey(input)) { lastStep(); return true; }
+        if (ModKeyBinding.nextTKey.matchesKey(input)) { nextTutorialKey(); return true; }
+        if (ModKeyBinding.prevTKey.matchesKey(input)) { prevTutorialKey(); return true; }
+        if (ModKeyBinding.resetKey.matchesKey(input)) { resetKey(); return true; }
+        return super.keyPressed(input);
+    }
+
+    // ---------------------------------------------------------------- 操作
 
     public void rotateKey(float delta) {
         renderState.addRotation(delta);
     }
 
-    public void ycKey(float delta) {
-        renderState.addYc(delta);
+    public void pitchKey(float delta) {
+        renderState.addPitch(delta);
     }
 
-    public void zoomKey(float delta) {
-        renderState.addScale(delta);
+    /** factor: 缩放倍数（>1 放大）。旧版传的是 ±0.2 加到乘数上，会直接把缩放变成最小值 */
+    public void zoomKey(float factor) {
+        renderState.addScale(factor);
+    }
+
+    private void selectMachine(int idx) {
+        if (idx == selectedMac) return;
+        selectedMac = idx;
+        currentStep = 1;
+        exportMessage = null;
+        this.clearAndInit();
     }
 
     public void nextStep() {
-        if (choose.isEmpty()) return;
-        MachineInfo machine = choose.get(selectedMac);
-        if (TutorialManager.loadNbtFromResource(machine.id, currentStep + 1) != null) {
+        if (machine != null && currentStep < stepCount) {
             currentStep++;
-            if (this.client != null) {
-                this.client.setScreen(new TutorialGroupScreen(group, selectedMac, currentStep, renderState, blockListExternal, blocklistConsist));
-            }
-        } else {
-            LOGGER.warn("CurrentStep Up NULL");
+            exportMessage = null;
+            this.clearAndInit();
         }
     }
 
     public void lastStep() {
-        if (currentStep > 1) {
+        if (machine != null && currentStep > 1) {
             currentStep--;
-            if (this.client != null) {
-                this.client.setScreen(new TutorialGroupScreen(group, selectedMac, currentStep, renderState, blockListExternal, blocklistConsist));
-            }
+            exportMessage = null;
+            this.clearAndInit();
         }
     }
 
     public void nextTutorialKey() {
-        if (selectedMac < OutputRecipe.factoryMachines.size()) selectedMac++;
+        if (selectedMac < choose.size() - 1) selectMachine(selectedMac + 1);
     }
 
     public void prevTutorialKey() {
-        if (selectedMac > 0) selectedMac--;
+        if (selectedMac > 0) selectMachine(selectedMac - 1);
     }
 
     public void resetKey() {
         renderState = new IsometricRenderState();
+        autoRotate = false;
+        this.clearAndInit();
     }
 
-    public void output(){
-        if (choose.isEmpty()) return;
-        int max = choose.get(selectedMac).selectbox.size();
-        LOGGER.info("{}.{}",machine.id,max);
-        ExportFile.exportTutorialFolder(machine.id,max);
+    /** 导出整台机器（_full.nbt） */
+    public void output() {
+        if (machine == null || stepCount <= 0) return;
+        Path out = ExportFile.exportTutorialFolder(machine.id(), stepCount);
+        exportMessage = out == null
+                ? Text.translatable("tutorial.ui.output.fail")
+                : Text.translatable("tutorial.ui.output.done", "schematics/AutomationEra/" + out.getFileName());
     }
 
-    public void Openpage(){
-        Map<String,List<?>> cm = OutputRecipe.ConvertMap();
-        for (Map.Entry<String,List<?>> entry:cm.entrySet()){
-            List<?> value = entry.getValue();
-            if (value.getFirst().equals(group) && value.getLast().equals(selectedMac)){
-                String key = entry.getKey();
-
-                EntryStack<?> entryStack = reiPlugin.ENTRY_BY_KEY.get(key);
-                if (entryStack == null) {
-                    LOGGER.warn("No EntryStack found from Openpage: {}", key);
-                    return;
-                }
-                ClientHelper.getInstance().openView(
-                        ViewSearchBuilder.builder()
-                                .addRecipesFor(entryStack)
-                                .setPreferredOpenedCategory(reiPlugin.MACHINE_CATEGORY_ID)
-
-                );
-
-                return;
-            }
+    private void openReiPage() {
+        if (machine == null || !FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) return;
+        String key = OutputRecipe.reiKeyOfTutorial(machine.id());
+        if (key != null) {
+            com.automationera.rei.reiPlugin.openMachinePage(key);
         }
-    }
-
-    public void setBlockList(List<AnalysisList.Entry> blockList) {
-        this.blockList = blockList;
-    }
-
-    public static class MachineInfo {
-        public final String id;
-        public final Item icon;
-        public final Text name;
-        private final List<List<SelectionBox>> selectbox;
-        private final boolean consist;
-
-        public MachineInfo(String id, Item icon, Text name, List<List<SelectionBox>> selectbox, boolean consist) {
-            this.id = id;
-            this.icon = icon;
-            this.name = name;
-            this.selectbox = selectbox;
-            this.consist = consist;
-        }
-    }
-
-    public static class SelectionBox {
-        final int x1;
-        final int y1;
-        final int z1;
-        final int x2;
-        final int y2;
-        final int z2;
-        public SelectionBox(int x1, int y1, int z1, int x2, int y2, int z2) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.z1 = z1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.z2 = z2;
-        }
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (com.automationera.keybinding.ModKeyBinding.openTutorialKey.matchesKey(keyCode, scanCode)) {
-            this.client.setScreen(new TutorialMainScreen());
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.leftKey.matchesKey(keyCode, scanCode)) {
-            this.rotateKey(-10f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.rightKey.matchesKey(keyCode, scanCode)) {
-            this.rotateKey(10f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.downKey.matchesKey(keyCode, scanCode)) {
-            this.ycKey(2.5f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.upKey.matchesKey(keyCode, scanCode)) {
-            this.ycKey(-2.5f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.inKey.matchesKey(keyCode, scanCode)) {
-            this.zoomKey(0.2f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.outKey.matchesKey(keyCode, scanCode)) {
-            this.zoomKey(-0.2f);
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.nextKey.matchesKey(keyCode, scanCode)) {
-            this.nextStep();
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.prevKey.matchesKey(keyCode, scanCode)) {
-            this.lastStep();
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.nextTKey.matchesKey(keyCode, scanCode)) {
-            this.nextTutorialKey();
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.prevTKey.matchesKey(keyCode, scanCode)) {
-            this.prevTutorialKey();
-            return true;
-        }
-        if (com.automationera.keybinding.ModKeyBinding.resetKey.matchesKey(keyCode, scanCode)) {
-            this.resetKey();
-            return true;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

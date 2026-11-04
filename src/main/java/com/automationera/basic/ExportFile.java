@@ -1,106 +1,71 @@
 package com.automationera.basic;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
 
 public class ExportFile {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("AutomationEraTutorial/FileManager");
+
     public static Path ensureAutomationEraDir() throws IOException {
-        Path gameDir = FabricLoader.getInstance().getGameDir();
-        String ver = SharedConstants.getGameVersion().getName();
-        Path dir = gameDir.resolve("schematics").resolve("AutomationEra");
+        Path dir = FabricLoader.getInstance().getGameDir().resolve("schematics").resolve("AutomationEra");
         Files.createDirectories(dir);
         return dir;
     }
 
-    public static void exportTutorialFolder(String machineId, int index) {
+    /**
+     * 把整台机器的结构文件（tutorial/&lt;id&gt;/&lt;id&gt;_full.nbt）导出到 schematics/AutomationEra/&lt;id&gt;.nbt。
+     * 0.1.9.1 起重新拆分的机器各步骤文件只含本步新增方块，所以优先导出 _full；
+     * 没有 _full 的（保持旧格式的机器）导出最后一步 lastStep。
+     *
+     * @return 导出的文件路径；资源不存在或写入失败时返回 null
+     */
+    public static Path exportTutorialFolder(String machineId, int lastStep) {
+        String modid = "automationera";
+        Identifier id = Identifier.of(modid, "tutorial/" + machineId + "/" + machineId + "_full.nbt");
         try {
             Path dest = ensureAutomationEraDir();
             ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
-            String modid = "automationera";
-            String path = "tutorial/" + machineId + "/" + machineId + "_step" + index + ".nbt";
-            Identifier id = Identifier.of(modid, path);
             Resource res = rm.getResource(id).orElse(null);
-            if (res != null) {
-                try (InputStream in = res.getInputStream()) {
-                    String filename = machineId + ".nbt";
-                    Files.copy(in, dest.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-                }
-            } else {
-                System.err.println("Resource not found: " + id);
+            if (res == null) {
+                id = Identifier.of(modid, "tutorial/" + machineId + "/" + machineId + "_step" + lastStep + ".nbt");
+                res = rm.getResource(id).orElse(null);
             }
+            if (res == null) {
+                LOGGER.warn("Resource not found: {}", id);
+                return null;
+            }
+            Path out = dest.resolve(machineId + ".nbt");
+            try (InputStream in = res.getInputStream()) {
+                Files.copy(in, out, StandardCopyOption.REPLACE_EXISTING);
+            }
+            return out;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Export failed: {}", id, e);
+            return null;
         }
     }
+
+    // 用原版的 Util 打开文件夹/链接：游戏里 java.awt 通常是 headless，Desktop 不可用
     public static void openAutomationEraDir() {
-        MinecraftClient.getInstance().execute(() -> {
-            try {
-                Path dir = ensureAutomationEraDir();
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(dir.toFile());
-                    LOGGER.info("Java desktop running");
-                }else {
-                    LOGGER.warn("Java Desktop error");
-                    String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-
-                    ProcessBuilder pb;
-                    if (os.contains("win")) {
-                        // Windows
-                        pb = new ProcessBuilder("explorer.exe", dir.toString());
-                    } else if (os.contains("mac")) {
-                        // macOS
-                        pb = new ProcessBuilder("open", dir.toString());
-                    } else {
-                        // Linux
-                        pb = new ProcessBuilder("xdg-open", dir.toString());
-                    }
-                    pb.start();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            Util.getOperatingSystem().open(ensureAutomationEraDir());
+        } catch (IOException e) {
+            LOGGER.error("Cannot open schematics folder", e);
+        }
     }
 
-    public static void buymeacoffee(){
-        String url = "https://buymeacoffee.com/albertchen857";
-        try {
-            URI uri = new URI(url);
-
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().browse(uri);
-                return;
-            }
-
-            String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-
-            Runtime rt = Runtime.getRuntime();
-            if (os.contains("win")) {
-                rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-            } else if (os.contains("mac")) {
-                rt.exec("open " + url);
-            } else {
-                rt.exec("xdg-open " + url);  // Linux
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void buymeacoffee() {
+        Util.getOperatingSystem().open("https://buymeacoffee.com/albertchen857");
     }
 }

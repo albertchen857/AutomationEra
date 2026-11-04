@@ -1,12 +1,17 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:animalfarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:honey_block"
+          "minecraft:honeycomb"
         ],
-        "required_stacks": 4
+        "required_stacks": 9
       },
       "trigger": "automationera:full_stack"
     }

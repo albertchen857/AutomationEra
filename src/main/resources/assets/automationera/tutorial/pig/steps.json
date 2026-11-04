@@ -1,0 +1,141 @@
+{
+ "id": "pig",
+ "oldSteps": 3,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 7,
+   "old": 1
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 3,
+   "old": 1
+  },
+  {
+   "step": 3,
+   "y0": 1,
+   "y1": 1,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 6,
+   "old": 1
+  },
+  {
+   "step": 4,
+   "y0": 1,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 9,
+   "old": 1
+  },
+  {
+   "step": 5,
+   "y0": 2,
+   "y1": 4,
+   "role": "fill",
+   "title": "平滑石 → lava … ×2 处（Y2–Y4）",
+   "blocks": 55,
+   "old": 1
+  },
+  {
+   "step": 6,
+   "y0": 4,
+   "y1": 6,
+   "role": "fill",
+   "title": "平滑石 → warped nylium …（Y4–Y6）",
+   "blocks": 228,
+   "old": 2
+  },
+  {
+   "step": 7,
+   "y0": 5,
+   "y1": 5,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 24,
+   "old": 2
+  },
+  {
+   "step": 8,
+   "y0": 7,
+   "y1": 7,
+   "role": "fill",
+   "title": "平滑石 #2",
+   "blocks": 216,
+   "old": 3
+  },
+  {
+   "step": 9,
+   "y0": 7,
+   "y1": 7,
+   "role": "detail",
+   "title": "橡木活板门 #1",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 10,
+   "y0": 8,
+   "y1": 9,
+   "role": "fill",
+   "title": "warped fungus → yellow concrete … ×8 处（Y8–Y9）",
+   "blocks": 12,
+   "old": 3
+  },
+  {
+   "step": 11,
+   "y0": 8,
+   "y1": 8,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 24,
+   "old": 3
+  },
+  {
+   "step": 12,
+   "y0": 10,
+   "y1": 10,
+   "role": "fill",
+   "title": "平滑石 #3",
+   "blocks": 216,
+   "old": 3
+  },
+  {
+   "step": 13,
+   "y0": 10,
+   "y1": 10,
+   "role": "detail",
+   "title": "橡木活板门 #2",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 14,
+   "y0": 11,
+   "y1": 11,
+   "role": "fill",
+   "title": "warped fungus · 本层 8 处",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 15,
+   "y0": 11,
+   "y1": 11,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 24,
+   "old": 3
+  }
+ ]
+}

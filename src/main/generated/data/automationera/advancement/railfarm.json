@@ -1,15 +1,21 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:ironfarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:activator_rail",
           "minecraft:detector_rail",
           "minecraft:powered_rail",
-          "minecraft:rail"
+          "minecraft:rail",
+          "minecraft:activator_rail"
         ],
-        "required_stacks": 9
+        "required_boxes": 1,
+        "required_stacks": 27
       },
       "trigger": "automationera:full_stack"
     }

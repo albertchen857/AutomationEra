@@ -1,0 +1,186 @@
+{
+ "id": "sheep",
+ "oldSteps": 4,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "opening",
+   "title": "white stained glass · 本层 2 处",
+   "blocks": 18,
+   "old": 3
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 3,
+   "y0": 1,
+   "y1": 1,
+   "role": "opening",
+   "title": "white stained glass · 本层 2 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 4,
+   "y0": 1,
+   "y1": 1,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 5,
+   "y0": 1,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 6,
+   "y0": 2,
+   "y1": 2,
+   "role": "opening",
+   "title": "white stained glass · 本层 2 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 7,
+   "y0": 2,
+   "y1": 2,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 8,
+   "y0": 2,
+   "y1": 2,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 6,
+   "old": 3
+  },
+  {
+   "step": 9,
+   "y0": 3,
+   "y1": 3,
+   "role": "opening",
+   "title": "white stained glass · 本层 2 处",
+   "blocks": 18,
+   "old": 3
+  },
+  {
+   "step": 10,
+   "y0": 3,
+   "y1": 3,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 11,
+   "y0": 3,
+   "y1": 3,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 12,
+   "y0": 4,
+   "y1": 4,
+   "role": "fill",
+   "title": "grass block · 本层 2 处",
+   "blocks": 17,
+   "old": 3
+  },
+  {
+   "step": 13,
+   "y0": 4,
+   "y1": 4,
+   "role": "opening",
+   "title": "white stained glass #1",
+   "blocks": 1,
+   "old": 3
+  },
+  {
+   "step": 14,
+   "y0": 4,
+   "y1": 4,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 15,
+   "y0": 4,
+   "y1": 4,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 16,
+   "y0": 5,
+   "y1": 5,
+   "role": "opening",
+   "title": "white stained glass · 本层 2 处",
+   "blocks": 18,
+   "old": 4
+  },
+  {
+   "step": 17,
+   "y0": 5,
+   "y1": 5,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 18,
+   "y0": 6,
+   "y1": 8,
+   "role": "opening",
+   "title": "white stained glass → water … ×2 处（Y6–Y8）",
+   "blocks": 35,
+   "old": 4
+  },
+  {
+   "step": 19,
+   "y0": 7,
+   "y1": 7,
+   "role": "opening",
+   "title": "white stained glass #2",
+   "blocks": 1,
+   "old": 3
+  },
+  {
+   "step": 20,
+   "y0": 8,
+   "y1": 8,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 1,
+   "old": 3
+  }
+ ]
+}

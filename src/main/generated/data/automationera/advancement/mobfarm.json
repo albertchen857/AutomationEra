@@ -1,12 +1,19 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:attribute",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:bone"
+          "minecraft:rotten_flesh",
+          "minecraft:bone",
+          "minecraft:gunpowder"
         ],
-        "required_stacks": 4
+        "required_stacks": 9
       },
       "trigger": "automationera:full_stack"
     }

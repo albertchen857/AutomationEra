@@ -1,0 +1,204 @@
+{
+ "id": "sugarcane",
+ "oldSteps": 4,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 26,
+   "old": 4
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 0,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 2,
+   "old": 4
+  },
+  {
+   "step": 3,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 1,
+   "old": 4
+  },
+  {
+   "step": 4,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "泥土 · 本层 2 处",
+   "blocks": 27,
+   "old": 4
+  },
+  {
+   "step": 5,
+   "y0": 1,
+   "y1": 1,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 3,
+   "old": 4
+  },
+  {
+   "step": 6,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "sugar cane · 本层 2 处",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 7,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 20,
+   "old": 4
+  },
+  {
+   "step": 8,
+   "y0": 2,
+   "y1": 6,
+   "role": "opening",
+   "title": "glass → 平滑石 ×2 处（Y2–Y6）",
+   "blocks": 28,
+   "old": 4
+  },
+  {
+   "step": 9,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 20,
+   "old": 4
+  },
+  {
+   "step": 10,
+   "y0": 3,
+   "y1": 3,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 11,
+   "y0": 4,
+   "y1": 4,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 12,
+   "y0": 4,
+   "y1": 4,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 13,
+   "y0": 5,
+   "y1": 5,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 26,
+   "old": 4
+  },
+  {
+   "step": 14,
+   "y0": 5,
+   "y1": 5,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 1,
+   "old": 4
+  },
+  {
+   "step": 15,
+   "y0": 6,
+   "y1": 6,
+   "role": "fill",
+   "title": "泥土 · 本层 2 处",
+   "blocks": 27,
+   "old": 4
+  },
+  {
+   "step": 16,
+   "y0": 7,
+   "y1": 7,
+   "role": "fill",
+   "title": "sugar cane · 本层 2 处",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 17,
+   "y0": 7,
+   "y1": 7,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 20,
+   "old": 4
+  },
+  {
+   "step": 18,
+   "y0": 7,
+   "y1": 9,
+   "role": "opening",
+   "title": "glass → 平滑石 ×2 处（Y7–Y9）",
+   "blocks": 22,
+   "old": 4
+  },
+  {
+   "step": 19,
+   "y0": 8,
+   "y1": 8,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 20,
+   "old": 4
+  },
+  {
+   "step": 20,
+   "y0": 8,
+   "y1": 8,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 21,
+   "y0": 9,
+   "y1": 9,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 22,
+   "y0": 9,
+   "y1": 9,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 4
+  }
+ ]
+}

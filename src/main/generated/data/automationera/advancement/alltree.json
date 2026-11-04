@@ -1,25 +1,29 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:curcuitrevolution",
   "criteria": {
     "a1": {
       "conditions": {
-        "item": {
-          "items": [
-            "minecraft:acacia_log",
-            "minecraft:jungle_log",
-            "minecraft:oak_log",
-            "minecraft:birch_log",
-            "minecraft:dark_oak_log",
-            "minecraft:crimson_stem",
-            "minecraft:spruce_log",
-            "minecraft:mangrove_log",
-            "minecraft:warped_stem",
-            "minecraft:cherry_log"
-          ]
-        },
-        "required_stacks": 27
+        "items": [
+          "minecraft:crimson_stem",
+          "minecraft:spruce_log",
+          "minecraft:pale_oak_log",
+          "minecraft:dark_oak_log",
+          "minecraft:warped_stem",
+          "minecraft:acacia_log",
+          "minecraft:mangrove_log",
+          "minecraft:jungle_log",
+          "minecraft:cherry_log",
+          "minecraft:oak_log",
+          "minecraft:birch_log"
+        ],
+        "required_boxes": 9
       },
-      "trigger": "automationera:full_shulker_box"
+      "trigger": "automationera:full_stack"
     }
   },
   "display": {

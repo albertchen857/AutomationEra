@@ -1,0 +1,528 @@
+{
+ "id": "ocean",
+ "oldSteps": 7,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "water · 本层 4 处",
+   "blocks": 78,
+   "old": 7
+  },
+  {
+   "step": 2,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "water · 本层 4 处",
+   "blocks": 56,
+   "old": 7
+  },
+  {
+   "step": 3,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "soul sand #1",
+   "blocks": 273,
+   "old": 7
+  },
+  {
+   "step": 4,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "prismarine · 本层 5 处",
+   "blocks": 21,
+   "old": 7
+  },
+  {
+   "step": 5,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "magma block #1",
+   "blocks": 25,
+   "old": 7
+  },
+  {
+   "step": 6,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 74,
+   "old": 7
+  },
+  {
+   "step": 7,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 297,
+   "old": 7
+  },
+  {
+   "step": 8,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 295,
+   "old": 7
+  },
+  {
+   "step": 9,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 66,
+   "old": 7
+  },
+  {
+   "step": 10,
+   "y0": 4,
+   "y1": 4,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 293,
+   "old": 7
+  },
+  {
+   "step": 11,
+   "y0": 4,
+   "y1": 4,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 68,
+   "old": 7
+  },
+  {
+   "step": 12,
+   "y0": 5,
+   "y1": 12,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 2344,
+   "old": 7
+  },
+  {
+   "step": 13,
+   "y0": 5,
+   "y1": 12,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 544,
+   "old": 7
+  },
+  {
+   "step": 14,
+   "y0": 13,
+   "y1": 13,
+   "role": "fill",
+   "title": "bubble column + 平滑石 + water（交错放置）",
+   "blocks": 361,
+   "old": 7
+  },
+  {
+   "step": 15,
+   "y0": 14,
+   "y1": 14,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 72,
+   "old": 7
+  },
+  {
+   "step": 16,
+   "y0": 14,
+   "y1": 14,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 289,
+   "old": 7
+  },
+  {
+   "step": 17,
+   "y0": 15,
+   "y1": 15,
+   "role": "fill",
+   "title": "soul sand #2",
+   "blocks": 25,
+   "old": 7
+  },
+  {
+   "step": 18,
+   "y0": 15,
+   "y1": 15,
+   "role": "detail",
+   "title": "脚手架 #1",
+   "blocks": 337,
+   "old": 7
+  },
+  {
+   "step": 19,
+   "y0": 16,
+   "y1": 16,
+   "role": "fill",
+   "title": "平滑石 #2",
+   "blocks": 72,
+   "old": 7
+  },
+  {
+   "step": 20,
+   "y0": 16,
+   "y1": 16,
+   "role": "fill",
+   "title": "water #3",
+   "blocks": 244,
+   "old": 7
+  },
+  {
+   "step": 21,
+   "y0": 16,
+   "y1": 16,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 25,
+   "old": 7
+  },
+  {
+   "step": 22,
+   "y0": 16,
+   "y1": 16,
+   "role": "detail",
+   "title": "脚手架 #1",
+   "blocks": 20,
+   "old": 7
+  },
+  {
+   "step": 23,
+   "y0": 17,
+   "y1": 17,
+   "role": "fill",
+   "title": "平滑石 · 本层 5 处",
+   "blocks": 316,
+   "old": 7
+  },
+  {
+   "step": 24,
+   "y0": 17,
+   "y1": 17,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 29,
+   "old": 7
+  },
+  {
+   "step": 25,
+   "y0": 17,
+   "y1": 17,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 26,
+   "y0": 18,
+   "y1": 18,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 29,
+   "old": 7
+  },
+  {
+   "step": 27,
+   "y0": 18,
+   "y1": 18,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 28,
+   "y0": 18,
+   "y1": 20,
+   "role": "fill",
+   "title": "yellow concrete → black concrete（Y18–Y20）",
+   "blocks": 3,
+   "old": 7
+  },
+  {
+   "step": 29,
+   "y0": 18,
+   "y1": 18,
+   "role": "detail",
+   "title": "平滑石 · 本层 4 处",
+   "blocks": 24,
+   "old": 7
+  },
+  {
+   "step": 30,
+   "y0": 18,
+   "y1": 18,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 10,
+   "old": 7
+  },
+  {
+   "step": 31,
+   "y0": 18,
+   "y1": 18,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 7
+  },
+  {
+   "step": 32,
+   "y0": 19,
+   "y1": 19,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 29,
+   "old": 7
+  },
+  {
+   "step": 33,
+   "y0": 19,
+   "y1": 19,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 34,
+   "y0": 19,
+   "y1": 19,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 10,
+   "old": 7
+  },
+  {
+   "step": 35,
+   "y0": 19,
+   "y1": 19,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 1,
+   "old": 7
+  },
+  {
+   "step": 36,
+   "y0": 19,
+   "y1": 19,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 7
+  },
+  {
+   "step": 37,
+   "y0": 20,
+   "y1": 20,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 29,
+   "old": 7
+  },
+  {
+   "step": 38,
+   "y0": 20,
+   "y1": 20,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 39,
+   "y0": 20,
+   "y1": 20,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 10,
+   "old": 7
+  },
+  {
+   "step": 40,
+   "y0": 20,
+   "y1": 20,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 7
+  },
+  {
+   "step": 41,
+   "y0": 21,
+   "y1": 21,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 32,
+   "old": 7
+  },
+  {
+   "step": 42,
+   "y0": 21,
+   "y1": 21,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 43,
+   "y0": 21,
+   "y1": 23,
+   "role": "opening",
+   "title": "glass（Y21–Y23）",
+   "blocks": 15,
+   "old": 7
+  },
+  {
+   "step": 44,
+   "y0": 22,
+   "y1": 22,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 32,
+   "old": 7
+  },
+  {
+   "step": 45,
+   "y0": 22,
+   "y1": 22,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 46,
+   "y0": 23,
+   "y1": 23,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 32,
+   "old": 7
+  },
+  {
+   "step": 47,
+   "y0": 23,
+   "y1": 23,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 48,
+   "y0": 24,
+   "y1": 24,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 41,
+   "old": 7
+  },
+  {
+   "step": 49,
+   "y0": 24,
+   "y1": 24,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 16,
+   "old": 7
+  },
+  {
+   "step": 50,
+   "y0": 25,
+   "y1": 53,
+   "role": "fill",
+   "title": "cobblestone · 本层 2 处",
+   "blocks": 1044,
+   "old": 7
+  },
+  {
+   "step": 51,
+   "y0": 25,
+   "y1": 53,
+   "role": "fill",
+   "title": "bubble column #1",
+   "blocks": 464,
+   "old": 7
+  },
+  {
+   "step": 52,
+   "y0": 54,
+   "y1": 54,
+   "role": "fill",
+   "title": "cobblestone + bubble column（交错放置）",
+   "blocks": 54,
+   "old": 7
+  },
+  {
+   "step": 53,
+   "y0": 55,
+   "y1": 55,
+   "role": "fill",
+   "title": "cobblestone #1",
+   "blocks": 30,
+   "old": 7
+  },
+  {
+   "step": 54,
+   "y0": 55,
+   "y1": 55,
+   "role": "detail",
+   "title": "脚手架 #2",
+   "blocks": 25,
+   "old": 7
+  },
+  {
+   "step": 55,
+   "y0": 56,
+   "y1": 56,
+   "role": "fill",
+   "title": "cobblestone #1",
+   "blocks": 35,
+   "old": 7
+  },
+  {
+   "step": 56,
+   "y0": 56,
+   "y1": 56,
+   "role": "detail",
+   "title": "橡木 #1",
+   "blocks": 5,
+   "old": 7
+  },
+  {
+   "step": 57,
+   "y0": 57,
+   "y1": 57,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 37,
+   "old": 7
+  },
+  {
+   "step": 58,
+   "y0": 57,
+   "y1": 57,
+   "role": "detail",
+   "title": "平滑石 #4",
+   "blocks": 24,
+   "old": 7
+  }
+ ]
+}

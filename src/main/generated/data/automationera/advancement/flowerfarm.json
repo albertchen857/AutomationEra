@@ -1,23 +1,28 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:beehive",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:azure_bluet",
-          "minecraft:allium",
-          "minecraft:poppy",
           "minecraft:wither_rose",
-          "minecraft:blue_orchid",
-          "minecraft:lily_of_the_valley",
+          "minecraft:poppy",
           "minecraft:red_tulip",
-          "minecraft:orange_tulip",
-          "minecraft:dandelion",
-          "minecraft:white_tulip",
+          "minecraft:lily_of_the_valley",
+          "minecraft:allium",
+          "minecraft:azure_bluet",
           "minecraft:pink_tulip",
-          "minecraft:cornflower"
+          "minecraft:dandelion",
+          "minecraft:cornflower",
+          "minecraft:blue_orchid",
+          "minecraft:orange_tulip",
+          "minecraft:white_tulip"
         ],
-        "required_stacks": 4
+        "required_stacks": 9
       },
       "trigger": "automationera:full_stack"
     }

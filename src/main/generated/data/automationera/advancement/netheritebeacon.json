@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "beacon": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.netheritebeacon.descr"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:netherite_block"
+    },
+    "title": {
+      "translate": "advancements.netheritebeacon.title"
+    }
+  },
+  "requirements": [
+    [
+      "beacon"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

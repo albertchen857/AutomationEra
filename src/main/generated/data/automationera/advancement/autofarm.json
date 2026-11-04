@@ -1,5 +1,10 @@
 {
-  "parent": "automationera:attribute",
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:village",
   "criteria": {
     "a1": {
       "conditions": {
@@ -8,7 +13,7 @@
           "minecraft:potato",
           "minecraft:carrot"
         ],
-        "required_stacks": 4
+        "required_stacks": 9
       },
       "trigger": "automationera:full_stack"
     }

@@ -1,0 +1,33 @@
+{
+ "id": "ice",
+ "oldSteps": 1,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 225,
+   "old": 1
+  },
+  {
+   "step": 2,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 81,
+   "old": 1
+  },
+  {
+   "step": 3,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "ice #1",
+   "blocks": 144,
+   "old": 1
+  }
+ ]
+}

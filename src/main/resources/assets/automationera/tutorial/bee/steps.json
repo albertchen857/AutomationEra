@@ -1,0 +1,141 @@
+{
+ "id": "bee",
+ "oldSteps": 3,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "石砖 · 本层 2 处",
+   "blocks": 45,
+   "old": 1
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 0,
+   "role": "opening",
+   "title": "glass · 本层 2 处",
+   "blocks": 8,
+   "old": 2
+  },
+  {
+   "step": 3,
+   "y0": 0,
+   "y1": 0,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 4,
+   "old": 1
+  },
+  {
+   "step": 4,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 1
+  },
+  {
+   "step": 5,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "poppy #1",
+   "blocks": 35,
+   "old": 3
+  },
+  {
+   "step": 6,
+   "y0": 1,
+   "y1": 1,
+   "role": "opening",
+   "title": "glass · 本层 5 处",
+   "blocks": 20,
+   "old": 1
+  },
+  {
+   "step": 7,
+   "y0": 1,
+   "y1": 1,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 10,
+   "old": 1
+  },
+  {
+   "step": 8,
+   "y0": 1,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 1
+  },
+  {
+   "step": 9,
+   "y0": 2,
+   "y1": 2,
+   "role": "opening",
+   "title": "glass · 本层 5 处",
+   "blocks": 30,
+   "old": 1
+  },
+  {
+   "step": 10,
+   "y0": 2,
+   "y1": 2,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 10,
+   "old": 1
+  },
+  {
+   "step": 11,
+   "y0": 2,
+   "y1": 2,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 2
+  },
+  {
+   "step": 12,
+   "y0": 3,
+   "y1": 3,
+   "role": "opening",
+   "title": "glass · 本层 3 处",
+   "blocks": 35,
+   "old": 2
+  },
+  {
+   "step": 13,
+   "y0": 3,
+   "y1": 3,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 10,
+   "old": 1
+  },
+  {
+   "step": 14,
+   "y0": 3,
+   "y1": 3,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 20,
+   "old": 1
+  },
+  {
+   "step": 15,
+   "y0": 4,
+   "y1": 4,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 30,
+   "old": 1
+  }
+ ]
+}

@@ -1,0 +1,204 @@
+{
+ "id": "stone",
+ "oldSteps": 7,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "soul sand #1",
+   "blocks": 2,
+   "old": 1
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 0,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 16,
+   "old": 1
+  },
+  {
+   "step": 3,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 8,
+   "old": 1
+  },
+  {
+   "step": 4,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 68,
+   "old": 1
+  },
+  {
+   "step": 5,
+   "y0": 1,
+   "y1": 1,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 8,
+   "old": 1
+  },
+  {
+   "step": 6,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 26,
+   "old": 3
+  },
+  {
+   "step": 7,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "water #1",
+   "blocks": 25,
+   "old": 3
+  },
+  {
+   "step": 8,
+   "y0": 2,
+   "y1": 2,
+   "role": "detail",
+   "title": "cobbled deepslate slab · 本层 4 处",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 9,
+   "y0": 2,
+   "y1": 2,
+   "role": "detail",
+   "title": "橡木活板门 #1",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 10,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "cobblestone #1",
+   "blocks": 41,
+   "old": 4
+  },
+  {
+   "step": 11,
+   "y0": 4,
+   "y1": 5,
+   "role": "fill",
+   "title": "cobblestone #1",
+   "blocks": 80,
+   "old": 3
+  },
+  {
+   "step": 12,
+   "y0": 4,
+   "y1": 5,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 2,
+   "old": 4
+  },
+  {
+   "step": 13,
+   "y0": 6,
+   "y1": 6,
+   "role": "fill",
+   "title": "cobblestone #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 14,
+   "y0": 7,
+   "y1": 9,
+   "role": "detail",
+   "title": "橡木活板门 → oak leaves …（Y7–Y9）",
+   "blocks": 23,
+   "old": 7
+  },
+  {
+   "step": 15,
+   "y0": 8,
+   "y1": 8,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 1,
+   "old": 7
+  },
+  {
+   "step": 16,
+   "y0": 9,
+   "y1": 10,
+   "role": "detail",
+   "title": "平滑石 → tnt ×3 处（Y9–Y10）",
+   "blocks": 8,
+   "old": 7
+  },
+  {
+   "step": 17,
+   "y0": 10,
+   "y1": 11,
+   "role": "detail",
+   "title": "平滑石 → 橡木活板门（Y10–Y11）",
+   "blocks": 9,
+   "old": 7
+  },
+  {
+   "step": 18,
+   "y0": 10,
+   "y1": 10,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 7
+  },
+  {
+   "step": 19,
+   "y0": 11,
+   "y1": 12,
+   "role": "fill",
+   "title": "平滑石 → piston head … ×4 处（Y11–Y12）",
+   "blocks": 6,
+   "old": 7
+  },
+  {
+   "step": 20,
+   "y0": 11,
+   "y1": 11,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 1,
+   "old": 7
+  },
+  {
+   "step": 21,
+   "y0": 11,
+   "y1": 11,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 1,
+   "old": 7
+  },
+  {
+   "step": 22,
+   "y0": 11,
+   "y1": 12,
+   "role": "attach",
+   "title": "倒挂附着物（从下方放置）",
+   "blocks": 2,
+   "old": 1
+  }
+ ]
+}

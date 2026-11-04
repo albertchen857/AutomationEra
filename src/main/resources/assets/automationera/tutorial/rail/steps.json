@@ -1,0 +1,186 @@
+{
+ "id": "rail",
+ "oldSteps": 3,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 0,
+   "role": "fill",
+   "title": "平滑石 #1",
+   "blocks": 1,
+   "old": 2
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 1,
+   "role": "opening",
+   "title": "glass → soul sand …（Y0–Y1）",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 3,
+   "y0": 0,
+   "y1": 0,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 4,
+   "y0": 0,
+   "y1": 0,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 1,
+   "old": 2
+  },
+  {
+   "step": 5,
+   "y0": 0,
+   "y1": 0,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 3
+  },
+  {
+   "step": 6,
+   "y0": 1,
+   "y1": 1,
+   "role": "fill",
+   "title": "piston head #1",
+   "blocks": 1,
+   "old": 2
+  },
+  {
+   "step": 7,
+   "y0": 1,
+   "y1": 1,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 8,
+   "y0": 1,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 5,
+   "old": 3
+  },
+  {
+   "step": 9,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "苔藓块 #1",
+   "blocks": 21,
+   "old": 2
+  },
+  {
+   "step": 10,
+   "y0": 2,
+   "y1": 2,
+   "role": "opening",
+   "title": "glass · 本层 2 处",
+   "blocks": 6,
+   "old": 3
+  },
+  {
+   "step": 11,
+   "y0": 2,
+   "y1": 2,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 12,
+   "y0": 2,
+   "y1": 2,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 13,
+   "y0": 3,
+   "y1": 3,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 37,
+   "old": 3
+  },
+  {
+   "step": 14,
+   "y0": 3,
+   "y1": 3,
+   "role": "detail",
+   "title": "平滑石 #2",
+   "blocks": 1,
+   "old": 3
+  },
+  {
+   "step": 15,
+   "y0": 3,
+   "y1": 3,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 4,
+   "old": 2
+  },
+  {
+   "step": 16,
+   "y0": 4,
+   "y1": 4,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 17,
+   "y0": 4,
+   "y1": 4,
+   "role": "detail",
+   "title": "脚手架 #1",
+   "blocks": 6,
+   "old": 3
+  },
+  {
+   "step": 18,
+   "y0": 5,
+   "y1": 5,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 26,
+   "old": 3
+  },
+  {
+   "step": 19,
+   "y0": 5,
+   "y1": 5,
+   "role": "detail",
+   "title": "oak fence gate #1",
+   "blocks": 1,
+   "old": 3
+  },
+  {
+   "step": 20,
+   "y0": 6,
+   "y1": 6,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 26,
+   "old": 3
+  }
+ ]
+}

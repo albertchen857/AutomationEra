@@ -1,4 +1,9 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:automaticfactory",
   "criteria": {
     "placeobserver": {

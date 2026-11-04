@@ -7,5 +7,9 @@
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"plugin": "com.automationera.mixin.AutomationeraMixinPlugin",
+	"client": [
+		"rei.DisplaySyncPacketMixin"
+	]
 }

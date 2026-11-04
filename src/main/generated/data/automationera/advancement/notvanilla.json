@@ -1,0 +1,31 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "mod": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.notvanilla.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:knowledge_book"
+    },
+    "title": {
+      "translate": "advancements.notvanilla.title"
+    }
+  },
+  "requirements": [
+    [
+      "mod"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
