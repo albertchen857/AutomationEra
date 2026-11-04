@@ -7,10 +7,10 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.DisplaySerializer;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +91,7 @@ public class TradeReiRecipe implements Display {
 
     @Override
     public Optional<Identifier> getDisplayLocation() {
-        return Optional.of(Identifier.of("automationera", "trade_recipe_" + key));
+        return Optional.of(Identifier.fromNamespaceAndPath("automationera", "trade_recipe_" + key));
     }
 
     @Override

@@ -16,10 +16,10 @@ import me.shedaniel.rei.api.client.view.ViewSearchBuilder;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class reiPlugin implements REIClientPlugin {
     public static final Map<String, List<List<Item>>> trade = new OutputRecipe().TradeRecipy();
     public static final Map<String, List<Item>> tut = new OutputRecipe().TutorialRecipy();
 
-    public static final Identifier ICON_TEXTURE = Identifier.of("automationera", "icon.png");
+    public static final Identifier ICON_TEXTURE = Identifier.fromNamespaceAndPath("automationera", "icon.png");
     public static final Map<String, EntryStack<?>> ENTRY_BY_KEY = new HashMap<>();
 
     @Override
@@ -105,17 +105,17 @@ public class reiPlugin implements REIClientPlugin {
 
     // Utility methods for texture Identifiers (for categories to use)
     public static Identifier getMachineTexture(String machineKey) {
-        return Identifier.of("automationera", "textures/rei/machine/" + machineKey + ".png");
+        return Identifier.fromNamespaceAndPath("automationera", "textures/rei/machine/" + machineKey + ".png");
     }
     public static Identifier getVillagerTexture(String job) {
-        return Identifier.of("automationera", "textures/rei/villager/" + job + ".png");
+        return Identifier.fromNamespaceAndPath("automationera", "textures/rei/villager/" + job + ".png");
     }
     /** 教程图片：非中文语言时优先用带英文标注的 <key>_en.png（存在的话） */
     public static Identifier getTutorialTexture(String tutKey) {
-        Identifier base = Identifier.of("automationera", "textures/rei/tutorial/" + tutKey + ".png");
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (!client.getLanguageManager().getLanguage().startsWith("zh")) {
-            Identifier en = Identifier.of("automationera", "textures/rei/tutorial/" + tutKey + "_en.png");
+        Identifier base = Identifier.fromNamespaceAndPath("automationera", "textures/rei/tutorial/" + tutKey + ".png");
+        Minecraft client = Minecraft.getInstance();
+        if (!client.getLanguageManager().getSelected().startsWith("zh")) {
+            Identifier en = Identifier.fromNamespaceAndPath("automationera", "textures/rei/tutorial/" + tutKey + "_en.png");
             if (client.getResourceManager().getResource(en).isPresent()) return en;
         }
         return base;
@@ -135,6 +135,6 @@ public class reiPlugin implements REIClientPlugin {
 
     // Utility to open wiki URL (called from category widgets on button click)
     public static void openWiki(String url) {
-        net.minecraft.util.Util.getOperatingSystem().open(url);
+        net.minecraft.util.Util.getPlatform().openUri(url);
     }
 }

@@ -12,12 +12,10 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,8 +34,8 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
     }
 
     @Override
-    public Text getTitle() {
-        return Text.translatable("emi.category.automationera.trade");
+    public Component getTitle() {
+        return Component.translatable("emi.category.automationera.trade");
     }
 
     @Override
@@ -61,18 +59,18 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
 
         // Special case: "trade_main" – similar highlight as circuit
         if (Objects.equals(key, "trade_main")) {
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.title"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.title"),
                     originX + 5, originY + 4, 150, 15, 0xFFE71B1B, 0.6f));
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.descr"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.descr"),
                     originX + 5, originY + 19, 150, 40, 0xFF404040, 0.5f));
             widgets.add(Widgets.createTexturedWidget(
                     reiPlugin.ICON_TEXTURE,
                     new Rectangle(originX + 48, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal(""))
-                    .text(Text.of("WIKI"))
+            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Component.literal(""))
+                    .text(Component.nullToEmpty("WIKI"))
                     .onClick(button -> {
-                        String url = I18n.translate("emi.automationera.circuit.wiki");
+                        String url = I18n.get("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
                     });
             widgets.add(wikiButton);
@@ -80,17 +78,17 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
         }
 
         // Standard villager trade display
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".title"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".title"),
                 originX + 5, originY + 4, 120, 15, 0xFF404040, 0.6f));
 
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
-                .text(Text.of("WIKI"))
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Component.literal(""))
+                .text(Component.nullToEmpty("WIKI"))
                 .onClick(button -> {
-                    String url = I18n.translate("emi.automationera.trade.wiki");
+                    String url = I18n.get("emi.automationera.trade.wiki");
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".descr"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".descr"),
                 originX + 5, originY + 19, 150, 20, 0xFF404040, 0.5f));
         // Villager image corresponding to profession (job)
         String job = key.contains("_") ? key.split("_")[0] : key;
@@ -107,7 +105,7 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
             inglen = isOutputTrade ? ingOlen : ingIlen;
         }
         // Determine primary item list to display (outputs vs inputs)
-        List<net.minecraft.item.Item> primaryList = isOutputTrade ? display.getAllOutputs() : display.getAllInputs();
+        List<net.minecraft.world.item.Item> primaryList = isOutputTrade ? display.getAllOutputs() : display.getAllInputs();
         int total = primaryList.size() + inglen;
         // Display the primary items (and any alternate ingredients) in a grid
         for (int i = 0; i < total; i++) {
@@ -120,7 +118,7 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
                 );
             } else {
                 int altIndex = i - primaryList.size();
-                List<net.minecraft.item.Item> altItems = display.getTemplate().get(
+                List<net.minecraft.world.item.Item> altItems = display.getTemplate().get(
                         display.getIng().get(job).get(isOutputTrade ? 0 : 1).get(altIndex));
                 List<EntryStack<?>> stacks = altItems.stream()
                         .map(item -> EntryStacks.of(new ItemStack(item)))

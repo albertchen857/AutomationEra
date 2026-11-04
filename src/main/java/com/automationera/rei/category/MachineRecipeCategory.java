@@ -15,12 +15,12 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +43,9 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
     }
 
     @Override
-    public Text getTitle() {
+    public Component getTitle() {
         // Use translation key if available for category title
-        return Text.translatable("emi.category.automationera.machine");
+        return Component.translatable("emi.category.automationera.machine");
     }
 
     @Override
@@ -73,18 +73,18 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         String key = display.getKey();
 
         if (Objects.equals(key, "circuit")) {
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.title"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.title"),
                     originX + 5, originY + 4, 150, 15, 0xFFE71B1B, 0.6f));
             widgets.add(Widgets.createTexturedWidget(
                     reiPlugin.ICON_TEXTURE, // Identifier.of("automationera", "icon.png")
                     new Rectangle(originX + 96, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.descr"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.descr"),
                     originX + 5, originY + 19, 150, 40, 0xFF404040, 0.5f));
-            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal("wiki"))
-                    .text(Text.of("WIKI"))
+            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Component.literal("wiki"))
+                    .text(Component.nullToEmpty("WIKI"))
                     .onClick(button -> {
-                        String url = I18n.translate("emi.automationera.circuit.wiki");
+                        String url = I18n.get("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
                     });
             // Use the wiki button texture as background
@@ -95,12 +95,12 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         // Standard case for other machines:
         // Title (default color)
 //        LOGGER.info("{}|{}",I18n.translate("emi.automationera." + key + ".title"),I18n.translate("emi.automationera." + key + ".descr"));
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".title"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".title"),
                 originX + 5, originY + 4, 120, 15, 0xFF404040, 0.6f));
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
-                .text(Text.of("WIKI"))
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Component.literal(""))
+                .text(Component.nullToEmpty("WIKI"))
                 .onClick(button -> {
-                    String url = I18n.translate("emi.automationera." + key + ".wiki");
+                    String url = I18n.get("emi.automationera." + key + ".wiki");
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
@@ -109,11 +109,11 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         if (tutorial != null) {
             widgets.add(Widgets.createButton(
                             new Rectangle(originX + 135, originY + 120, 22, 22),
-                            Text.literal(""))
-                    .tooltipLines(Text.translatable("tutorial.ui.open"))
-                    .onClick(button -> MinecraftClient.getInstance().setScreen(new TutorialGroupScreen(
+                            Component.literal(""))
+                    .tooltipLines(Component.translatable("tutorial.ui.open"))
+                    .onClick(button -> Minecraft.getInstance().setScreen(new TutorialGroupScreen(
                             (String) tutorial.getFirst(), (int) tutorial.getLast(), 1, new IsometricRenderState()))));
-            widgets.add(Widgets.createTexturedWidget(Identifier.of("automationera", "textures/gui/wikibutton.png"),
+            widgets.add(Widgets.createTexturedWidget(Identifier.fromNamespaceAndPath("automationera", "textures/gui/wikibutton.png"),
                     originX + 136, originY + 121, 1, 1, 20, 20));
         }
         // Machine image (e.g., textures/<key>.png scaled to 96x96)
@@ -122,7 +122,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                 new Rectangle(originX -8 , originY + 48, 96, 96),
                 0, 0, 500, 500, 500, 500));
         // Description (wrapped lines)
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".descr"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".descr"),
                 originX + 5, originY + 19, 150, 36, 0xFF404040, 0.5f));
 
         // Compute counts for alternate outputs/inputs if any (from Ing map)
@@ -147,7 +147,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                 } else {
                     // Alternate output ingredient (template-defined)
                     int altIndex = i - display.getAllOutputs().size();
-                    List<net.minecraft.item.Item> altItems = display.getTemplate().get(
+                    List<net.minecraft.world.item.Item> altItems = display.getTemplate().get(
                             display.getIng().get(key).getFirst().get(altIndex));
                     List<EntryStack<?>> stacks = altItems.stream()
                             .map(item -> EntryStacks.of(new ItemStack(item)))
@@ -172,7 +172,7 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                     );
                 } else {
                     int altIndex = i - display.getAllInputs().size();
-                    List<net.minecraft.item.Item> altItems = display.getTemplate().get(
+                    List<net.minecraft.world.item.Item> altItems = display.getTemplate().get(
                             display.getIng().get(key).get(1).get(altIndex));
                     List<EntryStack<?>> stacks = altItems.stream()
                             .map(item -> EntryStacks.of(new ItemStack(item)))

@@ -3,19 +3,19 @@ package com.automationera.ui;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtSizeTracker;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class TutorialManager {
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEraTutorial");
 
     // 每帧都会用到，避免每帧重新解压 NBT
-    private static final Map<String, Optional<NbtCompound>> NBT_CACHE = new HashMap<>();
+    private static final Map<String, Optional<CompoundTag>> NBT_CACHE = new HashMap<>();
     private static final Map<String, Optional<Structure>> STRUCTURE_CACHE = new HashMap<>();
 
     public record PlacedBlock(int x, int y, int z, BlockState state) {
@@ -110,10 +110,10 @@ public class TutorialManager {
     }
 
     private static List<StepMeta> readStepMeta(String id) {
-        Identifier rid = Identifier.of("automationera", "tutorial/" + id + "/steps.json");
-        Resource res = MinecraftClient.getInstance().getResourceManager().getResource(rid).orElse(null);
+        Identifier rid = Identifier.fromNamespaceAndPath("automationera", "tutorial/" + id + "/steps.json");
+        Resource res = Minecraft.getInstance().getResourceManager().getResource(rid).orElse(null);
         if (res == null) return List.of();
-        try (var reader = res.getReader()) {
+        try (var reader = res.openAsReader()) {
             List<StepMeta> list = new ArrayList<>();
             for (JsonElement e : JsonParser.parseReader(reader).getAsJsonObject().getAsJsonArray("steps")) {
                 JsonObject o = e.getAsJsonObject();
@@ -139,19 +139,19 @@ public class TutorialManager {
     }
 
     @Nullable
-    public static NbtCompound loadNbtFromResource(String id, int step) {
+    public static CompoundTag loadNbtFromResource(String id, int step) {
         return NBT_CACHE.computeIfAbsent(key(id, step), k -> Optional.ofNullable(readNbt(id, step))).orElse(null);
     }
 
     @Nullable
-    private static NbtCompound readNbt(String id, int step) {
+    private static CompoundTag readNbt(String id, int step) {
         if (step < 1) return null;
-        ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
-        Identifier rid = Identifier.of("automationera", "tutorial/" + id + "/" + id + "_step" + step + ".nbt");
+        ResourceManager rm = Minecraft.getInstance().getResourceManager();
+        Identifier rid = Identifier.fromNamespaceAndPath("automationera", "tutorial/" + id + "/" + id + "_step" + step + ".nbt");
         Resource res = rm.getResource(rid).orElse(null);
         if (res == null) return null;
-        try (InputStream is = res.getInputStream()) {
-            return NbtIo.readCompressed(is, NbtSizeTracker.ofUnlimitedBytes());
+        try (InputStream is = res.open()) {
+            return NbtIo.readCompressed(is, NbtAccounter.unlimitedHeap());
         } catch (Exception e) {
             LOGGER.error("NBT加载失败 {}", rid, e);
             return null;
@@ -175,10 +175,10 @@ public class TutorialManager {
     }
 
     @Nullable
-    public static Structure parseStructure(@Nullable NbtCompound nbt) {
+    public static Structure parseStructure(@Nullable CompoundTag nbt) {
         if (nbt == null) return null;
-        Optional<NbtList> paletteNbt = nbt.getList("palette");
-        Optional<NbtList> blocksNbt = nbt.getList("blocks");
+        Optional<ListTag> paletteNbt = nbt.getList("palette");
+        Optional<ListTag> blocksNbt = nbt.getList("blocks");
         if (paletteNbt.isEmpty() || blocksNbt.isEmpty()) {
             LOGGER.warn("Tutorial NBT invalid: missing palette/blocks");
             return null;
@@ -191,10 +191,10 @@ public class TutorialManager {
         List<PlacedBlock> blocks = new ArrayList<>();
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
-        NbtList list = blocksNbt.get();
+        ListTag list = blocksNbt.get();
         for (int i = 0; i < list.size(); i++) {
-            NbtCompound blk = list.getCompoundOrEmpty(i);
-            NbtList pos = blk.getList("pos").orElse(new NbtList());
+            CompoundTag blk = list.getCompoundOrEmpty(i);
+            ListTag pos = blk.getList("pos").orElse(new ListTag());
             int x = pos.getInt(0).orElse(0), y = pos.getInt(1).orElse(0), z = pos.getInt(2).orElse(0);
             minX = Math.min(minX, x); maxX = Math.max(maxX, x);
             minY = Math.min(minY, y); maxY = Math.max(maxY, y);
@@ -211,18 +211,18 @@ public class TutorialManager {
         return new Structure(List.copyOf(blocks), minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    public static BlockState readBlockStateFromNbt(NbtCompound compound) {
+    public static BlockState readBlockStateFromNbt(CompoundTag compound) {
         String name = compound.getString("Name").orElse("");
         Identifier id = Identifier.tryParse(name);
         if (id == null) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
-        Block block = Registries.BLOCK.get(id);
-        BlockState state = block.getDefaultState();
-        Optional<NbtCompound> props = compound.getCompound("Properties");
+        Block block = BuiltInRegistries.BLOCK.getValue(id);
+        BlockState state = block.defaultBlockState();
+        Optional<CompoundTag> props = compound.getCompound("Properties");
         if (props.isPresent()) {
-            for (String propName : props.get().getKeys()) {
-                Property<?> prop = block.getStateManager().getProperty(propName);
+            for (String propName : props.get().keySet()) {
+                Property<?> prop = block.getStateDefinition().getProperty(propName);
                 if (prop == null) continue;
                 String value = props.get().getString(propName).orElse(null);
                 if (value == null) continue;
@@ -233,6 +233,6 @@ public class TutorialManager {
     }
 
     private static <T extends Comparable<T>> BlockState withProperty(BlockState state, Property<T> prop, String value) {
-        return prop.parse(value).map(v -> state.with(prop, v)).orElse(state);
+        return prop.getValue(value).map(v -> state.setValue(prop, v)).orElse(state);
     }
 }

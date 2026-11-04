@@ -6,16 +6,16 @@ import com.automationera.OutputRecipe.SelectionBox;
 import com.automationera.basic.ExportFile;
 import com.automationera.keybinding.ModKeyBinding;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix3x2fStack;
 import org.slf4j.LoggerFactory;
 
@@ -48,11 +48,11 @@ public class TutorialGroupScreen extends Screen {
     private int blockScroll = 0;
     private int leftW;
     private int descY;
-    private Text exportMessage;
+    private Component exportMessage;
     private long lastFrameNanos = 0;
 
     public TutorialGroupScreen(String group, int selectedMac, int currentStep, IsometricRenderState renderState, boolean blocklistConsist) {
-        super(Text.translatable("tutorial.group." + group));
+        super(Component.translatable("tutorial.group." + group));
         this.group = group;
         this.selectedMac = selectedMac;
         this.currentStep = currentStep;
@@ -111,39 +111,39 @@ public class TutorialGroupScreen extends Screen {
         leftW = Math.max(110, this.width / 5);
         int listTop = 25;
         int listH = Math.max(40, Math.min(choose.size() * 20 + 4, this.height - listTop - BOTTOM_BAR_H - 70));
-        MachineEntryList list = new MachineEntryList(client, leftW, listH, listTop, 20);
+        MachineEntryList list = new MachineEntryList(minecraft, leftW, listH, listTop, 20);
         for (int m = 0; m < choose.size(); m++) {
             int idx = m;
             MachineInfo info = choose.get(m);
             list.addEntry(idx, new ItemStack(info.icon()), info.title(), () -> selectMachine(idx));
         }
         list.selectByIndex(selectedMac);
-        this.addDrawableChild(list);
+        this.addRenderableWidget(list);
         descY = listTop + listH + 6;
 
         int y = this.height - 25;
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.close"),
-                btn -> this.client.setScreen(new TutorialMainScreen())).dimensions(20, y, 60, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.prev"),
-                btn -> lastStep()).dimensions(120, y, 40, 20).build()).active = currentStep > 1;
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.next"),
-                btn -> nextStep()).dimensions(160, y, 40, 20).build()).active = currentStep < stepCount;
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tutorial.ui.output"),
-                btn -> output()).dimensions(200, y, 60, 20).build()).active = stepCount > 0;
+        this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.close"),
+                btn -> this.minecraft.setScreen(new TutorialMainScreen())).bounds(20, y, 60, 20).build());
+        this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.prev"),
+                btn -> lastStep()).bounds(120, y, 40, 20).build()).active = currentStep > 1;
+        this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.next"),
+                btn -> nextStep()).bounds(160, y, 40, 20).build()).active = currentStep < stepCount;
+        this.addRenderableWidget(Button.builder(Component.translatable("tutorial.ui.output"),
+                btn -> output()).bounds(200, y, 60, 20).build()).active = stepCount > 0;
         // 仰角改为上下拖拽调整，原来的仰角按钮已删除
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("▶"),
-                btn -> autoRotate = !autoRotate).dimensions(260, y, 20, 20).build());
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("↺"),
-                btn -> resetKey()).dimensions(280, y, 20, 20).build());
-        ButtonWidget rei = this.addDrawableChild(ButtonWidget.builder(Text.literal("REI"),
-                btn -> openReiPage()).dimensions(300, y, 20, 20).build());
+        this.addRenderableWidget(Button.builder(Component.literal("▶"),
+                btn -> autoRotate = !autoRotate).bounds(260, y, 20, 20).build());
+        this.addRenderableWidget(Button.builder(Component.literal("↺"),
+                btn -> resetKey()).bounds(280, y, 20, 20).build());
+        Button rei = this.addRenderableWidget(Button.builder(Component.literal("REI"),
+                btn -> openReiPage()).bounds(300, y, 20, 20).build());
         rei.active = FabricLoader.getInstance().isModLoaded("roughlyenoughitems") && OutputRecipe.reiKeyOfTutorial(machine.id()) != null;
-        this.addDrawableChild(ButtonWidget.builder(Text.literal(blocklistConsist ? "DIFF" : "NORM"),
+        this.addRenderableWidget(Button.builder(Component.literal(blocklistConsist ? "DIFF" : "NORM"),
                 btn -> {
                     blocklistConsist = !blocklistConsist;
                     loadStep();
-                    this.clearAndInit();
-                }).dimensions(320, y, 40, 20).build());
+                    this.rebuildWidgets();
+                }).bounds(320, y, 40, 20).build());
     }
 
     /**
@@ -154,14 +154,14 @@ public class TutorialGroupScreen extends Screen {
      */
     private void loadStep() {
         cumulative = !TutorialManager.loadStepMeta(machine.id()).isEmpty();
-        NbtCompound now = TutorialManager.loadNbtFromResource(machine.id(), currentStep);
+        CompoundTag now = TutorialManager.loadNbtFromResource(machine.id(), currentStep);
         if (!cumulative) {
             structure = TutorialManager.loadStructure(machine.id(), currentStep);
             stepStructure = null;
             if (now == null) {
                 blockList = List.of();
             } else if (blocklistConsist && currentStep > 1) {
-                NbtCompound prev = TutorialManager.loadNbtFromResource(machine.id(), currentStep - 1);
+                CompoundTag prev = TutorialManager.loadNbtFromResource(machine.id(), currentStep - 1);
                 blockList = new AnalysisList(now, prev, machine.blockListConsistent()).getResult();
             } else {
                 blockList = new AnalysisList(now).getResult();
@@ -176,9 +176,9 @@ public class TutorialGroupScreen extends Screen {
         } else if (blocklistConsist) {
             blockList = new AnalysisList(now).getResult();
         } else {
-            List<NbtCompound> upto = new ArrayList<>();
+            List<CompoundTag> upto = new ArrayList<>();
             for (int s = 1; s <= currentStep; s++) {
-                NbtCompound n = TutorialManager.loadNbtFromResource(machine.id(), s);
+                CompoundTag n = TutorialManager.loadNbtFromResource(machine.id(), s);
                 if (n != null) upto.add(n);
             }
             blockList = new AnalysisList(upto).getResult();
@@ -187,21 +187,21 @@ public class TutorialGroupScreen extends Screen {
     }
 
     /** 步骤说明：「Y 范围 · 这一步的类型」+ 这一步方块在旧教程里对应那一步的说明 */
-    private Text stepDescription() {
+    private Component stepDescription() {
         TutorialManager.StepMeta meta = TutorialManager.stepMeta(machine.id(), currentStep);
         if (meta == null) {
-            return Text.translatable("tutorial." + machine.id() + ".step" + currentStep);
+            return Component.translatable("tutorial." + machine.id() + ".step" + currentStep);
         }
         String y = meta.y0() == meta.y1() ? "Y" + meta.y0() : "Y" + meta.y0() + "–Y" + meta.y1();
-        Text head = Text.literal(y + " · ").append(Text.translatable("tutorial.ui.role." + meta.role())).formatted(Formatting.YELLOW);
-        return Text.empty().append(head).append("\n")
-                .append(Text.translatableWithFallback("tutorial." + machine.id() + ".step" + meta.old(), ""));
+        Component head = Component.literal(y + " · ").append(Component.translatable("tutorial.ui.role." + meta.role())).withStyle(ChatFormatting.YELLOW);
+        return Component.empty().append(head).append("\n")
+                .append(Component.translatableWithFallback("tutorial." + machine.id() + ".step" + meta.old(), ""));
     }
 
     // ---------------------------------------------------------------- 渲染
 
     @Override
-    public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
         ctx.fill(0, 0, this.width, this.height, 0x77000000);
         long now = System.nanoTime();
         // 按真实时间旋转，旧版每帧 +2° 会随帧率变化
@@ -213,42 +213,42 @@ public class TutorialGroupScreen extends Screen {
             renderStructure(ctx);
         }
         super.render(ctx, mouseX, mouseY, delta);
-        Text title = machine == null ? this.title : this.title.copy().append(Text.literal(" - ")).append(machine.title());
-        ctx.drawTextWithShadow(this.textRenderer, title, 8, 8, 0xFFFFFFFF);
+        Component title = machine == null ? this.title : this.title.copy().append(Component.literal(" - ")).append(machine.title());
+        ctx.drawString(this.font, title, 8, 8, 0xFFFFFFFF);
         if (machine == null) return;
 
         if (stepCount > 0) {
-            ctx.drawTextWithShadow(this.textRenderer, Text.literal(currentStep + " / " + stepCount), 205, this.height - 38, 0xFFBBBBBB);
+            ctx.drawString(this.font, Component.literal(currentStep + " / " + stepCount), 205, this.height - 38, 0xFFBBBBBB);
             drawFittedText(ctx, stepDescription(), 6, descY, leftW - 10, this.height - BOTTOM_BAR_H - 4 - descY, 0xFFFFFFFF);
         } else {
-            ctx.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("tutorial.ui.missing"),
+            ctx.drawCenteredString(this.font, Component.translatable("tutorial.ui.missing"),
                     (leftW + this.width) / 2, this.height / 2, 0xFFFFAA00);
         }
         if (exportMessage != null) {
-            ctx.drawTextWithShadow(this.textRenderer, exportMessage, leftW + 4, this.height - BOTTOM_BAR_H - 12, 0xFF55FF55);
+            ctx.drawString(this.font, exportMessage, leftW + 4, this.height - BOTTOM_BAR_H - 12, 0xFF55FF55);
         }
         renderBlockList(ctx);
     }
 
     /** 自动换行；放不下时缩小字号（英文步骤说明比中文长很多，以前会压到底部按钮上） */
-    private void drawFittedText(DrawContext ctx, Text text, int x, int y, int maxWidth, int maxHeight, int color) {
+    private void drawFittedText(GuiGraphics ctx, Component text, int x, int y, int maxWidth, int maxHeight, int color) {
         float scale = 1f;
-        List<OrderedText> lines = this.textRenderer.wrapLines(text, maxWidth);
+        List<FormattedCharSequence> lines = this.font.split(text, maxWidth);
         while (lines.size() * 9 * scale > maxHeight && scale > 0.55f) {
             scale -= 0.05f;
-            lines = this.textRenderer.wrapLines(text, (int) (maxWidth / scale));
+            lines = this.font.split(text, (int) (maxWidth / scale));
         }
-        Matrix3x2fStack m = ctx.getMatrices();
+        Matrix3x2fStack m = ctx.pose();
         m.pushMatrix();
         m.translate(x, y);
         m.scale(scale, scale);
         for (int i = 0; i < lines.size(); i++) {
-            ctx.drawTextWithShadow(this.textRenderer, lines.get(i), 0, i * 9, color);
+            ctx.drawString(this.font, lines.get(i), 0, i * 9, color);
         }
         m.popMatrix();
     }
 
-    private void renderStructure(DrawContext ctx) {
+    private void renderStructure(GuiGraphics ctx) {
         if (structure == null || structure.blocks().isEmpty()) return;
         int x1 = leftW, y1 = 0, x2 = this.width, y2 = this.height - BOTTOM_BAR_H;
         // 保持 0.1.9 的构图：中心点在屏幕 (2/3 宽 - 30, 5/8 高 - 40)，大小相对屏幕宽度
@@ -266,11 +266,11 @@ public class TutorialGroupScreen extends Screen {
             boxes = machine.selectionBoxes().get(currentStep - 1);
         }
         float alpha = 0.5f + 0.3f * (float) Math.abs(Math.sin(System.currentTimeMillis() / 300.0));
-        ctx.state.addSpecialElement(new TutorialStructureRenderState(structure, renderState.rotation, renderState.pitch,
+        ctx.guiRenderState.submitPicturesInPictureState(new TutorialStructureRenderState(structure, renderState.rotation, renderState.pitch,
                 centerX, centerY, blockSize, boxes, alpha, x1, y1, x2, y2, null));
     }
 
-    private void renderBlockList(DrawContext ctx) {
+    private void renderBlockList(GuiGraphics ctx) {
         if (blockList.isEmpty()) return;
         int total = blockList.size();
         int x = blockListX(), y0 = blockListY(), height = blockListH();
@@ -281,15 +281,15 @@ public class TutorialGroupScreen extends Screen {
         for (int i = 0; i < BLOCK_LINES && (i + blockScroll) < total; i++) {
             AnalysisList.Entry entry = blockList.get(i + blockScroll);
             int y = y0 + i * BLOCK_ROW_H;
-            ctx.drawItem(entry.stack, x, y);
+            ctx.renderItem(entry.stack, x, y);
             String name = entry.displayName.getString();
-            if (this.textRenderer.getWidth(name) > textMaxW) {
-                name = this.textRenderer.trimToWidth(name, textMaxW - this.textRenderer.getWidth("…")) + "…";
+            if (this.font.width(name) > textMaxW) {
+                name = this.font.plainSubstrByWidth(name, textMaxW - this.font.width("…")) + "…";
             }
-            ctx.drawText(this.textRenderer, name, x + 18, y + 4, 0xFFEBEBEB, true);
+            ctx.drawString(this.font, name, x + 18, y + 4, 0xFFEBEBEB, true);
             String count = entry.countBoxGroup();
-            int countX = x + BLOCK_LIST_W - (maxScroll > 0 ? 8 : 2) - this.textRenderer.getWidth(count);
-            ctx.drawText(this.textRenderer, count, countX, y + 4, 0xFFFF512C, true);
+            int countX = x + BLOCK_LIST_W - (maxScroll > 0 ? 8 : 2) - this.font.width(count);
+            ctx.drawString(this.font, count, countX, y + 4, 0xFFFF512C, true);
         }
         if (maxScroll > 0) {
             int barX = x + BLOCK_LIST_W - 4, barW = 4;
@@ -303,9 +303,9 @@ public class TutorialGroupScreen extends Screen {
     // ---------------------------------------------------------------- 输入
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         if (click.button() == 0 && inStructureView(click.x(), click.y())) {
-            if (this.client.isShiftPressed()) {
+            if (this.minecraft.hasShiftDown()) {
                 // Shift + 拖拽：平移
                 renderState.addPan((float) offsetX, (float) offsetY);
             } else {
@@ -334,7 +334,7 @@ public class TutorialGroupScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         int total = blockList.size();
         int maxScroll = Math.max(0, total - BLOCK_LINES);
         int barX = blockListX() + BLOCK_LIST_W - 4, y0 = blockListY(), listH = blockListH();
@@ -348,22 +348,22 @@ public class TutorialGroupScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
-        if (ModKeyBinding.openTutorialKey.matchesKey(input)) {
-            this.client.setScreen(new TutorialMainScreen());
+    public boolean keyPressed(KeyEvent input) {
+        if (ModKeyBinding.openTutorialKey.matches(input)) {
+            this.minecraft.setScreen(new TutorialMainScreen());
             return true;
         }
-        if (ModKeyBinding.leftKey.matchesKey(input)) { rotateKey(-10f); return true; }
-        if (ModKeyBinding.rightKey.matchesKey(input)) { rotateKey(10f); return true; }
-        if (ModKeyBinding.downKey.matchesKey(input)) { pitchKey(-5f); return true; }
-        if (ModKeyBinding.upKey.matchesKey(input)) { pitchKey(5f); return true; }
-        if (ModKeyBinding.inKey.matchesKey(input)) { zoomKey(1.2f); return true; }
-        if (ModKeyBinding.outKey.matchesKey(input)) { zoomKey(1 / 1.2f); return true; }
-        if (ModKeyBinding.nextKey.matchesKey(input)) { nextStep(); return true; }
-        if (ModKeyBinding.prevKey.matchesKey(input)) { lastStep(); return true; }
-        if (ModKeyBinding.nextTKey.matchesKey(input)) { nextTutorialKey(); return true; }
-        if (ModKeyBinding.prevTKey.matchesKey(input)) { prevTutorialKey(); return true; }
-        if (ModKeyBinding.resetKey.matchesKey(input)) { resetKey(); return true; }
+        if (ModKeyBinding.leftKey.matches(input)) { rotateKey(-10f); return true; }
+        if (ModKeyBinding.rightKey.matches(input)) { rotateKey(10f); return true; }
+        if (ModKeyBinding.downKey.matches(input)) { pitchKey(-5f); return true; }
+        if (ModKeyBinding.upKey.matches(input)) { pitchKey(5f); return true; }
+        if (ModKeyBinding.inKey.matches(input)) { zoomKey(1.2f); return true; }
+        if (ModKeyBinding.outKey.matches(input)) { zoomKey(1 / 1.2f); return true; }
+        if (ModKeyBinding.nextKey.matches(input)) { nextStep(); return true; }
+        if (ModKeyBinding.prevKey.matches(input)) { lastStep(); return true; }
+        if (ModKeyBinding.nextTKey.matches(input)) { nextTutorialKey(); return true; }
+        if (ModKeyBinding.prevTKey.matches(input)) { prevTutorialKey(); return true; }
+        if (ModKeyBinding.resetKey.matches(input)) { resetKey(); return true; }
         return super.keyPressed(input);
     }
 
@@ -387,14 +387,14 @@ public class TutorialGroupScreen extends Screen {
         selectedMac = idx;
         currentStep = 1;
         exportMessage = null;
-        this.clearAndInit();
+        this.rebuildWidgets();
     }
 
     public void nextStep() {
         if (machine != null && currentStep < stepCount) {
             currentStep++;
             exportMessage = null;
-            this.clearAndInit();
+            this.rebuildWidgets();
         }
     }
 
@@ -402,7 +402,7 @@ public class TutorialGroupScreen extends Screen {
         if (machine != null && currentStep > 1) {
             currentStep--;
             exportMessage = null;
-            this.clearAndInit();
+            this.rebuildWidgets();
         }
     }
 
@@ -417,7 +417,7 @@ public class TutorialGroupScreen extends Screen {
     public void resetKey() {
         renderState = new IsometricRenderState();
         autoRotate = false;
-        this.clearAndInit();
+        this.rebuildWidgets();
     }
 
     /** 导出整台机器（_full.nbt） */
@@ -425,8 +425,8 @@ public class TutorialGroupScreen extends Screen {
         if (machine == null || stepCount <= 0) return;
         Path out = ExportFile.exportTutorialFolder(machine.id(), stepCount);
         exportMessage = out == null
-                ? Text.translatable("tutorial.ui.output.fail")
-                : Text.translatable("tutorial.ui.output.done", "schematics/AutomationEra/" + out.getFileName());
+                ? Component.translatable("tutorial.ui.output.fail")
+                : Component.translatable("tutorial.ui.output.done", "schematics/AutomationEra/" + out.getFileName());
     }
 
     private void openReiPage() {

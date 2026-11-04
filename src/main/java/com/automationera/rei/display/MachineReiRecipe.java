@@ -7,9 +7,9 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.DisplaySerializer;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class MachineReiRecipe implements Display {
         this.allOutputs = allOutputs.get(0);
         this.allInputs = allOutputs.get(1);
         this.key = key;
-        this.ID = Identifier.of("automationera", "machine_recipe_" + key);
+        this.ID = Identifier.fromNamespaceAndPath("automationera", "machine_recipe_" + key);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MachineReiRecipe implements Display {
     @Override
     public Optional<Identifier> getDisplayLocation() {
         // Generate a unique recipe ID based on machine key
-        return Optional.of(Identifier.of("automationera", "machine_recipe_" + key));
+        return Optional.of(Identifier.fromNamespaceAndPath("automationera", "machine_recipe_" + key));
     }
 
     @Override

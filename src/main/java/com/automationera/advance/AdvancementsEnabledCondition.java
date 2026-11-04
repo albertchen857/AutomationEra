@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public final class AdvancementsEnabledCondition implements ResourceCondition {
     public static final AdvancementsEnabledCondition INSTANCE = new AdvancementsEnabledCondition();
     public static final ResourceConditionType<AdvancementsEnabledCondition> TYPE = ResourceConditionType.create(
-            Identifier.of("automationera", "advancements_enabled"), MapCodec.unit(INSTANCE));
+            Identifier.fromNamespaceAndPath("automationera", "advancements_enabled"), MapCodec.unit(INSTANCE));
 
     private static boolean registered = false;
 
@@ -35,7 +35,7 @@ public final class AdvancementsEnabledCondition implements ResourceCondition {
     }
 
     @Override
-    public boolean test(@Nullable RegistryOps.RegistryInfoGetter registryInfo) {
+    public boolean test(@Nullable RegistryOps.RegistryInfoLookup registryInfo) {
         return ModConfig.advancementsEnabled();
     }
 }

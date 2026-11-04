@@ -1,10 +1,10 @@
 package com.automationera.basic;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Util;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +32,13 @@ public class ExportFile {
      */
     public static Path exportTutorialFolder(String machineId, int lastStep) {
         String modid = "automationera";
-        Identifier id = Identifier.of(modid, "tutorial/" + machineId + "/" + machineId + "_full.nbt");
+        Identifier id = Identifier.fromNamespaceAndPath(modid, "tutorial/" + machineId + "/" + machineId + "_full.nbt");
         try {
             Path dest = ensureAutomationEraDir();
-            ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
+            ResourceManager rm = Minecraft.getInstance().getResourceManager();
             Resource res = rm.getResource(id).orElse(null);
             if (res == null) {
-                id = Identifier.of(modid, "tutorial/" + machineId + "/" + machineId + "_step" + lastStep + ".nbt");
+                id = Identifier.fromNamespaceAndPath(modid, "tutorial/" + machineId + "/" + machineId + "_step" + lastStep + ".nbt");
                 res = rm.getResource(id).orElse(null);
             }
             if (res == null) {
@@ -46,7 +46,7 @@ public class ExportFile {
                 return null;
             }
             Path out = dest.resolve(machineId + ".nbt");
-            try (InputStream in = res.getInputStream()) {
+            try (InputStream in = res.open()) {
                 Files.copy(in, out, StandardCopyOption.REPLACE_EXISTING);
             }
             return out;
@@ -59,13 +59,13 @@ public class ExportFile {
     // 用原版的 Util 打开文件夹/链接：游戏里 java.awt 通常是 headless，Desktop 不可用
     public static void openAutomationEraDir() {
         try {
-            Util.getOperatingSystem().open(ensureAutomationEraDir());
+            Util.getPlatform().openPath(ensureAutomationEraDir());
         } catch (IOException e) {
             LOGGER.error("Cannot open schematics folder", e);
         }
     }
 
     public static void buymeacoffee() {
-        Util.getOperatingSystem().open("https://buymeacoffee.com/albertchen857");
+        Util.getPlatform().openUri("https://buymeacoffee.com/albertchen857");
     }
 }

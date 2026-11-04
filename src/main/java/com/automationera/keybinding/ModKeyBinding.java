@@ -1,29 +1,29 @@
 package com.automationera.keybinding;
 
 import com.automationera.ui.TutorialMainScreen;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
 public class ModKeyBinding {
     public static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger("AutomationEraKeyBinding");
-    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("automationera", "main"));
-    public static KeyBinding openTutorialKey;
-    public static KeyBinding leftKey;
-    public static KeyBinding rightKey;
-    public static KeyBinding upKey;
-    public static KeyBinding downKey;
-    public static KeyBinding inKey;
-    public static KeyBinding outKey;
-    public static KeyBinding nextKey;
-    public static KeyBinding prevKey;
-    public static KeyBinding nextTKey;
-    public static KeyBinding prevTKey;
-    public static KeyBinding resetKey;
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("automationera", "main"));
+    public static KeyMapping openTutorialKey;
+    public static KeyMapping leftKey;
+    public static KeyMapping rightKey;
+    public static KeyMapping upKey;
+    public static KeyMapping downKey;
+    public static KeyMapping inKey;
+    public static KeyMapping outKey;
+    public static KeyMapping nextKey;
+    public static KeyMapping prevKey;
+    public static KeyMapping nextTKey;
+    public static KeyMapping prevTKey;
+    public static KeyMapping resetKey;
 
     public static void register() {
         openTutorialKey = registerKey("key.automationera.open_tutorial_ui", GLFW.GLFW_KEY_G);
@@ -41,18 +41,18 @@ public class ModKeyBinding {
 
         // 其余按键只在教程界面里生效，由 TutorialGroupScreen.keyPressed 处理（界面打开时 KeyBinding 不会收到按键）
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (openTutorialKey.wasPressed()) {
-                if (client.currentScreen == null) {
+            while (openTutorialKey.consumeClick()) {
+                if (client.screen == null) {
                     client.setScreen(new TutorialMainScreen());
                 }
             }
         });
     }
 
-    private static KeyBinding registerKey(String translationKey, int keyCode) {
-        return KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    private static KeyMapping registerKey(String translationKey, int keyCode) {
+        return KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 translationKey,
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 keyCode,
                 CATEGORY
         ));

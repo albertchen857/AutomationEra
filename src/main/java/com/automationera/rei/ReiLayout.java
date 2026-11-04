@@ -3,12 +3,12 @@ package com.automationera.rei;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.resource.Resource;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix3x2fStack;
 
 import java.io.DataInputStream;
@@ -34,23 +34,23 @@ public final class ReiLayout {
      * 先用原始字号，放不下时逐步缩小到 minScale；minScale 仍放不下就按 minScale 画（尽量不溢出宽度）。
      */
     public static Widget text(String str, int x, int y, int maxWidth, int maxHeight, int color, float minScale) {
-        TextRenderer tr = MinecraftClient.getInstance().textRenderer;
-        Text text = Text.literal(str);
+        Font tr = Minecraft.getInstance().font;
+        Component text = Component.literal(str);
         float scale = 1f;
-        List<OrderedText> lines = tr.wrapLines(text, maxWidth);
+        List<FormattedCharSequence> lines = tr.split(text, maxWidth);
         while (lines.size() * LINE_HEIGHT * scale > maxHeight && scale - SCALE_STEP >= minScale - 1e-4f) {
             scale -= SCALE_STEP;
-            lines = tr.wrapLines(text, (int) (maxWidth / scale));
+            lines = tr.split(text, (int) (maxWidth / scale));
         }
         final float s = scale;
-        final List<OrderedText> finalLines = lines;
+        final List<FormattedCharSequence> finalLines = lines;
         return Widgets.createDrawableWidget((ctx, mouseX, mouseY, delta) -> {
-            Matrix3x2fStack m = ctx.getMatrices();
+            Matrix3x2fStack m = ctx.pose();
             m.pushMatrix();
             m.translate(x, y);
             m.scale(s, s);
             for (int i = 0; i < finalLines.size(); i++) {
-                ctx.drawText(tr, finalLines.get(i), 0, i * LINE_HEIGHT, color, false);
+                ctx.drawString(tr, finalLines.get(i), 0, i * LINE_HEIGHT, color, false);
             }
             m.popMatrix();
         });
@@ -72,9 +72,9 @@ public final class ReiLayout {
     /** 读取 PNG 头里的宽高；读取失败时按正方形处理。 */
     public static int[] textureSize(Identifier id) {
         return TEXTURE_SIZE_CACHE.computeIfAbsent(id, key -> {
-            Resource res = MinecraftClient.getInstance().getResourceManager().getResource(key).orElse(null);
+            Resource res = Minecraft.getInstance().getResourceManager().getResource(key).orElse(null);
             if (res != null) {
-                try (InputStream is = res.getInputStream(); DataInputStream in = new DataInputStream(is)) {
+                try (InputStream is = res.open(); DataInputStream in = new DataInputStream(is)) {
                     in.skipNBytes(16); // PNG 签名(8) + IHDR 长度(4) + "IHDR"(4)
                     int w = in.readInt(), h = in.readInt();
                     if (w > 0 && h > 0) return new int[]{w, h};

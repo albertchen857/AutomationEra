@@ -6,16 +6,16 @@ import me.shedaniel.rei.impl.client.ClientHelperImpl;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.NbtSizeTracker;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public final class ReiDisplayCache {
     // 本次连接
     @Nullable private static String sessionKey;
     private static final List<Display> received = new ArrayList<>();
-    @Nullable private static DynamicRegistryManager receivedRegistries;
+    @Nullable private static RegistryAccess receivedRegistries;
     // 已读取的缓存
     @Nullable private static String loadedKey;
     private static List<Display> loaded = List.of();
@@ -77,20 +77,20 @@ public final class ReiDisplayCache {
 
     /** 由 DisplaySyncPacket.handle 的 mixin 调用：记录服务器真实同步的配方 */
     public static void onServerSync(boolean reset, Iterable<Display> displays) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.getNetworkHandler() == null) return;
+        Minecraft client = Minecraft.getInstance();
+        if (client.getConnection() == null) return;
         if (reset) received.clear();
         for (Display d : displays) received.add(d);
-        receivedRegistries = client.getNetworkHandler().getRegistryManager();
+        receivedRegistries = client.getConnection().registryAccess();
     }
 
     /** reiPlugin.registerDisplays 末尾调用：服务器没有 REI 时补上缓存的配方 */
     public static void addCachedDisplays(DisplayRegistry registry) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (sessionKey == null || client.getNetworkHandler() == null) return;
+        Minecraft client = Minecraft.getInstance();
+        if (sessionKey == null || client.getConnection() == null) return;
         if (ClientHelperImpl.getInstance().canUsePackets()) return; // 服务器装了 REI，会自己同步
         if (!sessionKey.equals(loadedKey)) {
-            DynamicRegistryManager registries = client.getNetworkHandler().getRegistryManager();
+            RegistryAccess registries = client.getConnection().registryAccess();
             loaded = load(sessionKey, registries);
             if (loaded.isEmpty() && !LOCAL.equals(sessionKey)) {
                 loaded = load(LOCAL, registries);
@@ -104,28 +104,28 @@ public final class ReiDisplayCache {
     }
 
     @Nullable
-    private static String keyOf(MinecraftClient client) {
-        if (client.isIntegratedServerRunning()) return LOCAL;
-        ServerInfo info = client.getCurrentServerEntry();
-        if (info == null || info.address == null) return null;
-        return "server_" + info.address.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9._-]", "_");
+    private static String keyOf(Minecraft client) {
+        if (client.hasSingleplayerServer()) return LOCAL;
+        ServerData info = client.getCurrentServer();
+        if (info == null || info.ip == null) return null;
+        return "server_" + info.ip.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9._-]", "_");
     }
 
     private static Path fileOf(String key) {
         return DIR.resolve(key + ".nbt");
     }
 
-    private static void save(String key, List<Display> displays, DynamicRegistryManager registries) {
-        RegistryOps<NbtElement> ops = RegistryOps.of(NbtOps.INSTANCE, registries);
-        NbtList list = new NbtList();
+    private static void save(String key, List<Display> displays, RegistryAccess registries) {
+        RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, registries);
+        ListTag list = new ListTag();
         int failed = 0;
         for (Display d : displays) {
             var r = Display.codec().encodeStart(ops, d).result();
             if (r.isPresent()) list.add(r.get());
             else failed++;
         }
-        NbtCompound root = new NbtCompound();
-        root.putString("mc", SharedConstants.getGameVersion().name());
+        CompoundTag root = new CompoundTag();
+        root.putString("mc", SharedConstants.getCurrentVersion().name());
         root.put("displays", list);
         try {
             Files.createDirectories(DIR);
@@ -136,19 +136,19 @@ public final class ReiDisplayCache {
         }
     }
 
-    private static List<Display> load(String key, DynamicRegistryManager registries) {
+    private static List<Display> load(String key, RegistryAccess registries) {
         Path file = fileOf(key);
         if (!Files.exists(file)) return List.of();
         try {
-            NbtCompound root = NbtIo.readCompressed(file, NbtSizeTracker.ofUnlimitedBytes());
-            if (!SharedConstants.getGameVersion().name().equals(root.getString("mc").orElse(""))) {
+            CompoundTag root = NbtIo.readCompressed(file, NbtAccounter.unlimitedHeap());
+            if (!SharedConstants.getCurrentVersion().name().equals(root.getString("mc").orElse(""))) {
                 LOGGER.info("REI cache: {} was made for another game version, ignored", key);
                 return List.of();
             }
-            RegistryOps<NbtElement> ops = RegistryOps.of(NbtOps.INSTANCE, registries);
+            RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, registries);
             List<Display> out = new ArrayList<>();
             int failed = 0;
-            for (NbtElement e : root.getListOrEmpty("displays")) {
+            for (Tag e : root.getListOrEmpty("displays")) {
                 // 当前环境里不存在的物品/配方，或 REI 自身编解码不对称（如锻造台的 SmithingDisplay）的条目，跳过即可
                 try {
                     var r = Display.codec().parse(ops, e).result();

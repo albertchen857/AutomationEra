@@ -1,12 +1,11 @@
 package com.automationera;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class OutputRecipe {
     public record SelectionBox(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -15,7 +14,7 @@ public class OutputRecipe {
     public record MachineInfo(
             String id,
             Item icon,
-            Text title,
+            Component title,
             List<List<SelectionBox>> selectionBoxes,
             boolean blockListConsistent) {
     }
@@ -1012,7 +1011,7 @@ public class OutputRecipe {
         return Ing;
     }
     public static final List<MachineInfo> factoryMachines = List.of(
-            new MachineInfo("iron", Items.IRON_BLOCK, Text.translatable("tutorial.iron.title"), List.of(
+            new MachineInfo("iron", Items.IRON_BLOCK, Component.translatable("tutorial.iron.title"), List.of(
                     List.of(),
                     List.of(new SelectionBox(4,4,4,9,6,1),new SelectionBox(4,4,26,9,6,29)),
                     List.of(new SelectionBox(13,19,1,1,7,4),new SelectionBox(13,19,26,1,7,29)),
@@ -1021,7 +1020,7 @@ public class OutputRecipe {
                     List.of(new SelectionBox(5,24,7,9,27,23)),
                     List.of(new SelectionBox(7,23,15,7,23,15))
             ),true),
-            new MachineInfo("stone", Items.COBBLESTONE, Text.translatable("tutorial.stone.title"), List.of(
+            new MachineInfo("stone", Items.COBBLESTONE, Component.translatable("tutorial.stone.title"), List.of(
                     List.of(),
                     List.of(new SelectionBox(4,2,1,12,3,10)),
                     List.of(new SelectionBox(4,3,2,12,6,10)),
@@ -1030,17 +1029,17 @@ public class OutputRecipe {
                     List.of(new SelectionBox(6,3,5,3,4,3)),
                     List.of(new SelectionBox(10,10,3,8,12,6))
             ),true),
-            new MachineInfo("wood", Items.OAK_LOG, Text.translatable("tutorial.wood.title"), List.of(
+            new MachineInfo("wood", Items.OAK_LOG, Component.translatable("tutorial.wood.title"), List.of(
                     List.of(),
                     List.of(new SelectionBox(14,3,8,10,5,4)),
                     List.of(new SelectionBox(11,4,12,11,11,0)),
                     List.of(new SelectionBox(10,20,13,14,12,7)),
                     List.of(new SelectionBox(11,18,9,3,21,5))
             ),true),
-            new MachineInfo("ice", Items.ICE, Text.translatable("tutorial.ice.title"), List.of(),false),
-            new MachineInfo("rail", Items.RAIL, Text.translatable("tutorial.rail.title"), List.of(),false),
-            new MachineInfo("concrete", Items.WHITE_CONCRETE, Text.translatable("tutorial.concrete.title"), List.of(),true),
-            new MachineInfo("furnace", Items.FURNACE, Text.translatable("tutorial.furnace.title"), List.of(
+            new MachineInfo("ice", Items.ICE, Component.translatable("tutorial.ice.title"), List.of(),false),
+            new MachineInfo("rail", Items.RAIL, Component.translatable("tutorial.rail.title"), List.of(),false),
+            new MachineInfo("concrete", Items.WHITE_CONCRETE, Component.translatable("tutorial.concrete.title"), List.of(),true),
+            new MachineInfo("furnace", Items.FURNACE, Component.translatable("tutorial.furnace.title"), List.of(
                     List.of(),
                     List.of(),
                     List.of(new SelectionBox(0,2,15,15,3,0),new SelectionBox(9,1,10,11,2,13)),
@@ -1048,12 +1047,12 @@ public class OutputRecipe {
                     List.of(new SelectionBox(0,4,15,9,9,11)),
                     List.of(new SelectionBox(4,9,11,2,6,15))
             ),true),
-            new MachineInfo("hook", Items.TRIPWIRE_HOOK, Text.translatable("tutorial.hook.title"), List.of(),true),
-            new MachineInfo("lantern", Items.JACK_O_LANTERN, Text.translatable("tutorial.lantern.title"), List.of(),true),
-            new MachineInfo("string", Items.STRING, Text.translatable("tutorial.string.title"), List.of(),true)
+            new MachineInfo("hook", Items.TRIPWIRE_HOOK, Component.translatable("tutorial.hook.title"), List.of(),true),
+            new MachineInfo("lantern", Items.JACK_O_LANTERN, Component.translatable("tutorial.lantern.title"), List.of(),true),
+            new MachineInfo("string", Items.STRING, Component.translatable("tutorial.string.title"), List.of(),true)
     );
     public static final List<MachineInfo> farmMachines = List.of(
-            new MachineInfo("mob", Items.ROTTEN_FLESH, Text.translatable("tutorial.mob.title"), List.of(
+            new MachineInfo("mob", Items.ROTTEN_FLESH, Component.translatable("tutorial.mob.title"), List.of(
                     List.of(),
                     List.of(new SelectionBox(0,2,11,42,4,10)),
                     List.of(new SelectionBox(40,4,10,50,7,23),new SelectionBox(34,5,4,4,5,25)),
@@ -1063,22 +1062,22 @@ public class OutputRecipe {
                     List.of(new SelectionBox(0,12,28,38,13,1)),
                     List.of(new SelectionBox(15,14,20,24,15,10))
             ),true),
-            new MachineInfo("pig", Items.COOKED_PORKCHOP, Text.translatable("tutorial.pig.title"), List.of(),true),
-            new MachineInfo("farm", Items.CARROT, Text.translatable("tutorial.farm.title"), List.of(),true),
-            new MachineInfo("sugarcane", Items.SUGAR_CANE, Text.translatable("tutorial.sugarcane.title"), List.of(),false),
-            new MachineInfo("bamboo", Items.BAMBOO, Text.translatable("tutorial.bamboo.title"), List.of(),false),
-            new MachineInfo("bee", Items.HONEYCOMB, Text.translatable("tutorial.bee.title"), List.of(
+            new MachineInfo("pig", Items.COOKED_PORKCHOP, Component.translatable("tutorial.pig.title"), List.of(),true),
+            new MachineInfo("farm", Items.CARROT, Component.translatable("tutorial.farm.title"), List.of(),true),
+            new MachineInfo("sugarcane", Items.SUGAR_CANE, Component.translatable("tutorial.sugarcane.title"), List.of(),false),
+            new MachineInfo("bamboo", Items.BAMBOO, Component.translatable("tutorial.bamboo.title"), List.of(),false),
+            new MachineInfo("bee", Items.HONEYCOMB, Component.translatable("tutorial.bee.title"), List.of(
                     List.of(),
                     List.of(),
                     List.of(new SelectionBox(5,1,4,1,1,8))
             ),true),
-            new MachineInfo("cactus", Items.CACTUS, Text.translatable("tutorial.cactus.title"), List.of(
+            new MachineInfo("cactus", Items.CACTUS, Component.translatable("tutorial.cactus.title"), List.of(
                     List.of(),
                     List.of(new SelectionBox(2,4,8,8,7,2)),
                     List.of(new SelectionBox(0,8,10,10,13,0))
             ),true),
             //new MachineInfo("flower", Items.WHITE_CARPET, Text.translatable("tutorial.carpet.title"), List.of(),true),
-            new MachineInfo("ocean", Items.PRISMARINE_SHARD, Text.translatable("tutorial.ocean.title"), List.of(
+            new MachineInfo("ocean", Items.PRISMARINE_SHARD, Component.translatable("tutorial.ocean.title"), List.of(
                     List.of(new SelectionBox(0,10,57,18,22,39),new SelectionBox(0,10,0,18,22,18),new SelectionBox(57,10,0,39,22,18),new SelectionBox(57,10,57,39,22,39)),
                     List.of(),
                     List.of(new SelectionBox(18,14,18,0,16,0)),
@@ -1087,12 +1086,12 @@ public class OutputRecipe {
                     List.of(new SelectionBox(6,53,13,12,17,13)),
                     List.of(new SelectionBox(8,55,14,14,57,6))
             ),true),
-            new MachineInfo("sheep", Items.WHITE_WOOL, Text.translatable("tutorial.sheep.title"), List.of(),true),
-            new MachineInfo("snow", Items.SNOWBALL, Text.translatable("tutorial.snow.title"), List.of(),true)
+            new MachineInfo("sheep", Items.WHITE_WOOL, Component.translatable("tutorial.sheep.title"), List.of(),true),
+            new MachineInfo("snow", Items.SNOWBALL, Component.translatable("tutorial.snow.title"), List.of(),true)
     );
     public static final List<MachineInfo> specialMachines = List.of(
-            new MachineInfo("carpet", Items.WHITE_CARPET, Text.translatable("tutorial.carpet.title"), List.of(),true),
-            new MachineInfo("load", Items.MINECART, Text.translatable("tutorial.load.title"), List.of(
+            new MachineInfo("carpet", Items.WHITE_CARPET, Component.translatable("tutorial.carpet.title"), List.of(),true),
+            new MachineInfo("load", Items.MINECART, Component.translatable("tutorial.load.title"), List.of(
                     List.of(new SelectionBox(3,1,2,3,1,2)),
                     List.of(),
                     List.of(),

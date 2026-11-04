@@ -11,11 +11,9 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,8 +31,8 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
     }
 
     @Override
-    public Text getTitle() {
-        return Text.translatable("emi.category.automationera.tutorial");
+    public Component getTitle() {
+        return Component.translatable("emi.category.automationera.tutorial");
     }
 
     @Override
@@ -58,18 +56,18 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
 
         // Special case: "circuit" tutorial page
         if (Objects.equals(key, "circuit")) {
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.title"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.title"),
                     originX + 5, originY + 4, 150, 15, 0xFFE71B1B, 0.6f));
-            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.descr"),
+            widgets.add(ReiLayout.text(I18n.get("emi.automationera.circuit.descr"),
                     originX + 5, originY + 19, 150, 40, 0xFF404040, 0.5f));
             widgets.add(Widgets.createTexturedWidget(
                     reiPlugin.ICON_TEXTURE,
                     new Rectangle(originX + 48, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal(""))
-                    .text(Text.of("WIKI"))
+            Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Component.literal(""))
+                    .text(Component.nullToEmpty("WIKI"))
                     .onClick(button -> {
-                        String url = I18n.translate("emi.automationera.circuit.wiki");
+                        String url = I18n.get("emi.automationera.circuit.wiki");
                         reiPlugin.openWiki(url);
                     });
             widgets.add(wikiButton);
@@ -81,19 +79,19 @@ public class TutorialRecipeCategory implements DisplayCategory<TutorialReiRecipe
                 new Rectangle(originX + 16, originY + 62, 80, 80),
                 0, 0, 500, 500, 500, 500));
         // Standard tutorial display
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".title"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".title"),
                 originX + 5, originY + 4, 120, 15, 0xFF404040, 0.6f));
-        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
-                .text(Text.of("WIKI"))
+        Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Component.literal(""))
+                .text(Component.nullToEmpty("WIKI"))
                 .onClick(button -> {
-                    String url = I18n.translate("emi.automationera." + key + ".wiki");
+                    String url = I18n.get("emi.automationera." + key + ".wiki");
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
-        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".descr"),
+        widgets.add(ReiLayout.text(I18n.get("emi.automationera." + key + ".descr"),
                 originX + 5, originY + 19, 150, 43, 0xFF404040, 0.5f));
         // List all tutorial output items at bottom
-        List<net.minecraft.item.Item> outputs = display.getAllOutputs();
+        List<net.minecraft.world.item.Item> outputs = display.getAllOutputs();
         for (int i = 0; i < outputs.size(); i++) {
             int sx = originX + 136;
             int sy = originY + 124 - i * 18;

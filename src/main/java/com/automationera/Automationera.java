@@ -4,7 +4,6 @@ import com.automationera.advance.*;
 import com.automationera.network.ClientModsPayload;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.world.gen.chunk.FlatChunkGenerator;
 import com.automationera.command.AdvancementCommand;
 import com.automationera.keybinding.ModKeyBinding;
 import net.fabricmc.api.ModInitializer;
@@ -12,35 +11,28 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.TntEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.Registries;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.FlatLevelSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +66,7 @@ public class Automationera implements ModInitializer {
 		//Automationera.register("full_shulker_box", FullStackCriterion.INSTANCE);
 		ModConfig.load();
 		AdvancementsEnabledCondition.register();
-		Criteria.register(FullStackCriterion.ID.toString(), FullStackCriterion.INSTANCE);
+		CriteriaTriggers.register(FullStackCriterion.ID.toString(), FullStackCriterion.INSTANCE);
 		PayloadTypeRegistry.playC2S().register(ClientModsPayload.ID, ClientModsPayload.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(ClientModsPayload.ID,
 				(payload, context) -> onClientMods(context.player(), payload.mods()));
@@ -82,11 +74,11 @@ public class Automationera implements ModInitializer {
 		AdvancementCommand.register();
 
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-			if (afkPlayers.contains(newPlayer.getUuid())){
-				MinecraftServer server = newPlayer.getEntityWorld().getServer();
-				AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":afkdie"));
+			if (afkPlayers.contains(newPlayer.getUUID())){
+				MinecraftServer server = newPlayer.level().getServer();
+				AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":afkdie"));
 				if (adv != null) {
-					newPlayer.getAdvancementTracker().grantCriterion(adv, "afkdie");
+					newPlayer.getAdvancements().award(adv, "afkdie");
 				}
 			}
 		});
@@ -96,47 +88,47 @@ public class Automationera implements ModInitializer {
 			if (!ModConfig.advancementsEnabled()) return;
 			// 放在玩家循环外：没人在线时也要更新，否则玩家重新进服时 MSPT 会被算成几十秒，误触发“卡服”
 			lastTickStartTime = System.nanoTime();
-			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-				if (server.getTicks() % 216000 == 0){ //1h
-					BlockPos pos = player.getBlockPos();
-					UUID uuid = player.getUuid();
+			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+				if (server.getTickCount() % 216000 == 0){ //1h
+					BlockPos pos = player.blockPosition();
+					UUID uuid = player.getUUID();
 					int[] now = new int[]{pos.getX(), pos.getZ()};
 					// 和一小时前的位置比（以前比的是 1 秒前的位置，只要整点那一秒没动就算挂机一小时）
 					if (Arrays.equals(afkCheckPos.get(uuid), now)){
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":afk"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":afk"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "afk");
+							player.getAdvancements().award(adv, "afk");
 						}
 						int period = afkPeriods.merge(uuid, 1, Integer::sum);
-						player.sendMessage(Text.literal("You already AFK "+period+" Hours"));
+						player.sendSystemMessage(Component.literal("You already AFK "+period+" Hours"));
 						afkPlayers.add(uuid);
 					}else{
 						afkPeriods.remove(uuid);
 						afkPlayers.remove(uuid);
 					}
 					afkCheckPos.put(uuid, now);
-				}else if (server.getTicks() % 200 == 0) {
-					ChunkPos chunkPos = player.getChunkPos();
-					if (isChunkAirSpace(player.getEntityWorld(), chunkPos, -64)){
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":realperimeter"));
+				}else if (server.getTickCount() % 200 == 0) {
+					ChunkPos chunkPos = player.chunkPosition();
+					if (isChunkAirSpace(player.level(), chunkPos, -64)){
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":realperimeter"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "realperimeter");
+							player.getAdvancements().award(adv, "realperimeter");
 						}
-					}else if (isChunkAirSpace(player.getEntityWorld(), chunkPos, -59)) {
-						if (player.getEntityWorld().getRegistryKey().equals(World.OVERWORLD)) {
-							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":perimeter"));
+					}else if (isChunkAirSpace(player.level(), chunkPos, -59)) {
+						if (player.level().dimension().equals(Level.OVERWORLD)) {
+							AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":perimeter"));
 							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "perimeter");
+								player.getAdvancements().award(adv, "perimeter");
 							}
-						} else if (player.getEntityWorld().getRegistryKey().equals(World.NETHER)) {
-							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":netherperimeter"));
+						} else if (player.level().dimension().equals(Level.NETHER)) {
+							AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":netherperimeter"));
 							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "netherperimeter");
+								player.getAdvancements().award(adv, "netherperimeter");
 							}
 						}
 					}
-				}else if (server.getTicks() % 20 == 0) {
-					int online = server.getCurrentPlayerCount();
+				}else if (server.getTickCount() % 20 == 0) {
+					int online = server.getPlayerCount();
 					//LOGGER.info("Checking player {} for advancements", player.getName().getString());
 
 					// 收集类进度：统计一次背包（含潜影盒）后判断所有条件
@@ -147,84 +139,84 @@ public class Automationera implements ModInitializer {
 					if (level >= 500) grant(player, "endlessxp", "level");
 					if (level >= 1000) grant(player, "impossiblexp", "level");
 
-					BlockPos pos = player.getBlockPos();
+					BlockPos pos = player.blockPosition();
 					// 检查地狱上层成就
-					if (player.getEntityWorld().getRegistryKey().equals(World.NETHER)) {
+					if (player.level().dimension().equals(Level.NETHER)) {
 						// 确保玩家真的在地狱上层，并且已经在那里待了一段时间
 						if (pos.getY() > 127) {
 							LOGGER.debug("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
-							Long entryTime = netherEntryTimes.get(player.getUuid());
+							Long entryTime = netherEntryTimes.get(player.getUUID());
 							// 检查玩家是否已经获得过这个成就
-							AdvancementEntry adv = player.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":abovenether"));
+							AdvancementHolder adv = player.level().getServer().getAdvancements().get(Identifier.parse(MOD_ID+":abovenether"));
 							//LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
-							if (adv != null && !player.getAdvancementTracker().getProgress(adv).isDone()) {
+							if (adv != null && !player.getAdvancements().getOrStartProgress(adv).isDone()) {
 								//ABOVE_NETHER_CRITERION.trigger(player);
-								player.getAdvancementTracker().grantCriterion(adv, "above_nether");
+								player.getAdvancements().award(adv, "above_nether");
 								//aboveNetherPlayers.add(player.getUuid());
 								LOGGER.info("Triggered above nether advancement for player {}", player.getName().getString());
 							}
 						}
-						int[] prev = lastPos.getOrDefault(player.getUuid(), new int[]{pos.getX(), pos.getZ()});
+						int[] prev = lastPos.getOrDefault(player.getUUID(), new int[]{pos.getX(), pos.getZ()});
 						long x = Math.abs(pos.getX()-prev[0]);
 						long y = Math.abs(pos.getZ()-prev[1]);
 						long distance = (long)Math.sqrt(x*x+y*y);
 						//LOGGER.info("distance:{}, {}", distance, lastpos);
 						if (distance > 10000){
-							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":fastesttravel"));
+							AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":fastesttravel"));
 							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "fastest_travel");
+								player.getAdvancements().award(adv, "fastest_travel");
 							}
 						} else if (Math.abs(pos.getX()) > 4285700 || Math.abs(pos.getZ()) > 4285700) {
-							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":lighttravel"));
+							AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":lighttravel"));
 							if (adv != null) {
-								player.getAdvancementTracker().grantCriterion(adv, "light_travel");
+								player.getAdvancements().award(adv, "light_travel");
 							}
 						}
 					}
-					lastPos.put(player.getUuid(), new int[]{pos.getX(), pos.getZ()});
+					lastPos.put(player.getUUID(), new int[]{pos.getX(), pos.getZ()});
 
 					double mspt = Arrays.stream(tickTimes).average().orElse(0.0);
 					//LOGGER.info("MSPT:{}, ONLINE:{}",mspt,online);
-					if (mspt > 100 && server.getTicks()>600) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":stuckserver"));
+					if (mspt > 100 && server.getTickCount()>600) {
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":stuckserver"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "stuck_server");
+							player.getAdvancements().award(adv, "stuck_server");
 						}
 					} else if (online > 49) { // 先判断大的，以前 >9 在前面导致 >49 永远进不去
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":giantserver"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":giantserver"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "giant_server");
+							player.getAdvancements().award(adv, "giant_server");
 						}
 					} else if (online > 9) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":largeserver"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":largeserver"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "large_server");
+							player.getAdvancements().award(adv, "large_server");
 						}
 					}
 
-					int dragonKills = player.getStatHandler().getStat(Stats.KILLED.getOrCreateStat(EntityType.ENDER_DRAGON));
+					int dragonKills = player.getStats().getValue(Stats.ENTITY_KILLED.get(EntityType.ENDER_DRAGON));
 					//LOGGER.info("dragon: {}",dragonKills);
 					if (dragonKills > 9) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":killdragon10time"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":killdragon10time"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "kill_10time");
+							player.getAdvancements().award(adv, "kill_10time");
 						}
 					}
 
-					ServerWorld world = player.getEntityWorld();
+					ServerLevel world = player.level();
 					int entityCount = 0;
-					for (Entity entity : world.iterateEntities()) {
-						if (entity instanceof TntEntity) entityCount++;
+					for (Entity entity : world.getAllEntities()) {
+						if (entity instanceof PrimedTnt) entityCount++;
 					}
 					if (entityCount  > 1000) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":worldeater"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":worldeater"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "worldeater");
+							player.getAdvancements().award(adv, "worldeater");
 						}
 					}else if (entityCount  > 100) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":tntquarry"));
+						AdvancementHolder adv = server.getAdvancements().get(Identifier.parse(MOD_ID+":tntquarry"));
 						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "tntquarry");
+							player.getAdvancements().award(adv, "tntquarry");
 						}
 					}
 				}
@@ -241,55 +233,55 @@ public class Automationera implements ModInitializer {
 		});
 
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			if (!world.isClient()) {
-				ItemStack stack = player.getStackInHand(hand);
-				if (player instanceof ServerPlayerEntity serverPlayer) {
-					if(entity instanceof VillagerEntity villager){
+			if (!world.isClientSide()) {
+				ItemStack stack = player.getItemInHand(hand);
+				if (player instanceof ServerPlayer serverPlayer) {
+					if(entity instanceof Villager villager){
 						LOGGER.info("Player {} traded with villager", player.getName().getString());
 						// 检查玩家是否已经获得过这个成就
-						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":tradingpost"));
-						if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
-							tradeCounts.merge(player.getUuid(), 1, Integer::sum);
-							int tradeCount = tradeCounts.get(player.getUuid());
+						AdvancementHolder adv = serverPlayer.level().getServer().getAdvancements().get(Identifier.parse(MOD_ID+":tradingpost"));
+						if (adv != null && !serverPlayer.getAdvancements().getOrStartProgress(adv).isDone()) {
+							tradeCounts.merge(player.getUUID(), 1, Integer::sum);
+							int tradeCount = tradeCounts.get(player.getUUID());
 							LOGGER.info("Player {} trade count: {}", player.getName().getString(), tradeCount);
 							if (tradeCount >= 60) {
-								serverPlayer.getAdvancementTracker().grantCriterion(adv, "trading_post");
+								serverPlayer.getAdvancements().award(adv, "trading_post");
 								LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
 							}
 						}
 					}
 				}
 			}
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-			if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
+			if (!world.isClientSide() && player instanceof ServerPlayer serverPlayer) {
 				BlockState state = world.getBlockState(hitResult.getBlockPos());
 				// 放置侦测器：以前挂在 UseEntityCallback（右键实体）上，放方块永远不会计数
-				if (player.getStackInHand(hand).isOf(Items.OBSERVER)) {
-					if (observerPlaces.merge(serverPlayer.getUuid(), 1, Integer::sum) > 9999) {
-						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":placeobserver"));
+				if (player.getItemInHand(hand).is(Items.OBSERVER)) {
+					if (observerPlaces.merge(serverPlayer.getUUID(), 1, Integer::sum) > 9999) {
+						AdvancementHolder adv = serverPlayer.level().getServer().getAdvancements().get(Identifier.parse(MOD_ID+":placeobserver"));
 						if (adv != null) {
-							serverPlayer.getAdvancementTracker().grantCriterion(adv, "placeobserver");
+							serverPlayer.getAdvancements().award(adv, "placeobserver");
 						}
 					}
 				}
-				if (state.isOf(Blocks.BEACON) && isFullNetheriteBeacon(world, hitResult.getBlockPos())) {
+				if (state.is(Blocks.BEACON) && isFullNetheriteBeacon(world, hitResult.getBlockPos())) {
 					if (grant(serverPlayer, "netheritebeacon", "beacon") && ModConfig.advancementRewardsEnabled()) {
-						serverPlayer.addExperience(NETHERITE_BEACON_REWARD_XP);
+						serverPlayer.giveExperiencePoints(NETHERITE_BEACON_REWARD_XP);
 					}
 				}
 				if (state.getBlock() == Blocks.FURNACE) {
-					if(furnaceOpens.merge(serverPlayer.getUuid(), 1, Integer::sum) > 1999){
-						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":openfurnace"));
+					if(furnaceOpens.merge(serverPlayer.getUUID(), 1, Integer::sum) > 1999){
+						AdvancementHolder adv = serverPlayer.level().getServer().getAdvancements().get(Identifier.parse(MOD_ID+":openfurnace"));
 						if (adv != null) {
-							serverPlayer.getAdvancementTracker().grantCriterion(adv, "openfurnace");
+							serverPlayer.getAdvancements().award(adv, "openfurnace");
 						}
 					}
 				}
 			}
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 
 
@@ -301,16 +293,16 @@ public class Automationera implements ModInitializer {
 	private static final Set<String> OPTIMIZE_MODS = Set.of("sodium", "iris", "entityculling");
 
 	/** 发放由代码控制的进度；返回 true 表示这次才刚完成（用于发奖励） */
-	public static boolean grant(ServerPlayerEntity player, String id, String criterion) {
-		MinecraftServer server = player.getEntityWorld().getServer();
-		AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID, id));
-		if (adv == null || player.getAdvancementTracker().getProgress(adv).isDone()) return false;
-		return player.getAdvancementTracker().grantCriterion(adv, criterion)
-				&& player.getAdvancementTracker().getProgress(adv).isDone();
+	public static boolean grant(ServerPlayer player, String id, String criterion) {
+		MinecraftServer server = player.level().getServer();
+		AdvancementHolder adv = server.getAdvancements().get(Identifier.fromNamespaceAndPath(MOD_ID, id));
+		if (adv == null || player.getAdvancements().getOrStartProgress(adv).isDone()) return false;
+		return player.getAdvancements().award(adv, criterion)
+				&& player.getAdvancements().getOrStartProgress(adv).isDone();
 	}
 
 	/** 客户端进服时上报的生电模组 */
-	private static void onClientMods(ServerPlayerEntity player, List<String> mods) {
+	private static void onClientMods(ServerPlayer player, List<String> mods) {
 		if (!ModConfig.advancementsEnabled()) return;
 		boolean masa = mods.stream().anyMatch(MASA_MODS::contains);
 		boolean carpet = mods.stream().anyMatch(CARPET_MODS::contains);
@@ -323,12 +315,12 @@ public class Automationera implements ModInitializer {
 	}
 
 	/** 满级（4 层）且全部是下界合金块的信标金字塔 */
-	public static boolean isFullNetheriteBeacon(World world, BlockPos beacon) {
+	public static boolean isFullNetheriteBeacon(Level world, BlockPos beacon) {
 		for (int layer = 1; layer <= 4; layer++) {
 			int y = beacon.getY() - layer;
 			for (int x = -layer; x <= layer; x++) {
 				for (int z = -layer; z <= layer; z++) {
-					if (!world.getBlockState(new BlockPos(beacon.getX() + x, y, beacon.getZ() + z)).isOf(Blocks.NETHERITE_BLOCK)) {
+					if (!world.getBlockState(new BlockPos(beacon.getX() + x, y, beacon.getZ() + z)).is(Blocks.NETHERITE_BLOCK)) {
 						return false;
 					}
 				}
@@ -338,16 +330,16 @@ public class Automationera implements ModInitializer {
 	}
 
 	/** 超平坦世界本来就是“空置域”，不算 */
-	public static boolean isFlatWorld(World world) {
-		return world instanceof ServerWorld sw && sw.getChunkManager().getChunkGenerator() instanceof FlatChunkGenerator;
+	public static boolean isFlatWorld(Level world) {
+		return world instanceof ServerLevel sw && sw.getChunkSource().getGenerator() instanceof FlatLevelSource;
 	}
 
-	public static boolean isChunkAirSpace(World world, ChunkPos chunkPos, int miny) {
+	public static boolean isChunkAirSpace(Level world, ChunkPos chunkPos, int miny) {
 		if (isFlatWorld(world)) return false;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				for (int y = miny; y <= 62; y++) {
-					BlockPos pos = new BlockPos(chunkPos.getStartX() + x, y, chunkPos.getStartZ() + z);
+					BlockPos pos = new BlockPos(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
 					BlockState state = world.getBlockState(pos);
 					if (!state.isAir()) {
 						return false; // 找到非空气方块，失败

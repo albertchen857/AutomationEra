@@ -4,20 +4,20 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.predicate.BlockPredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.predicate.entity.LocationPredicate;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.BlockPredicate;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.advancements.criterion.LocationPredicate;
+import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.boat.Boat;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockInNetherCriterion.Conditions> {
-    public static final Identifier ID = Identifier.of("automationera", "placed_block_in_nether");
+public class PlacedBlockInNetherCriterion extends SimpleCriterionTrigger<PlacedBlockInNetherCriterion.Conditions> {
+    public static final Identifier ID = Identifier.fromNamespaceAndPath("automationera", "placed_block_in_nether");
     private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEra/PlacedBlockInNetherCriterion");
     private static PlacedBlockInNetherCriterion INSTANCE;
     private static final double ICE_BOAT_SPEED = 5; // 每秒方块数
@@ -35,13 +35,13 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
     private static int tickCounter = 0;
     
     // 存储玩家上一次的位置
-    private static final Map<UUID, Vec3d> lastPositions = new HashMap<>();
+    private static final Map<UUID, Vec3> lastPositions = new HashMap<>();
     private static final Map<UUID, Long> lastCheckTimes = new HashMap<>();
 
     public PlacedBlockInNetherCriterion() {}
 
-    public static AdvancementCriterion<Conditions> conditions(BlockPredicate block, LocationPredicate location) {
-        return PlacedBlockInNetherCriterion.INSTANCE.create(new Conditions(location));
+    public static Criterion<Conditions> conditions(BlockPredicate block, LocationPredicate location) {
+        return PlacedBlockInNetherCriterion.INSTANCE.createCriterion(new Conditions(location));
     }
 
     protected Conditions conditionsFromJson(JsonObject obj,BlockPredicate playerPredicate) {
@@ -53,7 +53,7 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
         return new Conditions(locationPredicate);
     }
 
-    public void trigger(ServerPlayerEntity player, ServerWorld world, BlockPos pos) {
+    public void trigger(ServerPlayer player, ServerLevel world, BlockPos pos) {
         if (player == null || world == null || pos == null) {
             LOGGER.warn("Invalid trigger parameters");
             return;
@@ -63,21 +63,21 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
         this.trigger(player, conditions -> conditions.matches(world, pos));
     }
 
-    private static boolean isInNether(ServerWorld world) {
-        return world.getRegistryKey() == World.NETHER;
+    private static boolean isInNether(ServerLevel world) {
+        return world.dimension() == Level.NETHER;
     }
 
-    private static boolean isInBoat(PlayerEntity player) {
-        return player.getVehicle() instanceof BoatEntity;
+    private static boolean isInBoat(Player player) {
+        return player.getVehicle() instanceof Boat;
     }
 
-    private static boolean isSpeedOverIceBoat(PlayerEntity player) {
-        if (player.getVehicle() instanceof BoatEntity boat) {
-            UUID playerId = player.getUuid();
-            Vec3d currentPos = boat.getEntityPos();
+    private static boolean isSpeedOverIceBoat(Player player) {
+        if (player.getVehicle() instanceof Boat boat) {
+            UUID playerId = player.getUUID();
+            Vec3 currentPos = boat.position();
             long currentTime = System.currentTimeMillis();
             
-            Vec3d lastPos = lastPositions.get(playerId);
+            Vec3 lastPos = lastPositions.get(playerId);
             Long lastTime = lastCheckTimes.get(playerId);
             // 每次都更新位置和时间（以前算出速度后直接 return，之后一直和第一次的位置比，算的是“上船以来的平均速度”）
             lastPositions.put(playerId, currentPos);
@@ -103,11 +103,11 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
     }
 
     @Override
-    public Codec<Conditions> getConditionsCodec() {
+    public Codec<Conditions> codec() {
         return Conditions.CODEC;
     }
 
-    public static class Conditions implements AbstractCriterion.Conditions {
+    public static class Conditions implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<Conditions> CODEC = LocationPredicate.CODEC
                 .fieldOf("location")
                 .xmap(Conditions::new, c -> c.location)
@@ -118,8 +118,8 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
             this.location = location;
         }
 
-        public boolean matches(ServerWorld world, BlockPos pos) {
-            return this.location.test(world, pos.getX(), pos.getY(), pos.getZ());
+        public boolean matches(ServerLevel world, BlockPos pos) {
+            return this.location.matches(world, pos.getX(), pos.getY(), pos.getZ());
         }
 
         public JsonObject toJson() {
@@ -130,7 +130,7 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
         }
 
         @Override
-        public Optional<LootContextPredicate> player() {
+        public Optional<ContextAwarePredicate> player() {
             return Optional.empty();
         }
 
@@ -142,7 +142,7 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
     public static PlacedBlockInNetherCriterion register() {
         if (INSTANCE == null) {
             INSTANCE = new PlacedBlockInNetherCriterion();
-            Criteria.register(String.valueOf(ID), INSTANCE);
+            CriteriaTriggers.register(String.valueOf(ID), INSTANCE);
             LOGGER.info("!!!成功 registered PlacedBlockInNetherCriterion");
             
             // 注册服务器tick事件监听器
@@ -150,8 +150,8 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
                 tickCounter++;
                 if (tickCounter >= CHECK_INTERVAL) {
                     tickCounter = 0;
-                    for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                        ServerWorld serverWorld = player.getEntityWorld();
+                    for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                        ServerLevel serverWorld = player.level();
                             // 检查是否在地狱
                             if (isInNether(serverWorld)) {
                                 // 检查是否在船上
@@ -159,7 +159,7 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
                                     // 检查速度是否超过冰船速度
                                     if (isSpeedOverIceBoat(player)) {
                                         LOGGER.info("Player {} is in boat in nether with speed over ice boat", player.getName().getString());
-                                        INSTANCE.trigger(player, serverWorld, player.getBlockPos());
+                                        INSTANCE.trigger(player, serverWorld, player.blockPosition());
                                     }
                                 }
                             }

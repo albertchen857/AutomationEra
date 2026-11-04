@@ -1,16 +1,16 @@
 package com.automationera.ui;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class AnalysisList {
     private static List<@NotNull Item> NonInclude = List.of(
@@ -23,9 +23,9 @@ public class AnalysisList {
     );
     public static class Entry {
         public final ItemStack stack;
-        public final Text displayName;
+        public final Component displayName;
         public final int count;
-        public Entry(ItemStack stack, Text displayName, int count) {
+        public Entry(ItemStack stack, Component displayName, int count) {
             this.stack = stack;
             this.displayName = displayName;
             this.count = count;
@@ -42,7 +42,7 @@ public class AnalysisList {
     public List<Entry> getResult() { return result; }
 
     // 对比底层原文
-    public AnalysisList(NbtCompound currentNbt, NbtCompound baseNbt, boolean consist) {
+    public AnalysisList(CompoundTag currentNbt, CompoundTag baseNbt, boolean consist) {
         Map<Item, Integer> now = statItem(currentNbt, true);
         if (consist && baseNbt != null) {
             Map<Item, Integer> prev = statItem(baseNbt, true);
@@ -61,31 +61,31 @@ public class AnalysisList {
         this.result = toEntryList(now);
     }
 
-    public AnalysisList(NbtCompound nbt) {
+    public AnalysisList(CompoundTag nbt) {
         this.result = toEntryList(statItem(nbt, true));
     }
 
     /** 多个步骤文件的材料合计（累计渲染时用：第 1 步到当前步） */
-    public AnalysisList(List<NbtCompound> nbts) {
+    public AnalysisList(List<CompoundTag> nbts) {
         Map<Item, Integer> sum = new HashMap<>();
-        for (NbtCompound nbt : nbts) {
+        for (CompoundTag nbt : nbts) {
             statItem(nbt, true).forEach((item, n) -> sum.merge(item, n, Integer::sum));
         }
         this.result = toEntryList(sum);
     }
 
-    private Map<Item, Integer> statItem(NbtCompound nbt, boolean include) {
+    private Map<Item, Integer> statItem(CompoundTag nbt, boolean include) {
         Map<Item, Integer> map = new HashMap<>();
         if (nbt == null || !nbt.contains("palette") || !nbt.contains("blocks")) return map;
-        Optional<NbtList> palette = nbt.getList("palette");
+        Optional<ListTag> palette = nbt.getList("palette");
         if(palette.isEmpty()) return map;
-        Optional<NbtList> blocks = nbt.getList("blocks");
+        Optional<ListTag> blocks = nbt.getList("blocks");
         if (blocks.isPresent()){
             for (int i = 0; i < blocks.get().size(); i++) {
-                NbtCompound blk = blocks.get().getCompoundOrEmpty(i);
+                CompoundTag blk = blocks.get().getCompoundOrEmpty(i);
                 int id = blk.getInt("state").orElse(0);
                 String blockId = palette.get().getCompoundOrEmpty(id).getString("Name").orElse("");
-                var block = Registries.BLOCK.get(Identifier.of(blockId));
+                var block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId));
                 var item = block.asItem();
                 if (!(item == null || item.equals(Items.AIR) || (NonInclude.contains(item)) && include)) {
                     map.put(item, map.getOrDefault(item, 0) + 1);
