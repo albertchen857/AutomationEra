@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import java.util.List;
 import com.automationera.ui.TutorialStructureRenderer;
-import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class AutomationeraClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModKeyBinding.register();
-        SpecialGuiElementRegistry.register(ctx -> new TutorialStructureRenderer(ctx.vertexConsumers()));
+        PictureInPictureRendererRegistry.register(ctx -> new TutorialStructureRenderer(ctx.vertexConsumers()));
         if (FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
             com.automationera.rei.ReiDisplayCache.init();
         }

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 
 /**
  * 教程 3D 结构在 GUI 中的一帧渲染参数（1.21.6+ 的 GUI 只能用 PictureInPicture 方式画 3D）。

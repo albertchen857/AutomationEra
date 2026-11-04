@@ -7,7 +7,7 @@ import com.automationera.basic.ExportFile;
 import com.automationera.keybinding.ModKeyBinding;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -201,7 +201,7 @@ public class TutorialGroupScreen extends Screen {
     // ---------------------------------------------------------------- 渲染
 
     @Override
-    public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
         ctx.fill(0, 0, this.width, this.height, 0x77000000);
         long now = System.nanoTime();
         // 按真实时间旋转，旧版每帧 +2° 会随帧率变化
@@ -212,26 +212,26 @@ public class TutorialGroupScreen extends Screen {
         if (machine != null) {
             renderStructure(ctx);
         }
-        super.render(ctx, mouseX, mouseY, delta);
+        super.extractRenderState(ctx, mouseX, mouseY, delta);
         Component title = machine == null ? this.title : this.title.copy().append(Component.literal(" - ")).append(machine.title());
-        ctx.drawString(this.font, title, 8, 8, 0xFFFFFFFF);
+        ctx.text(this.font, title, 8, 8, 0xFFFFFFFF);
         if (machine == null) return;
 
         if (stepCount > 0) {
-            ctx.drawString(this.font, Component.literal(currentStep + " / " + stepCount), 205, this.height - 38, 0xFFBBBBBB);
+            ctx.text(this.font, Component.literal(currentStep + " / " + stepCount), 205, this.height - 38, 0xFFBBBBBB);
             drawFittedText(ctx, stepDescription(), 6, descY, leftW - 10, this.height - BOTTOM_BAR_H - 4 - descY, 0xFFFFFFFF);
         } else {
-            ctx.drawCenteredString(this.font, Component.translatable("tutorial.ui.missing"),
+            ctx.centeredText(this.font, Component.translatable("tutorial.ui.missing"),
                     (leftW + this.width) / 2, this.height / 2, 0xFFFFAA00);
         }
         if (exportMessage != null) {
-            ctx.drawString(this.font, exportMessage, leftW + 4, this.height - BOTTOM_BAR_H - 12, 0xFF55FF55);
+            ctx.text(this.font, exportMessage, leftW + 4, this.height - BOTTOM_BAR_H - 12, 0xFF55FF55);
         }
         renderBlockList(ctx);
     }
 
     /** 自动换行；放不下时缩小字号（英文步骤说明比中文长很多，以前会压到底部按钮上） */
-    private void drawFittedText(GuiGraphics ctx, Component text, int x, int y, int maxWidth, int maxHeight, int color) {
+    private void drawFittedText(GuiGraphicsExtractor ctx, Component text, int x, int y, int maxWidth, int maxHeight, int color) {
         float scale = 1f;
         List<FormattedCharSequence> lines = this.font.split(text, maxWidth);
         while (lines.size() * 9 * scale > maxHeight && scale > 0.55f) {
@@ -243,12 +243,12 @@ public class TutorialGroupScreen extends Screen {
         m.translate(x, y);
         m.scale(scale, scale);
         for (int i = 0; i < lines.size(); i++) {
-            ctx.drawString(this.font, lines.get(i), 0, i * 9, color);
+            ctx.text(this.font, lines.get(i), 0, i * 9, color);
         }
         m.popMatrix();
     }
 
-    private void renderStructure(GuiGraphics ctx) {
+    private void renderStructure(GuiGraphicsExtractor ctx) {
         if (structure == null || structure.blocks().isEmpty()) return;
         int x1 = leftW, y1 = 0, x2 = this.width, y2 = this.height - BOTTOM_BAR_H;
         // 保持 0.1.9 的构图：中心点在屏幕 (2/3 宽 - 30, 5/8 高 - 40)，大小相对屏幕宽度
@@ -270,7 +270,7 @@ public class TutorialGroupScreen extends Screen {
                 centerX, centerY, blockSize, boxes, alpha, x1, y1, x2, y2, null));
     }
 
-    private void renderBlockList(GuiGraphics ctx) {
+    private void renderBlockList(GuiGraphicsExtractor ctx) {
         if (blockList.isEmpty()) return;
         int total = blockList.size();
         int x = blockListX(), y0 = blockListY(), height = blockListH();
@@ -281,15 +281,15 @@ public class TutorialGroupScreen extends Screen {
         for (int i = 0; i < BLOCK_LINES && (i + blockScroll) < total; i++) {
             AnalysisList.Entry entry = blockList.get(i + blockScroll);
             int y = y0 + i * BLOCK_ROW_H;
-            ctx.renderItem(entry.stack, x, y);
+            ctx.item(entry.stack, x, y);
             String name = entry.displayName.getString();
             if (this.font.width(name) > textMaxW) {
                 name = this.font.plainSubstrByWidth(name, textMaxW - this.font.width("…")) + "…";
             }
-            ctx.drawString(this.font, name, x + 18, y + 4, 0xFFEBEBEB, true);
+            ctx.text(this.font, name, x + 18, y + 4, 0xFFEBEBEB, true);
             String count = entry.countBoxGroup();
             int countX = x + BLOCK_LIST_W - (maxScroll > 0 ? 8 : 2) - this.font.width(count);
-            ctx.drawString(this.font, count, countX, y + 4, 0xFFFF512C, true);
+            ctx.text(this.font, count, countX, y + 4, 0xFFFF512C, true);
         }
         if (maxScroll > 0) {
             int barX = x + BLOCK_LIST_W - 4, barW = 4;

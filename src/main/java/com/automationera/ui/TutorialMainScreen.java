@@ -1,7 +1,7 @@
 package com.automationera.ui;
 
 import com.automationera.basic.ExportFile;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -54,12 +54,12 @@ public class TutorialMainScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
         ctx.fill(0, 0, this.width, this.height, 0x99000000);
-        super.render(ctx, mouseX, mouseY, delta);
+        super.extractRenderState(ctx, mouseX, mouseY, delta);
         // 1.21.6+ 颜色必须带 alpha，0xFFFFFF 会完全透明
-        ctx.drawCenteredString(this.font, this.title, this.width / 2, 16, 0xFFFFFFFF);
-        ctx.drawWordWrap(this.font, Component.translatable("tutorial.ui.note1"),
+        ctx.centeredText(this.font, this.title, this.width / 2, 16, 0xFFFFFFFF);
+        ctx.textWithWordWrap(this.font, Component.translatable("tutorial.ui.note1"),
                 this.width - NOTE_WIDTH - 20, this.height - 150, NOTE_WIDTH, 0xFFFFFFFF);
     }
 }

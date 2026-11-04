@@ -22,30 +22,30 @@ public class OutputRecipe {
     public Map<String, List<Item>> OutputTemplate() {
         Map<String, List<Item>> Template = new HashMap<>();
         Template.put("WOOL", List.of(
-                Items.WHITE_WOOL, Items.BROWN_WOOL, Items.BLACK_WOOL, Items.GRAY_WOOL,
-                Items.LIGHT_GRAY_WOOL, Items.RED_WOOL, Items.ORANGE_WOOL, Items.YELLOW_WOOL,
-                Items.LIME_WOOL, Items.GREEN_WOOL, Items.CYAN_WOOL, Items.LIGHT_BLUE_WOOL,
-                Items.BLUE_WOOL, Items.PURPLE_WOOL, Items.MAGENTA_WOOL, Items.PINK_WOOL
+                Items.WOOL.white(), Items.WOOL.brown(), Items.WOOL.black(), Items.WOOL.gray(),
+                Items.WOOL.lightGray(), Items.WOOL.red(), Items.WOOL.orange(), Items.WOOL.yellow(),
+                Items.WOOL.lime(), Items.WOOL.green(), Items.WOOL.cyan(), Items.WOOL.lightBlue(),
+                Items.WOOL.blue(), Items.WOOL.purple(), Items.WOOL.magenta(), Items.WOOL.pink()
         ));
         Template.put("DYE", List.of(
-                Items.WHITE_DYE, Items.GRAY_DYE, Items.BLACK_DYE, Items.LIGHT_BLUE_DYE, Items.LIME_DYE,
-                Items.YELLOW_DYE, Items.LIGHT_GRAY_DYE, Items.ORANGE_DYE, Items.RED_DYE, Items.PINK_DYE,
-                Items.BROWN_DYE, Items.PURPLE_DYE, Items.BLUE_DYE, Items.GREEN_DYE, Items.MAGENTA_DYE, Items.CYAN_DYE
+                Items.DYE.white(), Items.DYE.gray(), Items.DYE.black(), Items.DYE.lightBlue(), Items.DYE.lime(),
+                Items.DYE.yellow(), Items.DYE.lightGray(), Items.DYE.orange(), Items.DYE.red(), Items.DYE.pink(),
+                Items.DYE.brown(), Items.DYE.purple(), Items.DYE.blue(), Items.DYE.green(), Items.DYE.magenta(), Items.DYE.cyan()
         ));
         Template.put("CARPET", List.of(
-                Items.WHITE_CARPET, Items.LIGHT_GRAY_CARPET, Items.GRAY_CARPET, Items.BLACK_CARPET, Items.BROWN_CARPET,
-                Items.RED_CARPET, Items.ORANGE_CARPET, Items.YELLOW_CARPET, Items.LIME_CARPET, Items.GREEN_CARPET,
-                Items.CYAN_CARPET, Items.LIGHT_BLUE_CARPET, Items.BLUE_CARPET, Items.PURPLE_CARPET, Items.MAGENTA_CARPET, Items.PINK_CARPET
+                Items.CARPET.white(), Items.CARPET.lightGray(), Items.CARPET.gray(), Items.CARPET.black(), Items.CARPET.brown(),
+                Items.CARPET.red(), Items.CARPET.orange(), Items.CARPET.yellow(), Items.CARPET.lime(), Items.CARPET.green(),
+                Items.CARPET.cyan(), Items.CARPET.lightBlue(), Items.CARPET.blue(), Items.CARPET.purple(), Items.CARPET.magenta(), Items.CARPET.pink()
         ));
         Template.put("BED", List.of(
-                Items.WHITE_BED, Items.LIGHT_GRAY_BED, Items.GRAY_BED, Items.BLACK_BED, Items.BROWN_BED, Items.RED_BED,
-                Items.ORANGE_BED, Items.YELLOW_BED, Items.LIME_BED, Items.GREEN_BED,
-                Items.CYAN_BED, Items.LIGHT_BLUE_BED, Items.BLUE_BED, Items.PURPLE_BED, Items.MAGENTA_BED, Items.PINK_BED
+                Items.BED.white(), Items.BED.lightGray(), Items.BED.gray(), Items.BED.black(), Items.BED.brown(), Items.BED.red(),
+                Items.BED.orange(), Items.BED.yellow(), Items.BED.lime(), Items.BED.green(),
+                Items.BED.cyan(), Items.BED.lightBlue(), Items.BED.blue(), Items.BED.purple(), Items.BED.magenta(), Items.BED.pink()
         ));
         Template.put("BANNER", List.of(
-                Items.WHITE_BANNER, Items.LIGHT_GRAY_BANNER, Items.GRAY_BANNER, Items.BLACK_BANNER, Items.BROWN_BANNER,
-                Items.RED_BANNER, Items.ORANGE_BANNER, Items.YELLOW_BANNER, Items.LIME_BANNER, Items.GREEN_BANNER,
-                Items.CYAN_BANNER, Items.LIGHT_BLUE_BANNER, Items.BLUE_BANNER, Items.PURPLE_BANNER, Items.MAGENTA_BANNER, Items.PINK_BANNER
+                Items.BANNER.white(), Items.BANNER.lightGray(), Items.BANNER.gray(), Items.BANNER.black(), Items.BANNER.brown(),
+                Items.BANNER.red(), Items.BANNER.orange(), Items.BANNER.yellow(), Items.BANNER.lime(), Items.BANNER.green(),
+                Items.BANNER.cyan(), Items.BANNER.lightBlue(), Items.BANNER.blue(), Items.BANNER.purple(), Items.BANNER.magenta(), Items.BANNER.pink()
         ));
         Template.put("DIAMOND_ARMOR", List.of(
                 Items.DIAMOND_HELMET,
@@ -57,10 +57,10 @@ public class OutputRecipe {
                 Items.BROWN_TERRACOTTA, Items.RED_TERRACOTTA, Items.ORANGE_TERRACOTTA, Items.YELLOW_TERRACOTTA, Items.LIME_TERRACOTTA, Items.GREEN_TERRACOTTA, Items.CYAN_TERRACOTTA
         ));
         Template.put("GLAZED_TERRACOTTA", List.of(
-                Items.WHITE_GLAZED_TERRACOTTA, Items.LIGHT_BLUE_TERRACOTTA, Items.BLUE_TERRACOTTA, Items.PURPLE_TERRACOTTA, Items.MAGENTA_TERRACOTTA, Items.PINK_TERRACOTTA,
-                Items.LIGHT_GRAY_GLAZED_TERRACOTTA, Items.GRAY_GLAZED_TERRACOTTA, Items.BLACK_GLAZED_TERRACOTTA,
-                Items.BROWN_GLAZED_TERRACOTTA, Items.RED_GLAZED_TERRACOTTA, Items.ORANGE_GLAZED_TERRACOTTA, Items.YELLOW_GLAZED_TERRACOTTA, Items.LIME_GLAZED_TERRACOTTA, Items.GREEN_GLAZED_TERRACOTTA,
-                Items.CYAN_GLAZED_TERRACOTTA, Items.LIGHT_BLUE_GLAZED_TERRACOTTA, Items.BLUE_GLAZED_TERRACOTTA, Items.PURPLE_GLAZED_TERRACOTTA, Items.MAGENTA_GLAZED_TERRACOTTA, Items.PINK_GLAZED_TERRACOTTA
+                Items.GLAZED_TERRACOTTA.white(), Items.LIGHT_BLUE_TERRACOTTA, Items.BLUE_TERRACOTTA, Items.PURPLE_TERRACOTTA, Items.MAGENTA_TERRACOTTA, Items.PINK_TERRACOTTA,
+                Items.GLAZED_TERRACOTTA.lightGray(), Items.GLAZED_TERRACOTTA.gray(), Items.GLAZED_TERRACOTTA.black(),
+                Items.GLAZED_TERRACOTTA.brown(), Items.GLAZED_TERRACOTTA.red(), Items.GLAZED_TERRACOTTA.orange(), Items.GLAZED_TERRACOTTA.yellow(), Items.GLAZED_TERRACOTTA.lime(), Items.GLAZED_TERRACOTTA.green(),
+                Items.GLAZED_TERRACOTTA.cyan(), Items.GLAZED_TERRACOTTA.lightBlue(), Items.GLAZED_TERRACOTTA.blue(), Items.GLAZED_TERRACOTTA.purple(), Items.GLAZED_TERRACOTTA.magenta(), Items.GLAZED_TERRACOTTA.pink()
         ));
         Template.put("BOAT", List.of(
                 Items.OAK_BOAT, Items.SPRUCE_BOAT, Items.BIRCH_BOAT, Items.JUNGLE_BOAT, Items.ACACIA_BOAT, Items.DARK_OAK_BOAT, Items.MANGROVE_BOAT, Items.CHERRY_BOAT, Items.BAMBOO_RAFT
@@ -80,22 +80,22 @@ public class OutputRecipe {
                 Items.SUNFLOWER, Items.LILAC, Items.ROSE_BUSH, Items.PEONY, Items.DANDELION, Items.POPPY
         ));
         Template.put("CONCRETE_POWDER", List.of(
-                Items.BLACK_CONCRETE_POWDER,
-                Items.WHITE_CONCRETE_POWDER,
-                Items.GRAY_CONCRETE_POWDER,
-                Items.LIGHT_GRAY_CONCRETE_POWDER,
-                Items.BROWN_CONCRETE_POWDER,
-                Items.RED_CONCRETE_POWDER,
-                Items.ORANGE_CONCRETE_POWDER,
-                Items.YELLOW_CONCRETE_POWDER,
-                Items.GREEN_CONCRETE_POWDER,
-                Items.LIME_CONCRETE_POWDER,
-                Items.CYAN_CONCRETE_POWDER,
-                Items.LIGHT_BLUE_CONCRETE_POWDER,
-                Items.BLUE_CONCRETE_POWDER,
-                Items.PURPLE_CONCRETE_POWDER,
-                Items.MAGENTA_CONCRETE_POWDER,
-                Items.PINK_CONCRETE_POWDER
+                Items.CONCRETE_POWDER.black(),
+                Items.CONCRETE_POWDER.white(),
+                Items.CONCRETE_POWDER.gray(),
+                Items.CONCRETE_POWDER.lightGray(),
+                Items.CONCRETE_POWDER.brown(),
+                Items.CONCRETE_POWDER.red(),
+                Items.CONCRETE_POWDER.orange(),
+                Items.CONCRETE_POWDER.yellow(),
+                Items.CONCRETE_POWDER.green(),
+                Items.CONCRETE_POWDER.lime(),
+                Items.CONCRETE_POWDER.cyan(),
+                Items.CONCRETE_POWDER.lightBlue(),
+                Items.CONCRETE_POWDER.blue(),
+                Items.CONCRETE_POWDER.purple(),
+                Items.CONCRETE_POWDER.magenta(),
+                Items.CONCRETE_POWDER.pink()
         ));
         Template.put("DEAD_CORAL_FAN", List.of(
                 Items.DEAD_TUBE_CORAL_FAN,
@@ -385,9 +385,9 @@ public class OutputRecipe {
                 Items.BONE_MEAL
         ), List.of(Items.BONE_MEAL)));
         ore.put("copper",List.of(List.of(
-                Items.EXPOSED_COPPER,
-                Items.WEATHERED_COPPER,
-                Items.OXIDIZED_COPPER
+                Items.COPPER_BLOCK.weathering().exposed(),
+                Items.COPPER_BLOCK.weathering().weathered(),
+                Items.COPPER_BLOCK.weathering().oxidized()
         ), List.of(Items.COPPER_BLOCK)));
         ore.put("creeper",List.of(List.of(
                 Items.GUNPOWDER
@@ -486,7 +486,7 @@ public class OutputRecipe {
                 Items.TOTEM_OF_UNDYING,
                 Items.CROSSBOW,
                 Items.ENCHANTED_BOOK,
-                Items.WHITE_BANNER,
+                Items.BANNER.white(),
                 Items.SADDLE,
                 Items.GLASS_BOTTLE,
                 Items.GLOWSTONE_DUST,
@@ -570,22 +570,22 @@ public class OutputRecipe {
                 Items.ENDER_PEARL
         ), List.of()));
         ore.put("sheep",List.of(List.of(
-                Items.WHITE_WOOL,      // 白色羊毛
-                Items.LIGHT_GRAY_WOOL, // 浅灰色羊毛
-                Items.GRAY_WOOL,       // 灰色羊毛
-                Items.BLACK_WOOL,      // 黑色羊毛
-                Items.BROWN_WOOL,      // 棕色羊毛
-                Items.RED_WOOL,        // 红色羊毛
-                Items.ORANGE_WOOL,     // 橙色羊毛
-                Items.YELLOW_WOOL,     // 黄色羊毛
-                Items.LIME_WOOL,       // 黄绿色羊毛
-                Items.GREEN_WOOL,      // 绿色羊毛
-                Items.CYAN_WOOL,       // 青色羊毛
-                Items.LIGHT_BLUE_WOOL, // 淡蓝色羊毛
-                Items.BLUE_WOOL,       // 蓝色羊毛
-                Items.PURPLE_WOOL,     // 紫色羊毛
-                Items.MAGENTA_WOOL,    // 品红色羊毛
-                Items.PINK_WOOL        // 粉红色羊毛
+                Items.WOOL.white(),      // 白色羊毛
+                Items.WOOL.lightGray(), // 浅灰色羊毛
+                Items.WOOL.gray(),       // 灰色羊毛
+                Items.WOOL.black(),      // 黑色羊毛
+                Items.WOOL.brown(),      // 棕色羊毛
+                Items.WOOL.red(),        // 红色羊毛
+                Items.WOOL.orange(),     // 橙色羊毛
+                Items.WOOL.yellow(),     // 黄色羊毛
+                Items.WOOL.lime(),       // 黄绿色羊毛
+                Items.WOOL.green(),      // 绿色羊毛
+                Items.WOOL.cyan(),       // 青色羊毛
+                Items.WOOL.lightBlue(), // 淡蓝色羊毛
+                Items.WOOL.blue(),       // 蓝色羊毛
+                Items.WOOL.purple(),     // 紫色羊毛
+                Items.WOOL.magenta(),    // 品红色羊毛
+                Items.WOOL.pink()        // 粉红色羊毛
         ), List.of(Items.SHEEP_SPAWN_EGG)));
         ore.put("witch",List.of(List.of(
                 Items.GLASS_BOTTLE,
@@ -607,22 +607,22 @@ public class OutputRecipe {
                 Items.POINTED_DRIPSTONE
         ), List.of()));
         ore.put("concrete",List.of(List.of(
-                Items.WHITE_CONCRETE,      // 白色混凝土
-                Items.LIGHT_GRAY_CONCRETE, // 浅灰色混凝土
-                Items.GRAY_CONCRETE,       // 灰色混凝土
-                Items.BLACK_CONCRETE,      // 黑色混凝土
-                Items.BROWN_CONCRETE,      // 棕色混凝土
-                Items.RED_CONCRETE,        // 红色混凝土
-                Items.ORANGE_CONCRETE,     // 橙色混凝土
-                Items.YELLOW_CONCRETE,     // 黄色混凝土
-                Items.LIME_CONCRETE,       // 黄绿色混凝土
-                Items.GREEN_CONCRETE,      // 绿色混凝土
-                Items.CYAN_CONCRETE,       // 青色混凝土
-                Items.LIGHT_BLUE_CONCRETE, // 淡蓝色混凝土
-                Items.BLUE_CONCRETE,       // 蓝色混凝土
-                Items.PURPLE_CONCRETE,     // 紫色混凝土
-                Items.MAGENTA_CONCRETE,    // 品红色混凝土
-                Items.PINK_CONCRETE        // 粉红色混凝土
+                Items.CONCRETE.white(),      // 白色混凝土
+                Items.CONCRETE.lightGray(), // 浅灰色混凝土
+                Items.CONCRETE.gray(),       // 灰色混凝土
+                Items.CONCRETE.black(),      // 黑色混凝土
+                Items.CONCRETE.brown(),      // 棕色混凝土
+                Items.CONCRETE.red(),        // 红色混凝土
+                Items.CONCRETE.orange(),     // 橙色混凝土
+                Items.CONCRETE.yellow(),     // 黄色混凝土
+                Items.CONCRETE.lime(),       // 黄绿色混凝土
+                Items.CONCRETE.green(),      // 绿色混凝土
+                Items.CONCRETE.cyan(),       // 青色混凝土
+                Items.CONCRETE.lightBlue(), // 淡蓝色混凝土
+                Items.CONCRETE.blue(),       // 蓝色混凝土
+                Items.CONCRETE.purple(),     // 紫色混凝土
+                Items.CONCRETE.magenta(),    // 品红色混凝土
+                Items.CONCRETE.pink()        // 粉红色混凝土
         ), List.of(Items.WATER_BUCKET)));
         ore.put("allay", List.of(List.of(), List.of(Items.ALLAY_SPAWN_EGG)));
         ore.put("bat", List.of(List.of(
@@ -637,22 +637,22 @@ public class OutputRecipe {
                 Items.SPLASH_POTION
         ), List.of(Items.POTION,Items.BLAZE_POWDER)));
         ore.put("carpet", List.of(List.of(
-                Items.WHITE_CARPET,
-                Items.ORANGE_CARPET,
-                Items.MAGENTA_CARPET,
-                Items.LIGHT_BLUE_CARPET,
-                Items.YELLOW_CARPET,
-                Items.LIME_CARPET,
-                Items.PINK_CARPET,
-                Items.GRAY_CARPET,
-                Items.LIGHT_GRAY_CARPET,
-                Items.CYAN_CARPET,
-                Items.PURPLE_CARPET,
-                Items.BLUE_CARPET,
-                Items.BROWN_CARPET,
-                Items.GREEN_CARPET,
-                Items.RED_CARPET,
-                Items.BLACK_CARPET
+                Items.CARPET.white(),
+                Items.CARPET.orange(),
+                Items.CARPET.magenta(),
+                Items.CARPET.lightBlue(),
+                Items.CARPET.yellow(),
+                Items.CARPET.lime(),
+                Items.CARPET.pink(),
+                Items.CARPET.gray(),
+                Items.CARPET.lightGray(),
+                Items.CARPET.cyan(),
+                Items.CARPET.purple(),
+                Items.CARPET.blue(),
+                Items.CARPET.brown(),
+                Items.CARPET.green(),
+                Items.CARPET.red(),
+                Items.CARPET.black()
         ), List.of()));
 
         ore.put("cat", List.of(List.of(
@@ -1038,7 +1038,7 @@ public class OutputRecipe {
             ),true),
             new MachineInfo("ice", Items.ICE, Component.translatable("tutorial.ice.title"), List.of(),false),
             new MachineInfo("rail", Items.RAIL, Component.translatable("tutorial.rail.title"), List.of(),false),
-            new MachineInfo("concrete", Items.WHITE_CONCRETE, Component.translatable("tutorial.concrete.title"), List.of(),true),
+            new MachineInfo("concrete", Items.CONCRETE.white(), Component.translatable("tutorial.concrete.title"), List.of(),true),
             new MachineInfo("furnace", Items.FURNACE, Component.translatable("tutorial.furnace.title"), List.of(
                     List.of(),
                     List.of(),
@@ -1076,7 +1076,7 @@ public class OutputRecipe {
                     List.of(new SelectionBox(2,4,8,8,7,2)),
                     List.of(new SelectionBox(0,8,10,10,13,0))
             ),true),
-            //new MachineInfo("flower", Items.WHITE_CARPET, Text.translatable("tutorial.carpet.title"), List.of(),true),
+            //new MachineInfo("flower", Items.CARPET.white(), Text.translatable("tutorial.carpet.title"), List.of(),true),
             new MachineInfo("ocean", Items.PRISMARINE_SHARD, Component.translatable("tutorial.ocean.title"), List.of(
                     List.of(new SelectionBox(0,10,57,18,22,39),new SelectionBox(0,10,0,18,22,18),new SelectionBox(57,10,0,39,22,18),new SelectionBox(57,10,57,39,22,39)),
                     List.of(),
@@ -1086,11 +1086,11 @@ public class OutputRecipe {
                     List.of(new SelectionBox(6,53,13,12,17,13)),
                     List.of(new SelectionBox(8,55,14,14,57,6))
             ),true),
-            new MachineInfo("sheep", Items.WHITE_WOOL, Component.translatable("tutorial.sheep.title"), List.of(),true),
+            new MachineInfo("sheep", Items.WOOL.white(), Component.translatable("tutorial.sheep.title"), List.of(),true),
             new MachineInfo("snow", Items.SNOWBALL, Component.translatable("tutorial.snow.title"), List.of(),true)
     );
     public static final List<MachineInfo> specialMachines = List.of(
-            new MachineInfo("carpet", Items.WHITE_CARPET, Component.translatable("tutorial.carpet.title"), List.of(),true),
+            new MachineInfo("carpet", Items.CARPET.white(), Component.translatable("tutorial.carpet.title"), List.of(),true),
             new MachineInfo("load", Items.MINECART, Component.translatable("tutorial.load.title"), List.of(
                     List.of(new SelectionBox(3,1,2,3,1,2)),
                     List.of(),

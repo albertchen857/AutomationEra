@@ -1,7 +1,7 @@
 package com.automationera.ui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -37,7 +37,7 @@ public class MachineEntryList extends AbstractSelectionList<MachineEntryList.Ent
     }
 
     @Override
-    protected void renderSelection(GuiGraphics context, com.automationera.ui.MachineEntryList.Entry entry, int color) {
+    protected void extractSelection(GuiGraphicsExtractor context, com.automationera.ui.MachineEntryList.Entry entry, int color) {
         // 选中高亮由 Entry 自己画
     }
 
@@ -57,21 +57,21 @@ public class MachineEntryList extends AbstractSelectionList<MachineEntryList.Ent
         }
 
         @Override
-        public void renderContent(GuiGraphics ctx, int mouseX, int mouseY, boolean hovered, float delta) {
+        public void extractContent(GuiGraphicsExtractor ctx, int mouseX, int mouseY, boolean hovered, float delta) {
             int x = this.getContentX(), y = this.getContentY(), width = this.getContentWidth(), height = this.getContentHeight();
             if (parentList.getSelected() == this) {
                 ctx.fill(x, y, x + width, y + height, 0x44007FFF);
             } else if (hovered) {
                 ctx.fill(x, y, x + width, y + height, 0x22FFFFFF);
             }
-            ctx.renderItem(icon, x + 2, y + (height - 16) / 2);
+            ctx.item(icon, x + 2, y + (height - 16) / 2);
             var tr = Minecraft.getInstance().font;
             Component shown = text;
             int maxTextW = width - 22;
             if (tr.width(text) > maxTextW) {
                 shown = Component.literal(tr.plainSubstrByWidth(text.getString(), maxTextW - tr.width("…")) + "…");
             }
-            ctx.drawString(tr, shown, x + 20, y + (height - 8) / 2, 0xFFFFFFFF, false);
+            ctx.text(tr, shown, x + 20, y + (height - 8) / 2, 0xFFFFFFFF, false);
         }
 
         @Override

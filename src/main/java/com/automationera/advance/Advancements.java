@@ -10,15 +10,15 @@ import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.BlockPredicate;
-import net.minecraft.advancements.criterion.BredAnimalsTrigger;
-import net.minecraft.advancements.criterion.ImpossibleTrigger;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.advancements.criterion.PlayerTrigger;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.predicates.BlockPredicate;
+import net.minecraft.advancements.triggers.BredAnimalsTrigger;
+import net.minecraft.advancements.triggers.ImpossibleTrigger;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.LocationPredicate;
+import net.minecraft.advancements.triggers.PlayerTrigger;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -115,8 +115,8 @@ public class Advancements {
         collect(consumer, "railfarm", Items.POWERED_RAIL, AdvancementType.TASK, ironfarm,
                 stacks27(Items.RAIL, Items.POWERED_RAIL, Items.DETECTOR_RAIL, Items.ACTIVATOR_RAIL));
         // 晒铜机：保持原条件
-        collect(consumer, "copperfarm", Items.EXPOSED_COPPER, AdvancementType.TASK, stonefarm,
-                stacks(4, Items.EXPOSED_COPPER, Items.WEATHERED_COPPER, Items.OXIDIZED_COPPER));
+        collect(consumer, "copperfarm", Items.COPPER_BLOCK.weathering().exposed(), AdvancementType.TASK, stonefarm,
+                stacks(4, Items.COPPER_BLOCK.weathering().exposed(), Items.COPPER_BLOCK.weathering().weathered(), Items.COPPER_BLOCK.weathering().oxidized()));
         collect(consumer, "leaffarm", Items.OAK_LEAVES, AdvancementType.TASK, bonefarm, stacks27(
                 Items.OAK_LEAVES, Items.SPRUCE_LEAVES, Items.BIRCH_LEAVES, Items.JUNGLE_LEAVES, Items.ACACIA_LEAVES,
                 Items.DARK_OAK_LEAVES, Items.MANGROVE_LEAVES, Items.CHERRY_LEAVES, Items.PALE_OAK_LEAVES,
@@ -125,11 +125,11 @@ public class Advancements {
         collect(consumer, "mushroomfarm", Items.RED_MUSHROOM_BLOCK, AdvancementType.TASK, bonefarm, stacks27(
                 Items.BROWN_MUSHROOM, Items.RED_MUSHROOM, Items.RED_MUSHROOM_BLOCK, Items.BROWN_MUSHROOM_BLOCK));
         // 混凝土工厂：保持原条件
-        collect(consumer, "concretefarm", Items.WHITE_CONCRETE, AdvancementType.TASK, sandfarm, stacks(9,
-                Items.WHITE_CONCRETE, Items.ORANGE_CONCRETE, Items.MAGENTA_CONCRETE, Items.LIGHT_BLUE_CONCRETE,
-                Items.YELLOW_CONCRETE, Items.LIME_CONCRETE, Items.PINK_CONCRETE, Items.GRAY_CONCRETE,
-                Items.LIGHT_GRAY_CONCRETE, Items.CYAN_CONCRETE, Items.PURPLE_CONCRETE, Items.BLUE_CONCRETE,
-                Items.BROWN_CONCRETE, Items.GREEN_CONCRETE, Items.RED_CONCRETE, Items.BLACK_CONCRETE));
+        collect(consumer, "concretefarm", Items.CONCRETE.white(), AdvancementType.TASK, sandfarm, stacks(9,
+                Items.CONCRETE.white(), Items.CONCRETE.orange(), Items.CONCRETE.magenta(), Items.CONCRETE.lightBlue(),
+                Items.CONCRETE.yellow(), Items.CONCRETE.lime(), Items.CONCRETE.pink(), Items.CONCRETE.gray(),
+                Items.CONCRETE.lightGray(), Items.CONCRETE.cyan(), Items.CONCRETE.purple(), Items.CONCRETE.blue(),
+                Items.CONCRETE.brown(), Items.CONCRETE.green(), Items.CONCRETE.red(), Items.CONCRETE.black()));
     }
 
     // ---------------------------------------------------------------- 生物农场（原“村民工程”根）
@@ -174,10 +174,10 @@ public class Advancements {
 
         collect(consumer, "turtlefarm", Items.TURTLE_EGG, AdvancementType.TASK, animalfarm, stacks(4, Items.TURTLE_EGG)); // 保持原条件
         collect(consumer, "snowfarm", Items.SNOW_BLOCK, AdvancementType.TASK, animalfarm, stacks27(Items.SNOW_BLOCK));
-        AdvancementHolder woolfarm = collect(consumer, "woolfarm", Items.WHITE_WOOL, AdvancementType.TASK, animalfarm, stacks27(
-                Items.WHITE_WOOL, Items.ORANGE_WOOL, Items.MAGENTA_WOOL, Items.LIGHT_BLUE_WOOL, Items.YELLOW_WOOL,
-                Items.LIME_WOOL, Items.PINK_WOOL, Items.GRAY_WOOL, Items.LIGHT_GRAY_WOOL, Items.CYAN_WOOL,
-                Items.PURPLE_WOOL, Items.BLUE_WOOL, Items.BROWN_WOOL, Items.GREEN_WOOL, Items.RED_WOOL, Items.BLACK_WOOL));
+        AdvancementHolder woolfarm = collect(consumer, "woolfarm", Items.WOOL.white(), AdvancementType.TASK, animalfarm, stacks27(
+                Items.WOOL.white(), Items.WOOL.orange(), Items.WOOL.magenta(), Items.WOOL.lightBlue(), Items.WOOL.yellow(),
+                Items.WOOL.lime(), Items.WOOL.pink(), Items.WOOL.gray(), Items.WOOL.lightGray(), Items.WOOL.cyan(),
+                Items.WOOL.purple(), Items.WOOL.blue(), Items.WOOL.brown(), Items.WOOL.green(), Items.WOOL.red(), Items.WOOL.black()));
         // 鱿鱼农场拆成普通/发光两个
         collect(consumer, "squidfarm", Items.INK_SAC, AdvancementType.TASK, animalfarm, stacks27(Items.INK_SAC));
         collect(consumer, "glowsquidfarm", Items.GLOW_INK_SAC, AdvancementType.TASK, animalfarm, stacks27(Items.GLOW_INK_SAC));
@@ -275,7 +275,7 @@ public class Advancements {
         // 生电模组（客户端上报已安装的模组）
         AdvancementHolder notvanilla = impossible(consumer, "notvanilla", Items.KNOWLEDGE_BOOK, AdvancementType.TASK, curcuitrevolution, "mod");
         impossible(consumer, "masamods", Items.WRITABLE_BOOK, AdvancementType.TASK, notvanilla, "mod");
-        impossible(consumer, "carpetmod", Items.WHITE_CARPET, AdvancementType.TASK, notvanilla, "mod");
+        impossible(consumer, "carpetmod", Items.CARPET.white(), AdvancementType.TASK, notvanilla, "mod");
         impossible(consumer, "optimizemods", Items.CLOCK, AdvancementType.TASK, notvanilla, "mod");
 
         // 顶级成就：满级全下界合金信标（奖励由代码发放，受开发者选项控制）

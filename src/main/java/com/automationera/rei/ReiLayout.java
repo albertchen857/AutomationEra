@@ -50,7 +50,7 @@ public final class ReiLayout {
             m.translate(x, y);
             m.scale(s, s);
             for (int i = 0; i < finalLines.size(); i++) {
-                ctx.drawString(tr, finalLines.get(i), 0, i * LINE_HEIGHT, color, false);
+                ctx.text(tr, finalLines.get(i), 0, i * LINE_HEIGHT, color, false);
             }
             m.popMatrix();
         });

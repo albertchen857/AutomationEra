@@ -12,7 +12,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -67,7 +67,7 @@ public class Automationera implements ModInitializer {
 		ModConfig.load();
 		AdvancementsEnabledCondition.register();
 		CriteriaTriggers.register(FullStackCriterion.ID.toString(), FullStackCriterion.INSTANCE);
-		PayloadTypeRegistry.playC2S().register(ClientModsPayload.ID, ClientModsPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(ClientModsPayload.ID, ClientModsPayload.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(ClientModsPayload.ID,
 				(payload, context) -> onClientMods(context.player(), payload.mods()));
 		PlacedBlockInNetherCriterion.register();

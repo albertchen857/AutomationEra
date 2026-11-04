@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.RenderShape;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.FluidState;
 import org.joml.Quaternionf;
 
 /**
- * 把教程结构渲染到离屏纹理，再由 GUI 贴回界面（替代 1.21.5 及以前直接在 GuiGraphics 里画方块的做法）。
+ * 把教程结构渲染到离屏纹理，再由 GUI 贴回界面（替代 1.21.5 及以前直接在 GuiGraphicsExtractor 里画方块的做法）。
  */
 public class TutorialStructureRenderer extends PictureInPictureRenderer<TutorialStructureRenderState> {
     private static final int FULL_BRIGHT = LightTexture.FULL_BRIGHT;

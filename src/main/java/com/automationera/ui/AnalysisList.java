@@ -16,10 +16,10 @@ public class AnalysisList {
     private static List<@NotNull Item> NonInclude = List.of(
             Items.AIR,
             Items.BARRIER,
-            Items.YELLOW_CONCRETE,
-            Items.BLACK_CONCRETE,
-            Items.BLUE_STAINED_GLASS,
-            Items.LIME_STAINED_GLASS
+            Items.CONCRETE.yellow(),
+            Items.CONCRETE.black(),
+            Items.STAINED_GLASS.blue(),
+            Items.STAINED_GLASS.lime()
     );
     public static class Entry {
         public final ItemStack stack;
