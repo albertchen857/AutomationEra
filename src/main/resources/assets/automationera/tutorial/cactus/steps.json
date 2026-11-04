@@ -1,0 +1,231 @@
+{
+ "id": "cactus",
+ "oldSteps": 3,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 1,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 4,
+   "old": 3
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 3
+  },
+  {
+   "step": 3,
+   "y0": 2,
+   "y1": 2,
+   "role": "detail",
+   "title": "平滑石台阶 #1",
+   "blocks": 80,
+   "old": 3
+  },
+  {
+   "step": 4,
+   "y0": 2,
+   "y1": 2,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 1,
+   "old": 3
+  },
+  {
+   "step": 5,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "water #1",
+   "blocks": 80,
+   "old": 3
+  },
+  {
+   "step": 6,
+   "y0": 3,
+   "y1": 3,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 7,
+   "y0": 4,
+   "y1": 4,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 8,
+   "y0": 4,
+   "y1": 4,
+   "role": "detail",
+   "title": "平滑石台阶 · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 9,
+   "y0": 5,
+   "y1": 5,
+   "role": "fill",
+   "title": "sand · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 10,
+   "y0": 5,
+   "y1": 5,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 11,
+   "y0": 6,
+   "y1": 6,
+   "role": "fill",
+   "title": "cactus · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 12,
+   "y0": 6,
+   "y1": 6,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 13,
+   "y0": 7,
+   "y1": 7,
+   "role": "opening",
+   "title": "glass #1",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 14,
+   "y0": 7,
+   "y1": 7,
+   "role": "detail",
+   "title": "oak fence · 本层 8 处",
+   "blocks": 8,
+   "old": 3
+  },
+  {
+   "step": 15,
+   "y0": 8,
+   "y1": 8,
+   "role": "detail",
+   "title": "平滑石台阶 #3",
+   "blocks": 80,
+   "old": 3
+  },
+  {
+   "step": 16,
+   "y0": 9,
+   "y1": 9,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 80,
+   "old": 3
+  },
+  {
+   "step": 17,
+   "y0": 9,
+   "y1": 9,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 18,
+   "y0": 10,
+   "y1": 10,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 19,
+   "y0": 10,
+   "y1": 10,
+   "role": "detail",
+   "title": "平滑石台阶 · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 20,
+   "y0": 11,
+   "y1": 11,
+   "role": "fill",
+   "title": "sand · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 21,
+   "y0": 11,
+   "y1": 11,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 22,
+   "y0": 12,
+   "y1": 12,
+   "role": "fill",
+   "title": "cactus · 本层 16 处",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 23,
+   "y0": 12,
+   "y1": 12,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 24,
+   "y0": 13,
+   "y1": 13,
+   "role": "opening",
+   "title": "glass #2",
+   "blocks": 40,
+   "old": 3
+  },
+  {
+   "step": 25,
+   "y0": 13,
+   "y1": 13,
+   "role": "detail",
+   "title": "oak fence · 本层 8 处",
+   "blocks": 8,
+   "old": 3
+  }
+ ]
+}

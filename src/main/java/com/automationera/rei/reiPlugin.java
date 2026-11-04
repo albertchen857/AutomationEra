@@ -8,12 +8,15 @@ import com.automationera.rei.display.MachineReiRecipe;
 import com.automationera.rei.display.TradeReiRecipe;
 import com.automationera.rei.display.TutorialReiRecipe;
 import com.automationera.rei.recipe.MachineRecipe;
+import me.shedaniel.rei.api.client.ClientHelper;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.view.ViewSearchBuilder;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -53,6 +56,7 @@ public class reiPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
+        ReiLayout.clearCache();
         registry.add(new MachineReiRecipe(
                 new MachineRecipe(Items.REDSTONE, Items.REDSTONE),
                 "circuit",
@@ -95,6 +99,8 @@ public class reiPlugin implements REIClientPlugin {
                 registry.add(new TutorialReiRecipe(new MachineRecipe(repr, repr), key, outputItems));
             }
         }
+        // 服务器没装 REI 时，补上本地缓存的配方
+        ReiDisplayCache.addCachedDisplays(registry);
     }
 
     // Utility methods for texture Identifiers (for categories to use)
@@ -104,9 +110,29 @@ public class reiPlugin implements REIClientPlugin {
     public static Identifier getVillagerTexture(String job) {
         return Identifier.of("automationera", "textures/rei/villager/" + job + ".png");
     }
+    /** 教程图片：非中文语言时优先用带英文标注的 <key>_en.png（存在的话） */
     public static Identifier getTutorialTexture(String tutKey) {
-        return Identifier.of("automationera", "textures/rei/tutorial/" + tutKey + ".png");
+        Identifier base = Identifier.of("automationera", "textures/rei/tutorial/" + tutKey + ".png");
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (!client.getLanguageManager().getLanguage().startsWith("zh")) {
+            Identifier en = Identifier.of("automationera", "textures/rei/tutorial/" + tutKey + "_en.png");
+            if (client.getResourceManager().getResource(en).isPresent()) return en;
+        }
+        return base;
     }
+    /** 打开某个机器的 REI 页面（教程界面的 REI 按钮用） */
+    public static void openMachinePage(String key) {
+        EntryStack<?> entryStack = ENTRY_BY_KEY.get(key);
+        if (entryStack == null) {
+            LOGGER.warn("No EntryStack found for machine page: {}", key);
+            return;
+        }
+        ClientHelper.getInstance().openView(
+                ViewSearchBuilder.builder()
+                        .addRecipesFor(entryStack)
+                        .setPreferredOpenedCategory(MACHINE_CATEGORY_ID));
+    }
+
     // Utility to open wiki URL (called from category widgets on button click)
     public static void openWiki(String url) {
         net.minecraft.util.Util.getOperatingSystem().open(url);

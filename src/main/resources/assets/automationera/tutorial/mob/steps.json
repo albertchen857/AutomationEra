@@ -1,0 +1,501 @@
+{
+ "id": "mob",
+ "oldSteps": 8,
+ "steps": [
+  {
+   "step": 1,
+   "y0": 0,
+   "y1": 1,
+   "role": "fill",
+   "title": "平滑石 ×2 处（Y0–Y1）",
+   "blocks": 12,
+   "old": 1
+  },
+  {
+   "step": 2,
+   "y0": 0,
+   "y1": 1,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 43,
+   "old": 1
+  },
+  {
+   "step": 3,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "soul campfire · 本层 2 处",
+   "blocks": 24,
+   "old": 2
+  },
+  {
+   "step": 4,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "平滑石 · 本层 3 处",
+   "blocks": 83,
+   "old": 1
+  },
+  {
+   "step": 5,
+   "y0": 2,
+   "y1": 2,
+   "role": "fill",
+   "title": "magma block · 本层 2 处",
+   "blocks": 56,
+   "old": 1
+  },
+  {
+   "step": 6,
+   "y0": 2,
+   "y1": 2,
+   "role": "opening",
+   "title": "lime stained glass #1",
+   "blocks": 1,
+   "old": 2
+  },
+  {
+   "step": 7,
+   "y0": 2,
+   "y1": 2,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 8,
+   "old": 1
+  },
+  {
+   "step": 8,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "平滑石 #2",
+   "blocks": 199,
+   "old": 1
+  },
+  {
+   "step": 9,
+   "y0": 3,
+   "y1": 3,
+   "role": "fill",
+   "title": "water · 本层 7 处",
+   "blocks": 99,
+   "old": 3
+  },
+  {
+   "step": 10,
+   "y0": 3,
+   "y1": 3,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 6,
+   "old": 2
+  },
+  {
+   "step": 11,
+   "y0": 3,
+   "y1": 3,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 1
+  },
+  {
+   "step": 12,
+   "y0": 4,
+   "y1": 4,
+   "role": "fill",
+   "title": "water · 本层 2 处",
+   "blocks": 64,
+   "old": 3
+  },
+  {
+   "step": 13,
+   "y0": 4,
+   "y1": 4,
+   "role": "detail",
+   "title": "平滑石 · 本层 7 处",
+   "blocks": 151,
+   "old": 1
+  },
+  {
+   "step": 14,
+   "y0": 4,
+   "y1": 4,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 15,
+   "y0": 4,
+   "y1": 4,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 3
+  },
+  {
+   "step": 16,
+   "y0": 5,
+   "y1": 5,
+   "role": "fill",
+   "title": "water #2",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 17,
+   "y0": 5,
+   "y1": 5,
+   "role": "detail",
+   "title": "平滑石 · 本层 5 处",
+   "blocks": 589,
+   "old": 3
+  },
+  {
+   "step": 18,
+   "y0": 5,
+   "y1": 5,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 19,
+   "y0": 5,
+   "y1": 5,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 3
+  },
+  {
+   "step": 20,
+   "y0": 6,
+   "y1": 6,
+   "role": "fill",
+   "title": "平滑石 · 本层 5 处",
+   "blocks": 61,
+   "old": 3
+  },
+  {
+   "step": 21,
+   "y0": 6,
+   "y1": 6,
+   "role": "detail",
+   "title": "stone brick stairs #1",
+   "blocks": 102,
+   "old": 4
+  },
+  {
+   "step": 22,
+   "y0": 6,
+   "y1": 6,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 23,
+   "y0": 6,
+   "y1": 6,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 6,
+   "old": 3
+  },
+  {
+   "step": 24,
+   "y0": 6,
+   "y1": 6,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 3
+  },
+  {
+   "step": 25,
+   "y0": 7,
+   "y1": 7,
+   "role": "fill",
+   "title": "平滑石 · 本层 4 处",
+   "blocks": 131,
+   "old": 4
+  },
+  {
+   "step": 26,
+   "y0": 7,
+   "y1": 7,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 20,
+   "old": 3
+  },
+  {
+   "step": 27,
+   "y0": 7,
+   "y1": 7,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 6,
+   "old": 4
+  },
+  {
+   "step": 28,
+   "y0": 7,
+   "y1": 7,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 10,
+   "old": 3
+  },
+  {
+   "step": 29,
+   "y0": 8,
+   "y1": 8,
+   "role": "fill",
+   "title": "平滑石 · 本层 5 处",
+   "blocks": 579,
+   "old": 5
+  },
+  {
+   "step": 30,
+   "y0": 8,
+   "y1": 8,
+   "role": "fill",
+   "title": "ice #1",
+   "blocks": 18,
+   "old": 5
+  },
+  {
+   "step": 31,
+   "y0": 8,
+   "y1": 8,
+   "role": "detail",
+   "title": "橡木 · 本层 2 处",
+   "blocks": 58,
+   "old": 4
+  },
+  {
+   "step": 32,
+   "y0": 8,
+   "y1": 8,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 12,
+   "old": 4
+  },
+  {
+   "step": 33,
+   "y0": 8,
+   "y1": 8,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 16,
+   "old": 4
+  },
+  {
+   "step": 34,
+   "y0": 9,
+   "y1": 9,
+   "role": "fill",
+   "title": "平滑石 · 本层 7 处",
+   "blocks": 42,
+   "old": 5
+  },
+  {
+   "step": 35,
+   "y0": 9,
+   "y1": 9,
+   "role": "detail",
+   "title": "cobblestone wall #1",
+   "blocks": 14,
+   "old": 5
+  },
+  {
+   "step": 36,
+   "y0": 9,
+   "y1": 9,
+   "role": "detail",
+   "title": "stone brick stairs #2",
+   "blocks": 102,
+   "old": 6
+  },
+  {
+   "step": 37,
+   "y0": 9,
+   "y1": 9,
+   "role": "furnish",
+   "title": "室内陈设",
+   "blocks": 2,
+   "old": 5
+  },
+  {
+   "step": 38,
+   "y0": 9,
+   "y1": 9,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 60,
+   "old": 5
+  },
+  {
+   "step": 39,
+   "y0": 10,
+   "y1": 10,
+   "role": "fill",
+   "title": "平滑石 · 本层 2 处",
+   "blocks": 107,
+   "old": 6
+  },
+  {
+   "step": 40,
+   "y0": 10,
+   "y1": 11,
+   "role": "fill",
+   "title": "cactus（Y10–Y11）",
+   "blocks": 2,
+   "old": 6
+  },
+  {
+   "step": 41,
+   "y0": 10,
+   "y1": 10,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 2,
+   "old": 6
+  },
+  {
+   "step": 42,
+   "y0": 11,
+   "y1": 11,
+   "role": "fill",
+   "title": "平滑石 · 本层 3 处",
+   "blocks": 166,
+   "old": 6
+  },
+  {
+   "step": 43,
+   "y0": 11,
+   "y1": 11,
+   "role": "detail",
+   "title": "橡木 · 本层 2 处",
+   "blocks": 58,
+   "old": 6
+  },
+  {
+   "step": 44,
+   "y0": 11,
+   "y1": 11,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 2,
+   "old": 6
+  },
+  {
+   "step": 45,
+   "y0": 12,
+   "y1": 15,
+   "role": "opening",
+   "title": "lime stained glass（Y12–Y15）",
+   "blocks": 4,
+   "old": 8
+  },
+  {
+   "step": 46,
+   "y0": 12,
+   "y1": 12,
+   "role": "detail",
+   "title": "平滑石 #5",
+   "blocks": 1032,
+   "old": 7
+  },
+  {
+   "step": 47,
+   "y0": 12,
+   "y1": 12,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 60,
+   "old": 6
+  },
+  {
+   "step": 48,
+   "y0": 13,
+   "y1": 13,
+   "role": "fill",
+   "title": "平滑石 · 本层 6 处",
+   "blocks": 35,
+   "old": 7
+  },
+  {
+   "step": 49,
+   "y0": 13,
+   "y1": 13,
+   "role": "fill",
+   "title": "water · 本层 2 处",
+   "blocks": 16,
+   "old": 8
+  },
+  {
+   "step": 50,
+   "y0": 13,
+   "y1": 13,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 31,
+   "old": 7
+  },
+  {
+   "step": 51,
+   "y0": 13,
+   "y1": 13,
+   "role": "redstone",
+   "title": "红石/功能",
+   "blocks": 2,
+   "old": 7
+  },
+  {
+   "step": 52,
+   "y0": 14,
+   "y1": 14,
+   "role": "fill",
+   "title": "water · 本层 2 处",
+   "blocks": 16,
+   "old": 8
+  },
+  {
+   "step": 53,
+   "y0": 14,
+   "y1": 14,
+   "role": "detail",
+   "title": "平滑石 · 本层 10 处",
+   "blocks": 62,
+   "old": 8
+  },
+  {
+   "step": 54,
+   "y0": 14,
+   "y1": 14,
+   "role": "attach",
+   "title": "附着物",
+   "blocks": 2,
+   "old": 8
+  },
+  {
+   "step": 55,
+   "y0": 15,
+   "y1": 15,
+   "role": "detail",
+   "title": "平滑石 · 本层 4 处",
+   "blocks": 31,
+   "old": 8
+  }
+ ]
+}

@@ -1,22 +1,28 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:autofarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:hanging_roots",
-          "minecraft:pink_petals",
-          "minecraft:peony",
-          "minecraft:lilac",
           "minecraft:rose_bush",
-          "minecraft:big_dripleaf",
+          "minecraft:cocoa_beans",
+          "minecraft:lilac",
           "minecraft:vine",
           "minecraft:glow_lichen",
+          "minecraft:hanging_roots",
+          "minecraft:pink_petals",
           "minecraft:glow_berries",
+          "minecraft:big_dripleaf",
           "minecraft:sunflower",
-          "minecraft:cocoa_beans"
+          "minecraft:peony"
         ],
-        "required_stacks": 9
+        "required_boxes": 1,
+        "required_stacks": 27
       },
       "trigger": "automationera:full_stack"
     }

@@ -1,19 +1,26 @@
 {
-  "parent": "automationera:automaticfactory",
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:attribute",
   "criteria": {
-    "a": {
+    "village": {
       "conditions": {
-        "entity": [
+        "player": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "minecraft:iron_golem"
+              "location": {
+                "structures": "#minecraft:village"
+              }
             }
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:location"
     }
   },
   "display": {
@@ -30,7 +37,7 @@
   },
   "requirements": [
     [
-      "a"
+      "village"
     ]
   ],
   "sends_telemetry_event": true

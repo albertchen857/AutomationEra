@@ -1,16 +1,21 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:seapicklefarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
+          "minecraft:bubble_coral_fan",
           "minecraft:brain_coral_fan",
           "minecraft:tube_coral_fan",
           "minecraft:horn_coral_fan",
-          "minecraft:bubble_coral_fan",
           "minecraft:fire_coral_fan"
         ],
-        "required_stacks": 4
+        "required_stacks": 9
       },
       "trigger": "automationera:full_stack"
     }

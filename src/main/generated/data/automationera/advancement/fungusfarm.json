@@ -1,13 +1,19 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:bonefarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:crimson_stem",
-          "minecraft:warped_stem"
+          "minecraft:warped_stem",
+          "minecraft:crimson_stem"
         ],
-        "required_stacks": 9
+        "required_boxes": 1,
+        "required_stacks": 27
       },
       "trigger": "automationera:full_stack"
     }

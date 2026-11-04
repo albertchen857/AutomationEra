@@ -1,4 +1,9 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:witherrose",
   "criteria": {
     "a1": {
@@ -8,7 +13,8 @@
           "minecraft:pearlescent_froglight",
           "minecraft:verdant_froglight"
         ],
-        "required_stacks": 9
+        "required_boxes": 1,
+        "required_stacks": 27
       },
       "trigger": "automationera:full_stack"
     }

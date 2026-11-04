@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:animalfarm",
+  "criteria": {
+    "a1": {
+      "conditions": {
+        "items": [
+          "minecraft:glow_ink_sac"
+        ],
+        "required_boxes": 1,
+        "required_stacks": 27
+      },
+      "trigger": "automationera:full_stack"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.glowsquidfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:glow_ink_sac"
+    },
+    "title": {
+      "translate": "advancements.glowsquidfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "a1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

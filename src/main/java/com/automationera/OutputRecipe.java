@@ -1,7 +1,5 @@
 package com.automationera;
 
-import com.automationera.ui.TutorialGroupScreen.SelectionBox;
-import com.automationera.ui.TutorialGroupScreen.MachineInfo;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
@@ -11,6 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 public class OutputRecipe {
+    public record SelectionBox(int x1, int y1, int z1, int x2, int y2, int z2) {
+    }
+
+    public record MachineInfo(
+            String id,
+            Item icon,
+            Text title,
+            List<List<SelectionBox>> selectionBoxes,
+            boolean blockListConsistent) {
+    }
+
     public Map<String, List<Item>> OutputTemplate() {
         Map<String, List<Item>> Template = new HashMap<>();
         Template.put("WOOL", List.of(
@@ -1090,30 +1099,42 @@ public class OutputRecipe {
                     List.of()
             ),true)
     );
+    /** REI 机器页 key -> 教程 id（只有 key 和教程文件夹名不一样的需要写在这里） */
+    private static final Map<String, String> REI_KEY_ALIAS = Map.of(
+            "honey", "bee",
+            "marine", "ocean"
+    );
+    private static final List<String> REI_KEYS_WITH_TUTORIAL = List.of(
+            "iron", "stone", "wood", "ice", "rail", "concrete", "furnace", "hook", "lantern", "string",
+            "mob", "pig", "farm", "sugarcane", "bamboo", "honey", "cactus", "marine", "sheep", "snow",
+            "carpet", "load"
+    );
+
+    /**
+     * REI 机器页 key -> [group, index]。
+     * 按教程 id 在列表里查下标，而不是手写下标：以后在列表中间插入/注释掉机器时不会错位。
+     */
     public static Map<String,List<?>> ConvertMap(){
         Map<String,List<?>> cm = new HashMap<>();
-        cm.put("iron",List.of("factory",0));
-        cm.put("stone",List.of("factory",1));
-        cm.put("wood",List.of("factory",2));
-        cm.put("ice",List.of("factory",3));
-        cm.put("rail",List.of("factory",4));
-        cm.put("concrete",List.of("factory",5));
-        cm.put("furnace",List.of("factory",6));
-        cm.put("hook",List.of("factory",7));
-        cm.put("lantern",List.of("factory",8));
-        cm.put("string",List.of("factory",9));
-        cm.put("mob",List.of("farm",0));
-        cm.put("pig",List.of("farm",1));
-        cm.put("farm",List.of("farm",2));
-        cm.put("sugarcane",List.of("farm",3));
-        cm.put("bamboo",List.of("farm",4));
-        cm.put("honey",List.of("farm",5));
-        cm.put("cactus",List.of("farm",6));
-        cm.put("marine",List.of("farm",7));
-        cm.put("sheep",List.of("farm",8));
-        cm.put("snow",List.of("farm",9));
-        cm.put("carpet",List.of("special",0));
-        cm.put("load", List.of("special",1));
+        for (String key : REI_KEYS_WITH_TUTORIAL) {
+            String id = REI_KEY_ALIAS.getOrDefault(key, key);
+            for (Map.Entry<String, List<MachineInfo>> g : Map.of(
+                    "factory", factoryMachines, "farm", farmMachines, "special", specialMachines).entrySet()) {
+                for (int i = 0; i < g.getValue().size(); i++) {
+                    if (g.getValue().get(i).id().equals(id)) {
+                        cm.put(key, List.of(g.getKey(), i));
+                    }
+                }
+            }
+        }
         return cm;
+    }
+
+    /** 教程 id -> REI 机器页 key；没有对应页面时返回 null */
+    public static String reiKeyOfTutorial(String tutorialId) {
+        for (String key : REI_KEYS_WITH_TUTORIAL) {
+            if (REI_KEY_ALIAS.getOrDefault(key, key).equals(tutorialId)) return key;
+        }
+        return null;
     }
 }

@@ -1,364 +1,238 @@
 package com.automationera.ui;
 
-import com.automationera.AutomationeraClient;
-import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.BlockRenderManager;
-
-import net.minecraft.client.texture.AbstractTexture;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.texture.atlas.Atlases;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtSizeTracker;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.biome.ColorResolver;
-import net.minecraft.world.chunk.light.LightingProvider;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-
+/**
+ * 教程结构文件（assets/automationera/tutorial/&lt;id&gt;/&lt;id&gt;_stepN.nbt）的读取与缓存。
+ * 0.1.9.1 起每个 stepN 只含这一步新增的方块，界面上显示的是第 1 步到当前步的累计；
+ * &lt;id&gt;_full.nbt 是完整机器（导出投影用），steps.json 是每步的元信息。
+ * 1.21.6+ 的 GUI 改为延迟渲染，真正的 3D 绘制在 {@link TutorialStructureRenderer} 里完成。
+ */
 public class TutorialManager {
-    private static long nowtime;
-    private static long lasttime=0;
-    private static boolean rt = true;
-    public static class SLogger {
-        private final Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger("AutomationEraTutorial");
 
-        public SLogger(Logger logger) {
-            this.logger = logger;
-        }
+    // 每帧都会用到，避免每帧重新解压 NBT
+    private static final Map<String, Optional<NbtCompound>> NBT_CACHE = new HashMap<>();
+    private static final Map<String, Optional<Structure>> STRUCTURE_CACHE = new HashMap<>();
 
-        public void info(String msg) {
-            if (logger != null && rt) {
-                logger.info(msg);
-            }
-        }
+    public record PlacedBlock(int x, int y, int z, BlockState state) {
+    }
 
-        public void warn(String msg) {
-            if (logger != null && rt) {
-                logger.warn(msg);
-            }
-        }
-
-        public void error(String msg, Exception e) {
-            if (logger != null && rt) {
-                logger.error(msg, e);
-            }
+    public record Structure(List<PlacedBlock> blocks, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        public int maxDimension() {
+            return Math.max(maxX - minX + 1, Math.max(maxY - minY + 1, maxZ - minZ + 1));
         }
     }
 
-    private static final SLogger LOGGER = new SLogger(LoggerFactory.getLogger("AutomationEraTutorial"));
+    /**
+     * steps.json 里每一步的信息（由 litematic_steps.py 拆分时生成）
+     *
+     * y0/y1：这一步覆盖的 Y 范围（结构坐标）；role：skeleton/fill/opening/detail/furnish/attach/redstone/entity；
+     * old：这一步的方块主要来自旧教程第几步，用来沿用旧的步骤说明
+     */
+    public record StepMeta(int step, int y0, int y1, String role, int old) {
+    }
 
+    private static final Map<String, Structure> CUMULATIVE_CACHE = new HashMap<>();
+    private static final Map<String, List<StepMeta>> META_CACHE = new HashMap<>();
 
-    public static NbtCompound loadNbtFromResource(String group, int step) {
+    /** 资源包重载后结构可能变化，打开教程主界面时清一次缓存 */
+    public static void clearCache() {
+        NBT_CACHE.clear();
+        STRUCTURE_CACHE.clear();
+        CUMULATIVE_CACHE.clear();
+        META_CACHE.clear();
+    }
+
+    /**
+     * 从第 1 步累计到第 upto 步的全部方块（0.1.9.1 起每个步骤文件只存本步新增的方块）。
+     * 包围盒固定用整台机器的，切换步骤时镜头不会跳。
+     */
+    @Nullable
+    public static Structure loadCumulative(String id, int upto) {
+        Structure all = union(id, countSteps(id));
+        if (all == null) return null;
+        Structure part = union(id, upto);
+        if (part == null) return null;
+        return new Structure(part.blocks(), all.minX(), all.minY(), all.minZ(), all.maxX(), all.maxY(), all.maxZ());
+    }
+
+    @Nullable
+    private static Structure union(String id, int upto) {
+        String k = id + "#cum" + upto;
+        Structure cached = CUMULATIVE_CACHE.get(k);
+        if (cached != null) return cached;
+        List<PlacedBlock> blocks = new ArrayList<>();
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+        for (int s = 1; s <= upto; s++) {
+            Structure st = loadStructure(id, s);
+            if (st == null) continue;
+            blocks.addAll(st.blocks());
+            if (st.blocks().isEmpty()) continue;
+            minX = Math.min(minX, st.minX()); minY = Math.min(minY, st.minY()); minZ = Math.min(minZ, st.minZ());
+            maxX = Math.max(maxX, st.maxX()); maxY = Math.max(maxY, st.maxY()); maxZ = Math.max(maxZ, st.maxZ());
+        }
+        if (minX == Integer.MAX_VALUE) return null;
+        Structure s = new Structure(List.copyOf(blocks), minX, minY, minZ, maxX, maxY, maxZ);
+        CUMULATIVE_CACHE.put(k, s);
+        return s;
+    }
+
+    /** 每一步的元信息；没有 steps.json（旧数据）时返回空列表 */
+    public static List<StepMeta> loadStepMeta(String id) {
+        return META_CACHE.computeIfAbsent(id, TutorialManager::readStepMeta);
+    }
+
+    private static List<StepMeta> readStepMeta(String id) {
+        Identifier rid = Identifier.of("automationera", "tutorial/" + id + "/steps.json");
+        Resource res = MinecraftClient.getInstance().getResourceManager().getResource(rid).orElse(null);
+        if (res == null) return List.of();
+        try (var reader = res.getReader()) {
+            List<StepMeta> list = new ArrayList<>();
+            for (JsonElement e : JsonParser.parseReader(reader).getAsJsonObject().getAsJsonArray("steps")) {
+                JsonObject o = e.getAsJsonObject();
+                int y0 = o.get("y0").isJsonNull() ? 0 : o.get("y0").getAsInt();
+                int y1 = o.get("y1").isJsonNull() ? y0 : o.get("y1").getAsInt();
+                list.add(new StepMeta(o.get("step").getAsInt(), y0, y1, o.get("role").getAsString(), o.get("old").getAsInt()));
+            }
+            return List.copyOf(list);
+        } catch (Exception ex) {
+            LOGGER.error("steps.json 读取失败 {}", rid, ex);
+            return List.of();
+        }
+    }
+
+    @Nullable
+    public static StepMeta stepMeta(String id, int step) {
+        List<StepMeta> list = loadStepMeta(id);
+        return step >= 1 && step <= list.size() ? list.get(step - 1) : null;
+    }
+
+    private static String key(String id, int step) {
+        return id + "#" + step;
+    }
+
+    @Nullable
+    public static NbtCompound loadNbtFromResource(String id, int step) {
+        return NBT_CACHE.computeIfAbsent(key(id, step), k -> Optional.ofNullable(readNbt(id, step))).orElse(null);
+    }
+
+    @Nullable
+    private static NbtCompound readNbt(String id, int step) {
+        if (step < 1) return null;
         ResourceManager rm = MinecraftClient.getInstance().getResourceManager();
-        Identifier id = Identifier.of("automationera","tutorial/"+group+"/"+group+"_step"+step+".nbt");
-        Resource res = rm.getResource(id).orElse(null);
+        Identifier rid = Identifier.of("automationera", "tutorial/" + id + "/" + id + "_step" + step + ".nbt");
+        Resource res = rm.getResource(rid).orElse(null);
         if (res == null) return null;
         try (InputStream is = res.getInputStream()) {
-            return NbtIo.readCompressed(is, NbtSizeTracker.of(Long.MAX_VALUE));
+            return NbtIo.readCompressed(is, NbtSizeTracker.ofUnlimitedBytes());
         } catch (Exception e) {
-            LOGGER.error("NBT加载失败", e);
+            LOGGER.error("NBT加载失败 {}", rid, e);
             return null;
         }
     }
-    public static void renderStructure3D(DrawContext ctx, NbtCompound nbt, int step, IsometricRenderState state, int width, int height, int size, List<List<TutorialGroupScreen.SelectionBox>> SelectBox) {
-        nowtime = Instant.now().toEpochMilli();
-        if (nbt == null || !nbt.contains("palette") || !nbt.contains("blocks")) {
-            LOGGER.warn("renderStructure3D: NBT invalid");
-            return;
+
+    public static boolean hasStep(String id, int step) {
+        return loadNbtFromResource(id, step) != null;
+    }
+
+    /** 该教程一共有多少步（step1 开始连续存在的 nbt 数量） */
+    public static int countSteps(String id) {
+        int n = 0;
+        while (hasStep(id, n + 1)) n++;
+        return n;
+    }
+
+    @Nullable
+    public static Structure loadStructure(String id, int step) {
+        return STRUCTURE_CACHE.computeIfAbsent(key(id, step), k -> Optional.ofNullable(parseStructure(loadNbtFromResource(id, step)))).orElse(null);
+    }
+
+    @Nullable
+    public static Structure parseStructure(@Nullable NbtCompound nbt) {
+        if (nbt == null) return null;
+        Optional<NbtList> paletteNbt = nbt.getList("palette");
+        Optional<NbtList> blocksNbt = nbt.getList("blocks");
+        if (paletteNbt.isEmpty() || blocksNbt.isEmpty()) {
+            LOGGER.warn("Tutorial NBT invalid: missing palette/blocks");
+            return null;
         }
-        MinecraftClient mc = MinecraftClient.getInstance();
-        BlockRenderManager brm = mc.getBlockRenderManager();
-        VertexConsumerProvider.Immediate immediate = mc.getBufferBuilders().getEntityVertexConsumers();
-        var matrices = new MatrixStack();
         List<BlockState> palette = new ArrayList<>();
-        Optional<NbtList> optn = nbt.getList("palette");
-        optn.ifPresent(nbtElements -> {
-            for (int i = 0; i < optn.get().size(); i++)
-                palette.add(readBlockStateFromNbt(optn.get().getCompoundOrEmpty(i)));
-        });
-
-        NbtList blocks = nbt.getList("blocks").orElse(new NbtList());
-
-        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, minZ = Double.MAX_VALUE;
-        double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE, maxZ = -Double.MAX_VALUE;
-        for (int i = 0; i < blocks.size(); i++) {
-            NbtCompound blk = blocks.getCompoundOrEmpty(i);
-            NbtList pos = blk.getList("pos").orElse(new NbtList());
-            minX = Math.min(minX, pos.getInt(0).orElse(0));
-            maxX = Math.max(maxX, pos.getInt(0).orElse(0));
-            minY = Math.min(minY, pos.getInt(1).orElse(0));
-            maxY = Math.max(maxY, pos.getInt(1).orElse(0));
-            minZ = Math.min(minZ, pos.getInt(2).orElse(0));
-            maxZ = Math.max(maxZ, pos.getInt(2).orElse(0));
+        for (int i = 0; i < paletteNbt.get().size(); i++) {
+            palette.add(readBlockStateFromNbt(paletteNbt.get().getCompoundOrEmpty(i)));
         }
-        double dx = (minX + maxX) / 2.0;
-        double dy = (minY + maxY) / 2.0;
-        double dz = (minZ + maxZ) / 2.0;
-        double globalScale = state.scale * size / Math.max(1, Math.max(maxX-minX+1, Math.max(maxY-minY+1, maxZ-minZ+1))) / 1.2f;
 
-        matrices.push();
-        matrices.translate(width / 3f * 2f - 30, height / 8f * 5f + state.yc - 40, 200);//position
-
-        double nx = (Math.sin(Math.toRadians(state.rotation)) * Math.cos(Math.toRadians(state.pitch))),
-                ny = (-Math.sin(Math.toRadians(state.pitch))),
-                nz = (Math.cos(Math.toRadians(state.rotation)) * Math.cos(Math.toRadians(state.pitch)));
-        matrices.multiply(new Quaternionf().rotateX((float) -Math.asin(ny)));
-        matrices.multiply(new Quaternionf().rotateY((float) Math.atan2(nx, nz)));//Normal Rotation
-
-        matrices.scale((float)globalScale, (float)-globalScale, (float)globalScale);
-        matrices.translate(-dx, -dy, -dz);//center point
-
-        GlStateManager._enableDepthTest();
-        GlStateManager._depthMask(true);
-        GlStateManager._enableCull();
-        GlStateManager._enableBlend();
-
-        for (int i = 0; i < blocks.size(); i++) {
-            NbtCompound blk = blocks.getCompoundOrEmpty(i);
+        List<PlacedBlock> blocks = new ArrayList<>();
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+        NbtList list = blocksNbt.get();
+        for (int i = 0; i < list.size(); i++) {
+            NbtCompound blk = list.getCompoundOrEmpty(i);
             NbtList pos = blk.getList("pos").orElse(new NbtList());
             int x = pos.getInt(0).orElse(0), y = pos.getInt(1).orElse(0), z = pos.getInt(2).orElse(0);
-            Optional<Integer> idx = blk.getInt("state");
-            if (idx.isPresent()) {
-                if (idx.get() < 0 || idx.get() >= palette.size()) continue;
-                BlockState bs = palette.get(idx.get());
-
-                matrices.push();
-                matrices.translate(x, y, z);
-                Block block = bs.getBlock();
-
-                if (!bs.isAir() || bs.getRenderType() == BlockRenderType.MODEL) {
-                    //LOGGER.info("{},{},{},{}|{}",block,x,y,z,bs);
-                    brm.renderBlockAsEntity(bs, matrices, immediate, 15728880, OverlayTexture.DEFAULT_UV);
-                }
-                if (!bs.getFluidState().isEmpty()) {
-                    GlStateManager._depthMask(false);
-                    boolean isWaterlogged = false;
-                    int level = 0;
-                    Identifier tex = block == Blocks.LAVA
-                            ? Identifier.of("minecraft", "block/lava_still")
-                            : Identifier.of("minecraft", "block/water_still");
-                    for (Property<?> prop : bs.getProperties()) {
-                        if (prop.getName().equals("waterlogged") && bs.get(prop).toString().equals("true")) {
-                            isWaterlogged = true;
-                            break;
-                        }
-                    }
-                    for (Property<?> prop : bs.getProperties()) {
-                        if (prop.getName().toLowerCase().contains("level")) {
-                            level = Integer.parseInt(bs.get(prop).toString());
-                            break;
-                        }
-                    }
-                    boolean isWater = (block == Blocks.WATER || isWaterlogged);
-                    float fluidHeight = (level == 0) ? 1.0f : (8 - level) / 8.0f;
-                    int r = isWater ? 63 : 255;
-                    int g = isWater ? 118 : 255;
-                    int b = isWater ? 228 : 255;
-                    if (isWater || block == Blocks.LAVA) {
-                        renderFluidCube(matrices, immediate, tex, 0, fluidHeight-0.001f, 0.9f, r, g, b);
-                    }
-                }
-                matrices.pop();
-            }
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+            minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
+            int idx = blk.getInt("state").orElse(-1);
+            if (idx < 0 || idx >= palette.size()) continue;
+            BlockState bs = palette.get(idx);
+            if (bs.isAir()) continue;
+            blocks.add(new PlacedBlock(x, y, z, bs));
         }
-        immediate.draw();
-        /*GlStateManager._depthMask(true);
-        GlStateManager._disableCull();
-        GlStateManager._disableBlend();
-        matrices.pop();*/
-
-        matrices.push();
-        if (SelectBox != null && step-1 < SelectBox.size()) {
-            long time = System.currentTimeMillis();
-            float a = 0.5f + 0.3f * (float)Math.abs(Math.sin(time / 300.0));
-            for (TutorialGroupScreen.SelectionBox box : SelectBox.get(step-1)) {
-                renderSelectionBoxOutline(matrices, immediate, box, 2.0f, 1f, 1f, 0.0f, a); // 粗亮黄
-            }
+        if (minX == Integer.MAX_VALUE) {
+            minX = minY = minZ = maxX = maxY = maxZ = 0;
         }
-        immediate.draw();
-        GlStateManager._depthMask(true);
-        GlStateManager._disableDepthTest();
-        GlStateManager._disableCull();
-        GlStateManager._disableBlend();
-        matrices.pop();
+        return new Structure(List.copyOf(blocks), minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-
-    public static void renderFluidCube(MatrixStack matrices, VertexConsumerProvider consumers,
-                                       Identifier texture, float y1, float y2, float alpha, int r,int g, int b) {
-        Sprite sprite = MinecraftClient.getInstance()
-                .getBakedModelManager()
-                .getAtlas(Identifier.of("minecraft","textures/atlas/blocks.png"))
-                .getSprite(texture);
-
-        float u0 = sprite.getMinU();
-        float u1 = sprite.getMaxU();
-        float v0 = sprite.getMinV();
-        float v1 = sprite.getMaxV();
-
-        GlStateManager._enableBlend();
-        GlStateManager._disableCull();
-
-        Matrix4f mat = matrices.peek().getPositionMatrix();
-        VertexConsumer builder = consumers.getBuffer(RenderLayer.getTranslucent());
-
-        int a = Math.round(255 * alpha);
-        int light = 0xF000F0;
-        int overlay = OverlayTexture.DEFAULT_UV;
-
-        // 上面
-        builder.vertex(mat, 0, y2, 1).texture(u0, v1).color(r, g, b, a).light(light).normal(0, 1, 0).overlay(overlay);
-        builder.vertex(mat, 1, y2, 1).texture(u1, v1).color(r, g, b, a).light(light).normal(0, 1, 0).overlay(overlay);
-        builder.vertex(mat, 1, y2, 0).texture(u1, v0).color(r, g, b, a).light(light).normal(0, 1, 0).overlay(overlay);
-        builder.vertex(mat, 0, y2, 0).texture(u0, v0).color(r, g, b, a).light(light).normal(0, 1, 0).overlay(overlay);
-
-
-        // 下面
-        builder.vertex(mat, 0, y1, 0).texture(u0, v0).color(r, g, b, a).light(light).normal(0, -1, 0).overlay(overlay);
-        builder.vertex(mat, 1, y1, 0).texture(u1, v0).color(r, g, b, a).light(light).normal(0, -1, 0).overlay(overlay);
-        builder.vertex(mat, 1, y1, 1).texture(u1, v1).color(r, g, b, a).light(light).normal(0, -1, 0).overlay(overlay);
-        builder.vertex(mat, 0, y1, 1).texture(u0, v1).color(r, g, b, a).light(light).normal(0, -1, 0).overlay(overlay);
-
-        // 前面
-        builder.vertex(mat, 0, y2, 0).texture(u0, v0).color(r, g, b, a).light(light).normal(0, 0, -1).overlay(overlay);
-        builder.vertex(mat, 1, y2, 0).texture(u1, v0).color(r, g, b, a).light(light).normal(0, 0, -1).overlay(overlay);
-        builder.vertex(mat, 1, y1, 0).texture(u1, v1).color(r, g, b, a).light(light).normal(0, 0, -1).overlay(overlay);
-        builder.vertex(mat, 0, y1, 0).texture(u0, v1).color(r, g, b, a).light(light).normal(0, 0, -1).overlay(overlay);
-
-        // 后面
-        builder.vertex(mat, 0, y1, 1).texture(u0, v0).color(r, g, b, a).light(light).normal(0, 0, 1).overlay(overlay);
-        builder.vertex(mat, 1, y1, 1).texture(u1, v0).color(r, g, b, a).light(light).normal(0, 0, 1).overlay(overlay);
-        builder.vertex(mat, 1, y2, 1).texture(u1, v1).color(r, g, b, a).light(light).normal(0, 0, 1).overlay(overlay);
-        builder.vertex(mat, 0, y2, 1).texture(u0, v1).color(r, g, b, a).light(light).normal(0, 0, 1).overlay(overlay);
-
-        // 左面
-        builder.vertex(mat, 0, y1, 0).texture(u0, v0).color(r, g, b, a).light(light).normal(-1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 0, y1, 1).texture(u1, v0).color(r, g, b, a).light(light).normal(-1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 0, y2, 1).texture(u1, v1).color(r, g, b, a).light(light).normal(-1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 0, y2, 0).texture(u0, v1).color(r, g, b, a).light(light).normal(-1, 0, 0).overlay(overlay);
-
-        // 右面
-        builder.vertex(mat, 1, y2, 0).texture(u0, v0).color(r, g, b, a).light(light).normal(1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 1, y2, 1).texture(u1, v0).color(r, g, b, a).light(light).normal(1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 1, y1, 1).texture(u1, v1).color(r, g, b, a).light(light).normal(1, 0, 0).overlay(overlay);
-        builder.vertex(mat, 1, y1, 0).texture(u0, v1).color(r, g, b, a).light(light).normal(1, 0, 0).overlay(overlay);
-    }
-
-    public static void renderSelectionBoxOutline(
-            MatrixStack matrices,
-            VertexConsumerProvider consumers,
-            TutorialGroupScreen.SelectionBox box,
-            float lineWidth,
-            float r, float g, float b, float a
-    ) {
-        float minX = Math.min(box.x1, box.x2), minY = Math.min(box.y1, box.y2), minZ = Math.min(box.z1, box.z2);
-        float maxX = Math.max(box.x1, box.x2) + 1, maxY = Math.max(box.y1, box.y2) + 1, maxZ = Math.max(box.z1, box.z2) + 1;
-
-        RenderSystem.lineWidth(lineWidth);
-
-        Matrix4f mat = matrices.peek().getPositionMatrix();
-        VertexConsumer builder = consumers.getBuffer(RenderLayer.getLines());
-        //底
-        builder.vertex(mat, minX, minY, minZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, maxX, minY, minZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, maxX, minY, minZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, maxX, minY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, maxX, minY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, minX, minY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, minX, minY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, minX, minY, minZ).color(r, g, b, a).normal(1, 0, 0);
-
-        // 顶面
-        builder.vertex(mat, minX, maxY, minZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, maxX, maxY, minZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, maxX, maxY, minZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, maxX, maxY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, maxX, maxY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, minX, maxY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-
-        builder.vertex(mat, minX, maxY, maxZ).color(r, g, b, a).normal(1, 0, 0);
-        builder.vertex(mat, minX, maxY, minZ).color(r, g, b, a).normal(1, 0, 0);
-
-        // 竖边
-        builder.vertex(mat, minX, minY, minZ).color(r, g, b, a).normal(0, 1, 0);
-        builder.vertex(mat, minX, maxY, minZ).color(r, g, b, a).normal(0, 1, 0);
-
-        builder.vertex(mat, maxX, minY, minZ).color(r, g, b, a).normal(0, 1, 0);
-        builder.vertex(mat, maxX, maxY, minZ).color(r, g, b, a).normal(0, 1, 0);
-
-        builder.vertex(mat, maxX, minY, maxZ).color(r, g, b, a).normal(0, 1, 0);
-        builder.vertex(mat, maxX, maxY, maxZ).color(r, g, b, a).normal(0, 1, 0);
-
-        builder.vertex(mat, minX, minY, maxZ).color(r, g, b, a).normal(0, 1, 0);
-        builder.vertex(mat, minX, maxY, maxZ).color(r, g, b, a).normal(0, 1, 0);
-    }
-
-
-    //private static BlockState state; fuck you java
     public static BlockState readBlockStateFromNbt(NbtCompound compound) {
-        String name = compound.getString("Name").orElse(null);
-        if (name == null || name.isEmpty()) {
+        String name = compound.getString("Name").orElse("");
+        Identifier id = Identifier.tryParse(name);
+        if (id == null) {
             return Blocks.AIR.getDefaultState();
         }
-        Identifier id = Identifier.of(name);
         Block block = Registries.BLOCK.get(id);
-        AtomicReference<BlockState> state = new AtomicReference<>(block.getDefaultState());
-
-        if (compound.contains("Properties")) {
-            Optional<NbtCompound> oprops = compound.getCompound("Properties");
-            oprops.ifPresent(props-> {
-                for (String key : props.getKeys()) {
-                    Property<?> prop = block.getStateManager().getProperty(key);
-                    if (prop == null) continue;
-
-                    String valueStr = props.getString(key).orElse(null);
-                    if (valueStr == null) continue;
-
-                    state.set(setProperty(state.get(), prop, valueStr));
-                }
-            });
+        BlockState state = block.getDefaultState();
+        Optional<NbtCompound> props = compound.getCompound("Properties");
+        if (props.isPresent()) {
+            for (String propName : props.get().getKeys()) {
+                Property<?> prop = block.getStateManager().getProperty(propName);
+                if (prop == null) continue;
+                String value = props.get().getString(propName).orElse(null);
+                if (value == null) continue;
+                state = withProperty(state, prop, value);
+            }
         }
-        return state.get();
+        return state;
     }
 
-    private static <T extends Comparable<T>> BlockState setProperty(BlockState state, Property<T> prop, String value) {
+    private static <T extends Comparable<T>> BlockState withProperty(BlockState state, Property<T> prop, String value) {
         return prop.parse(value).map(v -> state.with(prop, v)).orElse(state);
     }
 }

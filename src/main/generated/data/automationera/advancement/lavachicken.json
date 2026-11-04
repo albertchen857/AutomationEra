@@ -1,9 +1,16 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:hoglinfarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
+          "minecraft:egg",
+          "minecraft:feather",
           "minecraft:cooked_chicken"
         ],
         "required_stacks": 9

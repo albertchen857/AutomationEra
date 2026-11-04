@@ -1,14 +1,20 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:curcuitrevolution",
   "criteria": {
     "a1": {
       "conditions": {
-        "item": {
-          "items": "minecraft:smooth_stone"
-        },
-        "required_stacks": 27
+        "items": [
+          "minecraft:glass",
+          "minecraft:smooth_stone"
+        ],
+        "required_boxes": 9
       },
-      "trigger": "automationera:full_shulker_box"
+      "trigger": "automationera:full_stack"
     }
   },
   "display": {

@@ -1,6 +1,7 @@
 package com.automationera.ui;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
@@ -8,9 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
 public class MachineEntryList extends EntryListWidget<MachineEntryList.Entry> {
+    private final int rowWidth;
 
     public MachineEntryList(MinecraftClient client, int width, int height, int y, int itemHeight) {
         super(client, width, height, y, itemHeight);
+        this.rowWidth = width - 12;
     }
 
     /**
@@ -23,20 +26,19 @@ public class MachineEntryList extends EntryListWidget<MachineEntryList.Entry> {
     // 高亮用
     public void selectByIndex(int index) {
         if (index >= 0 && index < this.children().size()) {
-            this.setSelected(this.children().get(index));
-            int entryTop = this.getRowLeft() + this.itemHeight * index;
-            if (entryTop < this.getScrollY()) {
-                this.setScrollY(entryTop);
-            }else if (entryTop + this.itemHeight > this.getScrollY() + this.getHeight()) {
-                int newScrollY = entryTop + this.itemHeight - this.getHeight();
-                this.setScrollY(newScrollY+5);
-            }
+            Entry entry = this.children().get(index);
+            this.setSelected(entry);
+            this.scrollTo(entry);
         }
     }
 
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+    }
 
+    @Override
+    protected void drawSelectionHighlight(DrawContext context, Entry entry, int color) {
+        // 选中高亮由 Entry 自己画
     }
 
     public static class Entry extends EntryListWidget.Entry<Entry> {
@@ -55,31 +57,38 @@ public class MachineEntryList extends EntryListWidget<MachineEntryList.Entry> {
         }
 
         @Override
-        public void render(DrawContext ctx, int index, int y, int x, int width, int height,
-                           int mouseX, int mouseY, boolean hovered, float delta) {
-            // 高亮选中项
+        public void render(DrawContext ctx, int mouseX, int mouseY, boolean hovered, float delta) {
+            int x = this.getContentX(), y = this.getContentY(), width = this.getContentWidth(), height = this.getContentHeight();
             if (parentList.getSelectedOrNull() == this) {
                 ctx.fill(x, y, x + width, y + height, 0x44007FFF);
             } else if (hovered) {
-                ctx.fill(x, y, x + width, y + height, 0x22000000);
+                ctx.fill(x, y, x + width, y + height, 0x22FFFFFF);
             }
-            ctx.drawItem(icon, x + 4, y + 2);
-            ctx.drawText(MinecraftClient.getInstance().textRenderer, text, x + 24, y + 6, 0xFFFFFFFF, false);
+            ctx.drawItem(icon, x + 2, y + (height - 16) / 2);
+            var tr = MinecraftClient.getInstance().textRenderer;
+            Text shown = text;
+            int maxTextW = width - 22;
+            if (tr.getWidth(text) > maxTextW) {
+                shown = Text.literal(tr.trimToWidth(text.getString(), maxTextW - tr.getWidth("…")) + "…");
+            }
+            ctx.drawText(tr, shown, x + 20, y + (height - 8) / 2, 0xFFFFFFFF, false);
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            parentList.setSelected(this); // 列表高亮当前项
-            onClick.run();                // 通知外部Screen
+        public boolean mouseClicked(Click click, boolean doubled) {
+            parentList.setSelected(this);
+            onClick.run();
             return true;
         }
     }
+
     @Override
     public int getRowWidth() {
-        return 100;
+        return rowWidth;
     }
+
     @Override
     public int getRowLeft() {
-        return this.getX() + 8;
+        return this.getX() + 4;
     }
 }

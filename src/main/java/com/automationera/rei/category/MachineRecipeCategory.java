@@ -1,6 +1,7 @@
 package com.automationera.rei.category;
 
 import com.automationera.OutputRecipe;
+import com.automationera.rei.ReiLayout;
 import com.automationera.rei.display.MachineReiRecipe;
 import com.automationera.rei.reiPlugin;
 import com.automationera.ui.IsometricRenderState;
@@ -25,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -71,24 +71,16 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         int originY = bounds.getY();
 
         String key = display.getKey();
-        // Determine text wrapping length based on language (Chinese vs others)
-        String langCode = MinecraftClient.getInstance().getLanguageManager().getLanguage();
-        int textLen = ("zh_cn".equalsIgnoreCase(langCode)) ? 17 : 40;
 
         if (Objects.equals(key, "circuit")) {
-            widgets.add(Widgets.createLabel(new Point(originX + 30, originY + 5),
-                            Text.literal(I18n.translate("emi.automationera.circuit.title")))
-                    .color(0xFFE71B1B, 0xFFE71B1B).noShadow());
+            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.title"),
+                    originX + 5, originY + 4, 150, 15, 0xFFE71B1B, 0.6f));
             widgets.add(Widgets.createTexturedWidget(
                     reiPlugin.ICON_TEXTURE, // Identifier.of("automationera", "icon.png")
                     new Rectangle(originX + 96, originY + 60, 64, 64),
                     0, 0, 1000, 1000, 1000, 1000));
-            String descr = I18n.translate("emi.automationera.circuit.descr");
-            for (int i = 0; i <= descr.length(); i += textLen) {
-                String line = descr.substring(i, Math.min(descr.length(), i + textLen));
-                widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
-                        Text.literal(line)).color(0xFF404040, 0xFF404040).noShadow().leftAligned());
-            }
+            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.descr"),
+                    originX + 5, originY + 19, 150, 40, 0xFF404040, 0.5f));
             Widget wikiButton = Widgets.createButton(new Rectangle(originX + 2, originY + 120, 32, 12), Text.literal("wiki"))
                     .text(Text.of("WIKI"))
                     .onClick(button -> {
@@ -103,9 +95,8 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
         // Standard case for other machines:
         // Title (default color)
 //        LOGGER.info("{}|{}",I18n.translate("emi.automationera." + key + ".title"),I18n.translate("emi.automationera." + key + ".descr"));
-        widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
-                        Text.literal(I18n.translate("emi.automationera." + key + ".title")))
-                .color(0xFF404040, 0xFF404040).noShadow().leftAligned());
+        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".title"),
+                originX + 5, originY + 4, 120, 15, 0xFF404040, 0.6f));
         Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
                 .text(Text.of("WIKI"))
                 .onClick(button -> {
@@ -113,17 +104,17 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
-        Map<String, List<?>> cm = OutputRecipe.ConvertMap();
-        if (cm.containsKey(key)){
+        // 跳转到对应的 3D 教程
+        List<?> tutorial = OutputRecipe.ConvertMap().get(key);
+        if (tutorial != null) {
             widgets.add(Widgets.createButton(
-                            new Rectangle(originX+ 135, originY + 120, 22, 22),
-                            Text.literal("")
-                    )
-                    .onClick(button -> {
-                        MinecraftClient.getInstance().setScreen(new TutorialGroupScreen((String) cm.getOrDefault(key, List.of("factory", 0)).getFirst(), (int) cm.get(key).getLast(), 1, new IsometricRenderState()));
-                    }));
-//            widgets.add(Widgets.createTexturedWidget(Identifier.of("minecraft", "textures/item/knowledge_book.png"),originX + 137, originY + 122,0,0,16,16));
-            widgets.add(Widgets.createTexturedWidget(Identifier.of("automationera", "textures/gui/wikibutton.png"),originX + 136, originY + 121,1,1,20,20));
+                            new Rectangle(originX + 135, originY + 120, 22, 22),
+                            Text.literal(""))
+                    .tooltipLines(Text.translatable("tutorial.ui.open"))
+                    .onClick(button -> MinecraftClient.getInstance().setScreen(new TutorialGroupScreen(
+                            (String) tutorial.getFirst(), (int) tutorial.getLast(), 1, new IsometricRenderState()))));
+            widgets.add(Widgets.createTexturedWidget(Identifier.of("automationera", "textures/gui/wikibutton.png"),
+                    originX + 136, originY + 121, 1, 1, 20, 20));
         }
         // Machine image (e.g., textures/<key>.png scaled to 96x96)
         widgets.add(Widgets.createTexturedWidget(
@@ -131,12 +122,8 @@ public class MachineRecipeCategory implements DisplayCategory<MachineReiRecipe> 
                 new Rectangle(originX -8 , originY + 48, 96, 96),
                 0, 0, 500, 500, 500, 500));
         // Description (wrapped lines)
-        String descr = I18n.translate("emi.automationera." + key + ".descr");
-        for (int i = 0; i <= descr.length(); i += textLen) {
-            String line = descr.substring(i, Math.min(descr.length(), i + textLen));
-            widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
-                    Text.literal(line)).color(0xFF404040, 0xFF404040).noShadow().leftAligned());
-        }
+        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".descr"),
+                originX + 5, originY + 19, 150, 36, 0xFF404040, 0.5f));
 
         // Compute counts for alternate outputs/inputs if any (from Ing map)
         int ingOlen = 0;

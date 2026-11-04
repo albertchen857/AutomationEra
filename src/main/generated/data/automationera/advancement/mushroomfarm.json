@@ -1,15 +1,21 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
   "parent": "automationera:bonefarm",
   "criteria": {
     "a1": {
       "conditions": {
         "items": [
-          "minecraft:red_mushroom_block",
-          "minecraft:brown_mushroom_block",
+          "minecraft:brown_mushroom",
           "minecraft:red_mushroom",
-          "minecraft:brown_mushroom"
+          "minecraft:red_mushroom_block",
+          "minecraft:brown_mushroom_block"
         ],
-        "required_stacks": 9
+        "required_boxes": 1,
+        "required_stacks": 27
       },
       "trigger": "automationera:full_stack"
     }

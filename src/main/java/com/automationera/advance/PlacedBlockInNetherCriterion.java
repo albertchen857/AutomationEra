@@ -74,31 +74,30 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
     private static boolean isSpeedOverIceBoat(PlayerEntity player) {
         if (player.getVehicle() instanceof BoatEntity boat) {
             UUID playerId = player.getUuid();
-            Vec3d currentPos = boat.getPos();
+            Vec3d currentPos = boat.getEntityPos();
             long currentTime = System.currentTimeMillis();
             
-            if (lastPositions.containsKey(playerId) && lastCheckTimes.containsKey(playerId)) {
-                Vec3d lastPos = lastPositions.get(playerId);
-                long lastTime = lastCheckTimes.get(playerId);
+            Vec3d lastPos = lastPositions.get(playerId);
+            Long lastTime = lastCheckTimes.get(playerId);
+            // 每次都更新位置和时间（以前算出速度后直接 return，之后一直和第一次的位置比，算的是“上船以来的平均速度”）
+            lastPositions.put(playerId, currentPos);
+            lastCheckTimes.put(playerId, currentTime);
+
+            if (lastPos != null && lastTime != null) {
                 long timeDiff = currentTime - lastTime;
-                
                 if (timeDiff > 0) {
                     double distance = Math.sqrt(
                         Math.pow(currentPos.x - lastPos.x, 2) +
                         Math.pow(currentPos.z - lastPos.z, 2)
                     );
-                    
+
                     // 转换为每秒方块数
                     double speed = (distance / timeDiff) * 1000.0;
-                    
-                    LOGGER.info("Player {} boat speed: {} blocks/second", player.getName().getString(), speed);
+
+                    LOGGER.debug("Player {} boat speed: {} blocks/second", player.getName().getString(), speed);
                     return speed > ICE_BOAT_SPEED;
                 }
             }
-            
-            // 更新位置和时间
-            lastPositions.put(playerId, currentPos);
-            lastCheckTimes.put(playerId, currentTime);
         }
         return false;
     }
@@ -152,7 +151,7 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
                 if (tickCounter >= CHECK_INTERVAL) {
                     tickCounter = 0;
                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                        if (player.getWorld() instanceof ServerWorld serverWorld) {
+                        ServerWorld serverWorld = player.getEntityWorld();
                             // 检查是否在地狱
                             if (isInNether(serverWorld)) {
                                 // 检查是否在船上
@@ -164,7 +163,6 @@ public class PlacedBlockInNetherCriterion extends AbstractCriterion<PlacedBlockI
                                     }
                                 }
                             }
-                        }
                     }
                 }
             });

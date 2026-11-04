@@ -1,6 +1,7 @@
 package com.automationera.rei.category;
 
 import com.automationera.rei.display.TradeReiRecipe;
+import com.automationera.rei.ReiLayout;
 import com.automationera.rei.reiPlugin;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -57,20 +58,13 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
         int originX = bounds.getX();
         int originY = bounds.getY();
         String key = display.getKey();
-        String langCode = MinecraftClient.getInstance().getLanguageManager().getLanguage();
-        int textLen = ("zh_cn".equalsIgnoreCase(langCode)) ? 17 : 40;
 
         // Special case: "trade_main" – similar highlight as circuit
         if (Objects.equals(key, "trade_main")) {
-            widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
-                            Text.literal(I18n.translate("emi.automationera.circuit.title")))
-                    .color(0xFFE71B1B, 0xFFE71B1B).noShadow());
-            String descr = I18n.translate("emi.automationera.circuit.descr");
-            for (int i = 0; i <= descr.length(); i += textLen) {
-                String line = descr.substring(i, Math.min(descr.length(), i + textLen));
-                widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
-                        Text.literal(line)).color(0xFF404040, 0xFF404040).noShadow().leftAligned());
-            }
+            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.title"),
+                    originX + 5, originY + 4, 150, 15, 0xFFE71B1B, 0.6f));
+            widgets.add(ReiLayout.text(I18n.translate("emi.automationera.circuit.descr"),
+                    originX + 5, originY + 19, 150, 40, 0xFF404040, 0.5f));
             widgets.add(Widgets.createTexturedWidget(
                     reiPlugin.ICON_TEXTURE,
                     new Rectangle(originX + 48, originY + 60, 64, 64),
@@ -86,9 +80,8 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
         }
 
         // Standard villager trade display
-        widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 5),
-                        Text.literal(I18n.translate("emi.automationera." + key + ".title")))
-                .color(0xFF404040, 0xFF404040).noShadow().leftAligned());
+        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".title"),
+                originX + 5, originY + 4, 120, 15, 0xFF404040, 0.6f));
 
         Widget wikiButton = Widgets.createButton(new Rectangle(originX + 128, originY + 2, 32, 12), Text.literal(""))
                 .text(Text.of("WIKI"))
@@ -97,18 +90,12 @@ public class TradeRecipeCategory implements DisplayCategory<TradeReiRecipe> {
                     reiPlugin.openWiki(url);
                 });
         widgets.add(wikiButton);
-        String descr = I18n.translate("emi.automationera." + key + ".descr");
-        for (int i = 0; i <= descr.length(); i += textLen) {
-            String line = descr.substring(i, Math.min(descr.length(), i + textLen));
-            widgets.add(Widgets.createLabel(new Point(originX + 5, originY + 20 + (i / textLen) * 8),
-                    Text.literal(line)).color(0xFF404040, 0xFF404040).noShadow().leftAligned());
-        }
+        widgets.add(ReiLayout.text(I18n.translate("emi.automationera." + key + ".descr"),
+                originX + 5, originY + 19, 150, 20, 0xFF404040, 0.5f));
         // Villager image corresponding to profession (job)
         String job = key.contains("_") ? key.split("_")[0] : key;
-        widgets.add(Widgets.createTexturedWidget(
-                reiPlugin.getVillagerTexture(job),
-                new Rectangle(originX + 0, originY + 30, 48, 96),
-                0, 0, 410, 825, 410, 825));
+        // 按图片真实宽高等比缩放（fisherman/farmer 比其他村民宽，写死 410x825 会被挤窄）
+        widgets.add(ReiLayout.fitTexture(reiPlugin.getVillagerTexture(job), originX, originY + 30, 52, 96));
 
         // Determine if this display is an "input trade" or "output trade"
         boolean isOutputTrade = key.endsWith("_out");

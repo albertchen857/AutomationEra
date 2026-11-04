@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:smallxpfarm",
+  "criteria": {
+    "level": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.endlessxp.descr"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "translate": "advancements.endlessxp.title"
+    }
+  },
+  "requirements": [
+    [
+      "level"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

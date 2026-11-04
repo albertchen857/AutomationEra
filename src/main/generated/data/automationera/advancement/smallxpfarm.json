@@ -1,0 +1,31 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "automationera:advancements_enabled"
+    }
+  ],
+  "parent": "automationera:curcuitrevolution",
+  "criteria": {
+    "level": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smallxpfarm.descr"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "advancements.smallxpfarm.title"
+    }
+  },
+  "requirements": [
+    [
+      "level"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

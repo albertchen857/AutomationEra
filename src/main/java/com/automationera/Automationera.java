@@ -1,6 +1,11 @@
 package com.automationera;
 
 import com.automationera.advance.*;
+import com.automationera.network.ClientModsPayload;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.world.gen.chunk.FlatChunkGenerator;
+import com.automationera.command.AdvancementCommand;
 import com.automationera.keybinding.ModKeyBinding;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -12,7 +17,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.EntityType;
@@ -24,8 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.Registries;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.resource.Resource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -49,142 +51,6 @@ public class Automationera implements ModInitializer {
 	public static final String MOD_ID = "automationera";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	private static final Set<Item> LOG_ITEMS = Set.of(
-			Items.OAK_LOG,
-			Items.SPRUCE_LOG,
-			Items.BIRCH_LOG,
-			Items.JUNGLE_LOG,
-			Items.ACACIA_LOG,
-			Items.DARK_OAK_LOG,
-			Items.MANGROVE_LOG,
-			Items.CHERRY_LOG,
-			Items.CRIMSON_STEM,
-			Items.WARPED_STEM
-	);
-	private static final Set<Item> CROP_ITEMS = Set.of(
-			Items.WHEAT,
-			Items.POTATO,
-			Items.CARROT
-	);
-	private static final Set<Item> RAIL_ITEMS = Set.of(
-			Items.RAIL,           // 普通铁轨
-			Items.POWERED_RAIL,   // 动力铁轨
-			Items.DETECTOR_RAIL,  // 探测铁轨
-			Items.ACTIVATOR_RAIL  // 激活铁轨
-	);
-	private static final Set<Item> CORAL_FAN = Set.of(
-			Items.BRAIN_CORAL_FAN,
-			Items.BUBBLE_CORAL_FAN,
-			Items.FIRE_CORAL_FAN,
-			Items.HORN_CORAL_FAN,
-			Items.TUBE_CORAL_FAN
-	);
-	private static final Set<Item> FLOWER = Set.of(
-			Items.DANDELION,
-			Items.POPPY,
-			Items.BLUE_ORCHID,
-			Items.ALLIUM,
-			Items.AZURE_BLUET,
-			Items.CORNFLOWER,
-			Items.LILY_OF_THE_VALLEY,
-			Items.ORANGE_TULIP,
-			Items.PINK_TULIP,
-			Items.RED_TULIP,
-			Items.WHITE_TULIP,
-			Items.WITHER_ROSE
-	);
-	private static final Set<Item> COPPER_BLOCKS = Set.of(
-			Items.EXPOSED_COPPER,
-			Items.WEATHERED_COPPER,
-			Items.OXIDIZED_COPPER
-	);
-	private static final Set<Item> LEAVES = Set.of(
-			Items.OAK_LEAVES,
-			Items.SPRUCE_LEAVES,
-			Items.BIRCH_LEAVES,
-			Items.JUNGLE_LEAVES,
-			Items.ACACIA_LEAVES,
-			Items.DARK_OAK_LEAVES,
-			Items.MANGROVE_LEAVES,
-			Items.CHERRY_LEAVES,
-			Items.AZALEA_LEAVES,
-			Items.FLOWERING_AZALEA_LEAVES
-	);
-	private static final Set<Item> NETHER_WOOD = Set.of(
-			Items.CRIMSON_STEM,
-			Items.WARPED_STEM
-	);
-	private static final Set<Item> WOOL = Set.of(
-			Items.WHITE_WOOL,
-			Items.ORANGE_WOOL,
-			Items.MAGENTA_WOOL,
-			Items.LIGHT_BLUE_WOOL,
-			Items.YELLOW_WOOL,
-			Items.LIME_WOOL,
-			Items.PINK_WOOL,
-			Items.GRAY_WOOL,
-			Items.LIGHT_GRAY_WOOL,
-			Items.CYAN_WOOL,
-			Items.PURPLE_WOOL,
-			Items.BLUE_WOOL,
-			Items.BROWN_WOOL,
-			Items.GREEN_WOOL,
-			Items.RED_WOOL,
-			Items.BLACK_WOOL
-	);
-	private static final Set<Item> FROG_LIGHT = Set.of(
-			Items.OCHRE_FROGLIGHT,
-			Items.PEARLESCENT_FROGLIGHT,
-			Items.VERDANT_FROGLIGHT
-	);
-	private static final Set<Item> SQUID = Set.of(
-			Items.INK_SAC,
-			Items.GLOW_INK_SAC
-	);
-	private static final Set<Item> Furnace = Set.of(Items.GLASS,Items.STONE);
-	private static final Set<Item> Mushroom = Set.of(
-			Items.BROWN_MUSHROOM,
-			Items.RED_MUSHROOM,
-			Items.RED_MUSHROOM_BLOCK,
-			Items.BROWN_MUSHROOM_BLOCK
-	);
-	private static final Set<Item> Concrete = Set.of( // 混凝土农场
-			Items.WHITE_CONCRETE,
-			Items.ORANGE_CONCRETE,
-			Items.MAGENTA_CONCRETE,
-			Items.LIGHT_BLUE_CONCRETE,
-			Items.YELLOW_CONCRETE,
-			Items.LIME_CONCRETE,
-			Items.PINK_CONCRETE,
-			Items.GRAY_CONCRETE,
-			Items.LIGHT_GRAY_CONCRETE,
-			Items.CYAN_CONCRETE,
-			Items.PURPLE_CONCRETE,
-			Items.BLUE_CONCRETE,
-			Items.BROWN_CONCRETE,
-			Items.GREEN_CONCRETE,
-			Items.RED_CONCRETE,
-			Items.BLACK_CONCRETE
-	);
-	private static final Set<Item> Sniffer = Set.of( // 嗅探兽农场
-			Items.TORCHFLOWER_SEEDS,
-			Items.PITCHER_POD
-	);
-	private static final Set<Item> Pigtrade = Set.of(Items.QUARTZ,Items.CRYING_OBSIDIAN);
-	private static final Set<Item> Ripening = Set.of( // 催熟机
-			Items.COCOA_BEANS,
-			Items.GLOW_BERRIES,
-			Items.VINE,
-			Items.GLOW_LICHEN,
-			Items.BIG_DRIPLEAF,
-			Items.HANGING_ROOTS,
-			Items.PINK_PETALS,
-			Items.ROSE_BUSH,
-			Items.LILAC,
-			Items.PEONY,
-			Items.SUNFLOWER
-	);
-
 	private static final Map<UUID, Integer> tradeCounts = new HashMap<>();
 	private static final Map<UUID, Long> netherEntryTimes = new HashMap<>();
 	private static final Set<UUID> aboveNetherPlayers = new HashSet<>();
@@ -194,23 +60,30 @@ public class Automationera implements ModInitializer {
 	private long lastTickStartTime;
 	private long tickDuration;
 
-	private int[] lastpos = new int[]{0,0};
-	private boolean afk = false;
-	private int afkperiod = 0;
-	private int furnace = 0;
-	private int Observer = 0;
+	// 以下状态都按玩家区分（以前是全局变量，多人服务器里会互相串：别人开的熔炉算到你头上、两个玩家相距很远会误触发“最快旅行”）
+	private final Map<UUID, int[]> lastPos = new HashMap<>();       // 每 20 tick 记录的位置（地狱旅行距离）
+	private final Map<UUID, int[]> afkCheckPos = new HashMap<>();   // 上一次整点挂机检查时的位置
+	private final Map<UUID, Integer> afkPeriods = new HashMap<>();
+	private final Set<UUID> afkPlayers = new HashSet<>();
+	private final Map<UUID, Integer> furnaceOpens = new HashMap<>();
+	private final Map<UUID, Integer> observerPlaces = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
 		//Automationera.register("full_stack", FullStackCriterion.INSTANCE);
 		//Automationera.register("full_shulker_box", FullStackCriterion.INSTANCE);
+		ModConfig.load();
+		AdvancementsEnabledCondition.register();
 		Criteria.register(FullStackCriterion.ID.toString(), FullStackCriterion.INSTANCE);
-		Criteria.register(FullShulkerBoxCriterion.ID.toString(), FullShulkerBoxCriterion.INSTANCE);
+		PayloadTypeRegistry.playC2S().register(ClientModsPayload.ID, ClientModsPayload.CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(ClientModsPayload.ID,
+				(payload, context) -> onClientMods(context.player(), payload.mods()));
 		PlacedBlockInNetherCriterion.register();
+		AdvancementCommand.register();
 
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-			if (afk){
-				MinecraftServer server = newPlayer.getServer();
+			if (afkPlayers.contains(newPlayer.getUuid())){
+				MinecraftServer server = newPlayer.getEntityWorld().getServer();
 				AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":afkdie"));
 				if (adv != null) {
 					newPlayer.getAdvancementTracker().grantCriterion(adv, "afkdie");
@@ -220,37 +93,42 @@ public class Automationera implements ModInitializer {
 
 		// 添加每刻检查
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
+			if (!ModConfig.advancementsEnabled()) return;
+			// 放在玩家循环外：没人在线时也要更新，否则玩家重新进服时 MSPT 会被算成几十秒，误触发“卡服”
+			lastTickStartTime = System.nanoTime();
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-				lastTickStartTime = System.nanoTime();
 				if (server.getTicks() % 216000 == 0){ //1h
 					BlockPos pos = player.getBlockPos();
-					//LOGGER.info("afk {}/{}/{}",lastpos, new int[]{pos.getX(), pos.getZ()},Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()}));
-					if (Arrays.equals(lastpos, new int[]{pos.getX(), pos.getZ()})){
+					UUID uuid = player.getUuid();
+					int[] now = new int[]{pos.getX(), pos.getZ()};
+					// 和一小时前的位置比（以前比的是 1 秒前的位置，只要整点那一秒没动就算挂机一小时）
+					if (Arrays.equals(afkCheckPos.get(uuid), now)){
 						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":afk"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "afk");
 						}
-						afkperiod+=1;
-						player.sendMessage(Text.literal("You already AFK "+(afkperiod)+" Hours"));
-						afk = true;
+						int period = afkPeriods.merge(uuid, 1, Integer::sum);
+						player.sendMessage(Text.literal("You already AFK "+period+" Hours"));
+						afkPlayers.add(uuid);
 					}else{
-						afkperiod = 0;
-						afk = false;
+						afkPeriods.remove(uuid);
+						afkPlayers.remove(uuid);
 					}
+					afkCheckPos.put(uuid, now);
 				}else if (server.getTicks() % 200 == 0) {
 					ChunkPos chunkPos = player.getChunkPos();
-					if (isChunkAirSpace(player.getWorld(), chunkPos, -64)){
+					if (isChunkAirSpace(player.getEntityWorld(), chunkPos, -64)){
 						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":realperimeter"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "realperimeter");
 						}
-					}else if (isChunkAirSpace(player.getWorld(), chunkPos, -59)) {
-						if (player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
+					}else if (isChunkAirSpace(player.getEntityWorld(), chunkPos, -59)) {
+						if (player.getEntityWorld().getRegistryKey().equals(World.OVERWORLD)) {
 							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":perimeter"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "perimeter");
 							}
-						} else if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
+						} else if (player.getEntityWorld().getRegistryKey().equals(World.NETHER)) {
 							AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":netherperimeter"));
 							if (adv != null) {
 								player.getAdvancementTracker().grantCriterion(adv, "netherperimeter");
@@ -261,93 +139,34 @@ public class Automationera implements ModInitializer {
 					int online = server.getCurrentPlayerCount();
 					//LOGGER.info("Checking player {} for advancements", player.getName().getString());
 
-					// 检查单物品成就
-					checkPlayerStacks(player, Items.COBBLESTONE, 9);
-					checkPlayerStacks(player, Items.ICE, 9);
-					checkPlayerStacks(player, Items.BASALT, 9);
-					checkPlayerStacks(player, Items.DRIPSTONE_BLOCK, 9);
-					checkPlayerStacks(player, Items.GLASS, 4);
-					checkPlayerStacks(player, Items.SMOOTH_STONE, 27);
-					checkPlayerStacks(player, Items.IRON_INGOT, 9);
-					checkPlayerStacks(player, Items.AMETHYST_SHARD, 9);
-					checkPlayerStacks(player, Items.SAND, 9);
-					checkPlayerStacks(player, Items.CLAY, 9);
-					checkPlayerStacks(player, Items.DIRT, 27);
-					checkPlayerStacks(player, Items.BONE_MEAL, 9);
-					checkPlayerStacks(player, Items.BONE, 4);
-					checkPlayerStacks(player, Items.SHULKER_SHELL, 9);
-					checkPlayerStacks(player, Items.REDSTONE, 9);
-					checkPlayerStacks(player, Items.SLIME_BALL, 9);
-					checkPlayerStacks(player, Items.BLAZE_ROD, 9);
-					checkPlayerStacks(player, Items.ENDER_PEARL, 9);
-					checkPlayerStacks(player, Items.GOLD_INGOT, 9);
-					checkPlayerStacks(player, Items.GOLD_INGOT, 27);
-					checkPlayerStacks(player, Items.WITHER_ROSE, 9);
-					checkPlayerStacks(player, Items.WITHER_SKELETON_SKULL, 4);
-					checkPlayerStacks(player, Items.NETHER_STAR, 9);
-					checkPlayerStacks(player, Items.PRISMARINE_SHARD, 9);
-					checkPlayerStacks(player, Items.WHEAT, 9);
-					checkPlayerStacks(player, Items.SUGAR_CANE, 4);
-					checkPlayerStacks(player, Items.CACTUS, 4);
-					checkPlayerStacks(player, Items.KELP, 9);
-					checkPlayerStacks(player, Items.BAMBOO, 4);
-					checkPlayerStacks(player, Items.PUMPKIN, 4);
-					checkPlayerStacks(player, Items.MELON, 4);
-					checkPlayerStacks(player, Items.NETHER_WART, 9);
-					checkPlayerStacks(player, Items.SWEET_BERRIES, 9);
-					checkPlayerStacks(player, Items.SEA_PICKLE, 4);
-					checkPlayerStacks(player, Items.TURTLE_EGG, 4);
-					checkPlayerStacks(player, Items.SNOW_BLOCK, 9);
-					checkPlayerStacks(player, Items.COOKED_PORKCHOP, 9);
-					checkPlayerStacks(player, Items.COOKED_CHICKEN, 4);
-					checkPlayerStacks(player, Items.COOKED_BEEF, 4);
-					checkPlayerStacks(player, Items.HONEY_BLOCK, 4);
-					checkPlayerStacks(player, Items.EMERALD, 9);
-					checkPlayerStacks(player, Items.BEDROCK, 1);
-
-					// 检查物品集合成就
-					checkAnyItemStacks(player, LOG_ITEMS, 9);
-					checkAnyItemStacks(player, LOG_ITEMS, 27);
-					checkAnyItemStacks(player, CROP_ITEMS, 4);
-					checkAnyItemStacks(player, RAIL_ITEMS, 9);
-					checkAnyItemStacks(player, CORAL_FAN, 4);
-					checkAnyItemStacks(player, FLOWER, 4);
-					checkAnyItemStacks(player, COPPER_BLOCKS, 2);
-					checkAnyItemStacks(player, LEAVES, 9);
-					checkAnyItemStacks(player, NETHER_WOOD, 9);
-					checkAnyItemStacks(player, WOOL, 4);
-					checkAnyItemStacks(player, SQUID, 4);
-					checkAnyItemStacks(player, FROG_LIGHT, 9);
-					checkAnyItemStacks(player, Furnace, 9);
-					checkAnyItemStacks(player, Mushroom, 9);
-					checkAnyItemStacks(player, Concrete, 9);
-					checkAnyItemStacks(player, Sniffer, 9);
-					checkAnyItemStacks(player, Pigtrade, 9);
-					checkAnyItemStacks(player, Ripening, 9);
-
-					// 检查潜影盒成就
-					//LOGGER.info("Triggering shulker box check for player {}", player.getName().getString());
-					FullShulkerBoxCriterion.INSTANCE.trigger(player);
+					// 收集类进度：统计一次背包（含潜影盒）后判断所有条件
+					FullStackCriterion.INSTANCE.trigger(player);
+					// 经验等级：100 → 500 → 1000 级
+					int level = player.experienceLevel;
+					if (level >= 100) grant(player, "smallxpfarm", "level");
+					if (level >= 500) grant(player, "endlessxp", "level");
+					if (level >= 1000) grant(player, "impossiblexp", "level");
 
 					BlockPos pos = player.getBlockPos();
 					// 检查地狱上层成就
-					if (player.getWorld().getRegistryKey().equals(World.NETHER)) {
+					if (player.getEntityWorld().getRegistryKey().equals(World.NETHER)) {
 						// 确保玩家真的在地狱上层，并且已经在那里待了一段时间
 						if (pos.getY() > 127) {
-							LOGGER.info("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
+							LOGGER.debug("Player {} in Nether at Y: {}", player.getName().getString(), pos.getY());
 							Long entryTime = netherEntryTimes.get(player.getUuid());
 							// 检查玩家是否已经获得过这个成就
-							AdvancementEntry adv = player.getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":abovenether"));
+							AdvancementEntry adv = player.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":abovenether"));
 							//LOGGER.info("ADV:{}",!player.getAdvancementTracker().getProgress(adv).isDone());
-							if (!player.getAdvancementTracker().getProgress(adv).isDone()) {
+							if (adv != null && !player.getAdvancementTracker().getProgress(adv).isDone()) {
 								//ABOVE_NETHER_CRITERION.trigger(player);
 								player.getAdvancementTracker().grantCriterion(adv, "above_nether");
 								//aboveNetherPlayers.add(player.getUuid());
 								LOGGER.info("Triggered above nether advancement for player {}", player.getName().getString());
 							}
 						}
-						int x = Math.abs(pos.getX()-lastpos[0]);
-						int y = Math.abs(pos.getZ()-lastpos[1]);
+						int[] prev = lastPos.getOrDefault(player.getUuid(), new int[]{pos.getX(), pos.getZ()});
+						long x = Math.abs(pos.getX()-prev[0]);
+						long y = Math.abs(pos.getZ()-prev[1]);
 						long distance = (long)Math.sqrt(x*x+y*y);
 						//LOGGER.info("distance:{}, {}", distance, lastpos);
 						if (distance > 10000){
@@ -362,7 +181,7 @@ public class Automationera implements ModInitializer {
 							}
 						}
 					}
-					lastpos = new int[]{pos.getX(), pos.getZ()};
+					lastPos.put(player.getUuid(), new int[]{pos.getX(), pos.getZ()});
 
 					double mspt = Arrays.stream(tickTimes).average().orElse(0.0);
 					//LOGGER.info("MSPT:{}, ONLINE:{}",mspt,online);
@@ -371,15 +190,15 @@ public class Automationera implements ModInitializer {
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "stuck_server");
 						}
+					} else if (online > 49) { // 先判断大的，以前 >9 在前面导致 >49 永远进不去
+						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":giantserver"));
+						if (adv != null) {
+							player.getAdvancementTracker().grantCriterion(adv, "giant_server");
+						}
 					} else if (online > 9) {
 						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":largeserver"));
 						if (adv != null) {
 							player.getAdvancementTracker().grantCriterion(adv, "large_server");
-						}
-					} else if (online > 49) {
-						AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID+":giantserver"));
-						if (adv != null) {
-							player.getAdvancementTracker().grantCriterion(adv, "giant_server");
 						}
 					}
 
@@ -392,7 +211,7 @@ public class Automationera implements ModInitializer {
 						}
 					}
 
-					ServerWorld world = player.getServerWorld();
+					ServerWorld world = player.getEntityWorld();
 					int entityCount = 0;
 					for (Entity entity : world.iterateEntities()) {
 						if (entity instanceof TntEntity) entityCount++;
@@ -422,13 +241,13 @@ public class Automationera implements ModInitializer {
 		});
 
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			if (!world.isClient) {
+			if (!world.isClient()) {
 				ItemStack stack = player.getStackInHand(hand);
 				if (player instanceof ServerPlayerEntity serverPlayer) {
 					if(entity instanceof VillagerEntity villager){
 						LOGGER.info("Player {} traded with villager", player.getName().getString());
 						// 检查玩家是否已经获得过这个成就
-						AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":tradingpost"));
+						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":tradingpost"));
 						if (adv != null && !serverPlayer.getAdvancementTracker().getProgress(adv).isDone()) {
 							tradeCounts.merge(player.getUuid(), 1, Integer::sum);
 							int tradeCount = tradeCounts.get(player.getUuid());
@@ -438,14 +257,6 @@ public class Automationera implements ModInitializer {
 								LOGGER.info("Triggered trading post advancement for player {}", player.getName().getString());
 							}
 						}
-					}else if (stack.getItem() == Items.OBSERVER) {
-						Observer+=1;
-						if (Observer>9999){
-							AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":placeobserver"));
-							if (adv != null) {
-								serverPlayer.getAdvancementTracker().grantCriterion(adv, "placeobserver");
-							}
-						}
 					}
 				}
 			}
@@ -453,12 +264,25 @@ public class Automationera implements ModInitializer {
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-			if (!world.isClient && player instanceof ServerPlayerEntity serverPlayer) {
+			if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
 				BlockState state = world.getBlockState(hitResult.getBlockPos());
+				// 放置侦测器：以前挂在 UseEntityCallback（右键实体）上，放方块永远不会计数
+				if (player.getStackInHand(hand).isOf(Items.OBSERVER)) {
+					if (observerPlaces.merge(serverPlayer.getUuid(), 1, Integer::sum) > 9999) {
+						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":placeobserver"));
+						if (adv != null) {
+							serverPlayer.getAdvancementTracker().grantCriterion(adv, "placeobserver");
+						}
+					}
+				}
+				if (state.isOf(Blocks.BEACON) && isFullNetheriteBeacon(world, hitResult.getBlockPos())) {
+					if (grant(serverPlayer, "netheritebeacon", "beacon") && ModConfig.advancementRewardsEnabled()) {
+						serverPlayer.addExperience(NETHERITE_BEACON_REWARD_XP);
+					}
+				}
 				if (state.getBlock() == Blocks.FURNACE) {
-					furnace+=1;
-					if(furnace>1999){
-						AdvancementEntry adv = serverPlayer.getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":openfurnace"));
+					if(furnaceOpens.merge(serverPlayer.getUuid(), 1, Integer::sum) > 1999){
+						AdvancementEntry adv = serverPlayer.getEntityWorld().getServer().getAdvancementLoader().get(Identifier.of(MOD_ID+":openfurnace"));
 						if (adv != null) {
 							serverPlayer.getAdvancementTracker().grantCriterion(adv, "openfurnace");
 						}
@@ -471,50 +295,55 @@ public class Automationera implements ModInitializer {
 
 	}
 
-	private void checkPlayerStacks(ServerPlayerEntity player, Item item, int requiredStacks) {
-		int fullStackCount = 0;
-		int stackSize = item.getMaxCount();
+	private static final int NETHERITE_BEACON_REWARD_XP = 10000;
+	private static final Set<String> MASA_MODS = Set.of("malilib");
+	private static final Set<String> CARPET_MODS = Set.of("carpet");
+	private static final Set<String> OPTIMIZE_MODS = Set.of("sodium", "iris", "entityculling");
 
-		// 扫描玩家背包
-		PlayerInventory inv = player.getInventory();
-		for (int i = 0; i<=inv.size(); i++) {
-			ItemStack stack = inv.getStack(i);
-			if (!stack.isEmpty() &&
-					stack.getItem() == item &&
-					stack.getCount() == stackSize) {
-				fullStackCount++;
-			}
-		}
-
-		// 如果满足条件则触发进度
-		if (fullStackCount >= requiredStacks) {
-			FullStackCriterion.INSTANCE.trigger(player, Set.of(item), requiredStacks);
-		}
+	/** 发放由代码控制的进度；返回 true 表示这次才刚完成（用于发奖励） */
+	public static boolean grant(ServerPlayerEntity player, String id, String criterion) {
+		MinecraftServer server = player.getEntityWorld().getServer();
+		AdvancementEntry adv = server.getAdvancementLoader().get(Identifier.of(MOD_ID, id));
+		if (adv == null || player.getAdvancementTracker().getProgress(adv).isDone()) return false;
+		return player.getAdvancementTracker().grantCriterion(adv, criterion)
+				&& player.getAdvancementTracker().getProgress(adv).isDone();
 	}
 
-	// 检查任意集合内物品达到指定组数
-	private void checkAnyItemStacks(ServerPlayerEntity player, Set<Item> items, int requiredStacks) {
-		for (Item item : items) {
-			int fullStackCount = 0;
-			int stackSize = item.getMaxCount();
-			PlayerInventory inv = player.getInventory();
-			for (int i = 0; i<=inv.size(); i++) {
-				ItemStack stack = inv.getStack(i);
-				if (!stack.isEmpty() && stack.getItem() == item && stack.getCount() == stackSize) {
-					fullStackCount++;
+	/** 客户端进服时上报的生电模组 */
+	private static void onClientMods(ServerPlayerEntity player, List<String> mods) {
+		if (!ModConfig.advancementsEnabled()) return;
+		boolean masa = mods.stream().anyMatch(MASA_MODS::contains);
+		boolean carpet = mods.stream().anyMatch(CARPET_MODS::contains);
+		boolean optimize = mods.stream().anyMatch(OPTIMIZE_MODS::contains);
+		if (!(masa || carpet || optimize)) return;
+		grant(player, "notvanilla", "mod");
+		if (masa) grant(player, "masamods", "mod");
+		if (carpet) grant(player, "carpetmod", "mod");
+		if (optimize) grant(player, "optimizemods", "mod");
+	}
+
+	/** 满级（4 层）且全部是下界合金块的信标金字塔 */
+	public static boolean isFullNetheriteBeacon(World world, BlockPos beacon) {
+		for (int layer = 1; layer <= 4; layer++) {
+			int y = beacon.getY() - layer;
+			for (int x = -layer; x <= layer; x++) {
+				for (int z = -layer; z <= layer; z++) {
+					if (!world.getBlockState(new BlockPos(beacon.getX() + x, y, beacon.getZ() + z)).isOf(Blocks.NETHERITE_BLOCK)) {
+						return false;
+					}
 				}
 			}
-			if (fullStackCount >= requiredStacks) {
-				FullStackCriterion.INSTANCE.trigger(player, Set.of(item), requiredStacks);
-				return;
-			}
 		}
-
-		Map<Identifier, Resource> resMap = ((ReloadableResourceManagerImpl) MinecraftClient.getInstance().getResourceManager())
-				.findResources("textures/rei/machine", id -> true);
+		return true;
 	}
 
-	public boolean isChunkAirSpace(World world, ChunkPos chunkPos, int miny) {
+	/** 超平坦世界本来就是“空置域”，不算 */
+	public static boolean isFlatWorld(World world) {
+		return world instanceof ServerWorld sw && sw.getChunkManager().getChunkGenerator() instanceof FlatChunkGenerator;
+	}
+
+	public static boolean isChunkAirSpace(World world, ChunkPos chunkPos, int miny) {
+		if (isFlatWorld(world)) return false;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				for (int y = miny; y <= 62; y++) {
